@@ -58,7 +58,7 @@ public class JSONPointer {
 
     /**
      * This class allows the user to build a JSONPointer in steps, using
-     * exactly one segment in each step.
+     * exactly one segment in each update.
      */
     public static class Builder {
 

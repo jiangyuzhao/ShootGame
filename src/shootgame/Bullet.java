@@ -1,40 +1,43 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package shootgame;
 
 /**
+ * 这是一种由玩家射出的最普通子弹
  *
- * @author qinyuxuan
+ * @author qinyuxuan, hehao
  */
-public class Bullet extends FlyingObject {  
-    private int speed = 3;  //移动的速度  
+public class Bullet extends Projectile {
       
     /** 初始化数据 */  
-    public Bullet(int x,int y){  
+    public Bullet(ShootGame game, double x, double y){
+        super(game);
+
         this.x = x;  
         this.y = y;  
-        this.image = ShootGame.bullet;  
-    } 
-    public Bullet(int x,int y, boolean b){  
+        this.image = ShootGame.bullet;
+
+        this.velocityY = -3;
+    }
+
+    public Bullet(ShootGame game, double x, double y, boolean b){
+        super(game);
+
         this.x = x;  
         this.y = y;  
-        if(b==true)
-            this.image = ShootGame.bullet1;  
-    } 
-  
-    /** 移动 */  
-    @Override  
-    public void step(){     
-        y-=speed;  
-    }  
-  
-    /** 越界处理 */  
-    @Override  
-    public boolean outOfBounds() {  
-        return y<-height;  
-    }  
-  
+        if(b) {
+            this.image = ShootGame.bullet1;
+        }
+
+        this.velocityY = -3;
+    }
+
+    @Override
+    public void update() {
+        x += velocityX;
+        y += velocityY;
+    }
+
+    @Override
+    public void onCollision(GameObject other) {
+
+    }
 }

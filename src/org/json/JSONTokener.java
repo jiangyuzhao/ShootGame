@@ -99,7 +99,7 @@ public class JSONTokener {
      * Back up one character. This provides a sort of lookahead capability,
      * so that you can test for a digit or letter before attempting to parse
      * the next number or identifier.
-     * @throws JSONException Thrown if trying to step back more than 1 step
+     * @throws JSONException Thrown if trying to update back more than 1 update
      *  or if already at the start of the string
      */
     public void back() throws JSONException {
@@ -146,7 +146,7 @@ public class JSONTokener {
     /**
      * Checks if the end of the input has been reached.
      *  
-     * @return true if at the end of the file and we didn't step back
+     * @return true if at the end of the file and we didn't update back
      */
     public boolean end() {
         return this.eof && !this.usePrevious;

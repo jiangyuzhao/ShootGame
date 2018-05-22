@@ -1,56 +1,49 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package shootgame;
 
-/**
- *
- * @author qinyuxuan
- */
 import java.awt.Font;  
 import java.awt.Color;  
 import java.awt.Graphics;  
 import java.awt.event.MouseAdapter;  
-import java.awt.event.MouseEvent;  
-import java.util.Arrays;  
-import java.util.Random;  
-import java.util.Timer;  
-import java.util.TimerTask;  
-import java.awt.image.BufferedImage;  
+import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
   
-import javax.imageio.ImageIO;  
-import javax.swing.ImageIcon;  
-import javax.swing.JFrame;  
-import javax.swing.JPanel;  
-import org.json.JSONException;
-import org.json.JSONObject;
-import static shootgame.Demo.readString3;
-import static shootgame.Demo.readString2;
-import static shootgame.Demo.readString;
-import java.io.*;
+import javax.imageio.ImageIO;
+import javax.swing.*;
 import java.lang.*;
-  
-public class ShootGame extends JPanel {  
-    public static final int WIDTH = 600; // 面板宽  
-    public static final int HEIGHT = 800; // 面板高  
-    /** 游戏的当前状态: START RUNNING PAUSE GAME_OVER */  
+import java.util.Date;
+import java.util.Timer;
+import java.util.TimerTask;
+
+/**
+ * 游戏的主窗体和游戏状态类
+ *
+ * @author qinyuxuan, hehao
+ */
+public class ShootGame extends JPanel {
+    /**
+     * 窗体的大小
+     */
+    public static final int WIDTH = 600;
+    public static final int HEIGHT = 800;
+
+    /**
+     * 游戏的当前状态: START RUNNING PAUSE GAME_OVER
+     */
     private int state;  
     private static final int START = 0;  
     private static final int RUNNING = 1;  
     private static final int PAUSE = 2;  
     private static final int GAME_OVER = 3;  
   
-    private int score = 0; // 得分  
-    private Timer timer; // 定时器  
-    private Timer hero_timer;//主角的定时器
-    private Timer gesture_timer;//识别手势的定时器
-    private int intervel =10; // 时间间隔(毫秒)  
-  
-    public static int trick; //记录大招已经发放的时间
-    public static int former_hero_x;
-    public static int former_hero_y;
+    private int score = 0; // 得分
+
+    private Timer timer; // 定时器
+    private int interval = 10; // 时间间隔(毫秒)
+    public long lastUpdatedTime;
+    public long currentTime;
+    public long deltaTime;
+
+    // 资源图片
     public static BufferedImage background;  
     public static BufferedImage start;  
     public static BufferedImage airplane;  
@@ -66,88 +59,157 @@ public class ShootGame extends JPanel {
     public static BufferedImage hero0;  
     public static BufferedImage hero1;  
     public static BufferedImage pause;  
-    public static BufferedImage gameover;  
-  
-    private FlyingObject[] flyings = {}; // 敌机数组  
-    private Bullet[] bullets = {}; // 子弹数组  
-    private Hero hero = new Hero(); // 英雄机  
+    public static BufferedImage gameover;
+
+    // 管理敌人的生成，道具的生成等操作
+    public SceneManager sceneManager = new SceneManager(this);
+
+    // 负责处理用户的输入
+    public InputManager inputManager = new InputManager();
+
+    // 负责处理物理
+    public PhysicsEngine physicsEngine = new PhysicsEngine(this);
+
+    public Projectile[] projectiles = new Projectile[1000]; // 子弹数组
+    public Enemy[] enemies = new Enemy[100]; // 敌人数组
+    public Player player = new Player(this); // 玩家
       
     static { // 静态代码块，初始化图片资源  
-        try {  
-            /*
-            background = ImageIO.read(ShootGame.class  
-                    .getResource("background.png"));  
-            start = ImageIO.read(ShootGame.class.getResource("start.png"));  
-            airplane = ImageIO  
-                    .read(ShootGame.class.getResource("airplane.png"));  
-            bee = ImageIO.read(ShootGame.class.getResource("bee.png"));  
-            bullet = ImageIO.read(ShootGame.class.getResource("bullet.png"));  
-            hero0 = ImageIO.read(ShootGame.class.getResource("hero0.png"));  
-            hero1 = ImageIO.read(ShootGame.class.getResource("hero1.png"));  
-            pause = ImageIO.read(ShootGame.class.getResource("pause.png"));  
-            gameover = ImageIO  
-                    .read(ShootGame.class.getResource("gameover.png"));  */
-            background = ImageIO.read(ShootGame.class.getResource("resources/background_41.jpg"));
-            start = ImageIO.read(ShootGame.class.getResource("resources/start_4.png"));
-            airplane = ImageIO.read(ShootGame.class.getResource("resources/airplane_40.png"));
-            airplane0 = ImageIO.read(ShootGame.class.getResource("resources/airplane_41.png"));
-            airplane1 = ImageIO.read(ShootGame.class.getResource("resources/airplane_42.png"));
-            airplane2 = ImageIO.read(ShootGame.class.getResource("resources/airplane_43.png"));
-            airplane3 = ImageIO.read(ShootGame.class.getResource("resources/airplane_44.png"));
-            airplane4 = ImageIO.read(ShootGame.class.getResource("resources/airplane_46.png"));
-            bee = ImageIO.read(ShootGame.class.getResource("resources/airplane_45.png"));
-            bullet = ImageIO.read(ShootGame.class.getResource("resources/bullet_40.png"));
-            bullet0 = ImageIO.read(ShootGame.class.getResource("resources/bullet_40.png"));
-            bullet1 = ImageIO.read(ShootGame.class.getResource("resources/bullet_41.png"));
+        try {
+            background = ImageIO.read(ShootGame.class.getResource("/resources/background_41.jpg"));
+            start = ImageIO.read(ShootGame.class.getResource("/resources/start_4.png"));
+            airplane = ImageIO.read(ShootGame.class.getResource("/resources/airplane_40.png"));
+            airplane0 = ImageIO.read(ShootGame.class.getResource("/resources/airplane_41.png"));
+            airplane1 = ImageIO.read(ShootGame.class.getResource("/resources/airplane_42.png"));
+            airplane2 = ImageIO.read(ShootGame.class.getResource("/resources/airplane_43.png"));
+            airplane3 = ImageIO.read(ShootGame.class.getResource("/resources/airplane_44.png"));
+            airplane4 = ImageIO.read(ShootGame.class.getResource("/resources/airplane_46.png"));
+            bee = ImageIO.read(ShootGame.class.getResource("/resources/airplane_45.png"));
+            bullet = ImageIO.read(ShootGame.class.getResource("/resources/bullet_40.png"));
+            bullet0 = ImageIO.read(ShootGame.class.getResource("/resources/bullet_40.png"));
+            bullet1 = ImageIO.read(ShootGame.class.getResource("/resources/bullet_41.png"));
             
-            hero0 = ImageIO.read(ShootGame.class.getResource("resources/hero_40.jpg"));
-            hero1 = ImageIO.read(ShootGame.class.getResource("resources/hero_41.png"));
-            pause = ImageIO.read(ShootGame.class.getResource("resources/pause_4.jpeg"));
+            hero0 = ImageIO.read(ShootGame.class.getResource("/resources/hero_40.jpg"));
+            hero1 = ImageIO.read(ShootGame.class.getResource("/resources/hero_41.png"));
+            pause = ImageIO.read(ShootGame.class.getResource("/resources/pause_4.jpeg"));
             gameover = ImageIO  
-                    .read(ShootGame.class.getResource("resources/gameover_4.jpg"));
-            trick = 0;
-            former_hero_x = 300;
-            former_hero_y = 1100;
+                    .read(ShootGame.class.getResource("/resources/gameover_4.jpg"));
         } catch (Exception e) { 
             e.printStackTrace();  
         }  
-    }  
-  
+    }
+
+    public static void main(String[] args) {
+        JFrame frame = new JFrame("Come on! Avangers!");
+        ShootGame game = new ShootGame(); // 面板对象
+        frame.add(game); // 将面板添加到JFrame中
+        frame.setSize(WIDTH, HEIGHT); // 设置大小
+        frame.setAlwaysOnTop(true); // 设置其总在最上
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE); // 默认关闭操作
+        frame.setIconImage(new ImageIcon("images/icon.jpg").getImage()); // 设置窗体的图标
+        frame.setLocationRelativeTo(null); // 设置窗体初始位置
+        frame.setVisible(true); // 尽快调用paint
+
+        game.start(); // 启动执行
+    }
+
+    /** 启动执行代码 */
+    public void start() {
+
+        // 鼠标监听事件
+        MouseAdapter l = new MouseAdapter() {
+            @Override
+            public void mouseMoved(MouseEvent e) { // 鼠标移动
+                if (state == RUNNING) { // 运行状态下移动英雄机--随鼠标位置
+                    int x = e.getX();
+                    int y = e.getY();
+                    player.moveTo(x, y);
+                }
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) { // 鼠标进入
+                if (state == PAUSE) { // 暂停状态下运行
+                    state = RUNNING;
+                }
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) { // 鼠标退出
+                if (state == RUNNING) { // 游戏未结束，则设置其为暂停
+                    state = PAUSE;
+                }
+            }
+
+            @Override
+            public void mouseClicked(MouseEvent e) { // 鼠标点击
+                switch (state) {
+                    case START:
+                        state = RUNNING; // 启动状态下运行
+                        break;
+                    case GAME_OVER: // 游戏结束，清理现场
+                        enemies = new Enemy[0]; // 清空飞行物
+                        projectiles = new Projectile[0]; // 清空子弹
+                        player = new Player(ShootGame.this); // 重新创建英雄机
+                        score = 0; // 清空成绩
+                        state = START; // 状态设置为启动
+                        break;
+                }
+            }
+        };
+        this.addMouseListener(l); // 处理鼠标点击操作
+        this.addMouseMotionListener(l); // 处理鼠标滑动操作
+
+        timer = new Timer(); // 主流程控制
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                // 更新时序信息
+                lastUpdatedTime = currentTime;
+                currentTime = new Date().getTime();
+                deltaTime = currentTime - lastUpdatedTime;
+
+                if (state == RUNNING) { // 运行状态
+                    // 先刷新敌人
+                    sceneManager.spawnEnemies();
+
+                    // 依次更新投射物，敌人和玩家的状态
+                    for (Projectile proj : projectiles)
+                        proj.update();
+                    for (Enemy enemy : enemies)
+                        enemy.update();
+                    player.update();
+
+                    garbageCollection(); // 删除越界飞行物，死亡飞行物及子弹
+
+                    physicsEngine.detectCollision(); // 物理引擎检测碰撞
+
+                    checkGameOver(); // 检查游戏结束
+                }
+                repaint(); // 重绘，调用paint()方法
+            }
+
+        }, interval, interval);
+    }
+
     /** 画 */  
     @Override  
     public void paint(Graphics g) {  
-        g.drawImage(background, 0, 0, null); // 画背景图  
-        paintHero(g); // 画英雄机  
-        paintBullets(g); // 画子弹  
-        paintFlyingObjects(g); // 画飞行物  
+        g.drawImage(background, 0, 0, null); // 画背景图
+
+        // 依次绘制投射物，敌人和玩家
+        for (Projectile proj : projectiles)
+            proj.render(g);
+        for (Enemy enemy : enemies)
+            enemy.render(g);
+        player.render(g);
+
         paintScore(g); // 画分数  
         paintState(g); // 画游戏状态  
     }  
-  
-    /** 画英雄机 */  
-    public void paintHero(Graphics g) {  
-        g.drawImage(hero.getImage(), hero.getX(), hero.getY(), null);  
-    }  
-  
-    /** 画子弹 */  
-    public void paintBullets(Graphics g) {  
-        for (int i = 0; i < bullets.length; i++) {  
-            Bullet b = bullets[i];  
-            g.drawImage(b.getImage(), b.getX() - b.getWidth() / 2, b.getY(),  
-                    null);  
-        }  
-    }  
-  
-    /** 画飞行物 */  
-    public void paintFlyingObjects(Graphics g) {  
-        for (int i = 0; i < flyings.length; i++) {  
-            FlyingObject f = flyings[i];  
-            g.drawImage(f.getImage(), f.getX(), f.getY(), null);  
-        }  
-    }  
-  
+
     /** 画分数 */  
-    public void paintScore(Graphics g) {  
+    private void paintScore(Graphics g) {
         int x = 10; // x坐标  
         int y = 25; // y坐标  
         Font font = new Font(Font.SANS_SERIF, Font.BOLD, 22); // 字体  
@@ -155,11 +217,11 @@ public class ShootGame extends JPanel {
         g.setFont(font); // 设置字体  
         g.drawString("SCORE:" + score, x, y); // 画分数  
         y=y+20; // y坐标增20  
-        g.drawString("LIFE:" + hero.getLife(), x, y); // 画命  
+        g.drawString("LIFE:" + player.getLife(), x, y); // 画命
     }  
   
     /** 画游戏状态 */  
-    public void paintState(Graphics g) {  
+    private void paintState(Graphics g) {
         switch (state) {  
         case START: // 启动状态  
             g.drawImage(start, 0, 0, null);  
@@ -171,377 +233,41 @@ public class ShootGame extends JPanel {
             g.drawImage(gameover, 0, 0, null);  
             break;  
         }  
-    }  
-  
-    public static void main(String[] args) {  
-        JFrame frame = new JFrame("Come on! Avangers!");  
-        ShootGame game = new ShootGame(); // 面板对象  
-        frame.add(game); // 将面板添加到JFrame中  
-        frame.setSize(WIDTH, HEIGHT); // 设置大小  
-        frame.setAlwaysOnTop(true); // 设置其总在最上  
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // 默认关闭操作  
-        frame.setIconImage(new ImageIcon("images/icon.jpg").getImage()); // 设置窗体的图标  
-        frame.setLocationRelativeTo(null); // 设置窗体初始位置  
-        frame.setVisible(true); // 尽快调用paint  
-  
-        game.action(); // 启动执行  
-    }  
-  
-    /** 启动执行代码 */  
-    public void action() {  
-        // 鼠标监听事件  
-        MouseAdapter l = new MouseAdapter() {  
-            @Override  
-            public void mouseMoved(MouseEvent e) { // 鼠标移动  
-                if (state == RUNNING) { // 运行状态下移动英雄机--随鼠标位置  
-                    int x = e.getX();  
-                    int y = e.getY();  
-                    hero.moveTo(x, y);  
-                }  
-            }  
-  
-            @Override  
-            public void mouseEntered(MouseEvent e) { // 鼠标进入  
-                if (state == PAUSE) { // 暂停状态下运行  
-                    state = RUNNING;  
-                }  
-            }  
-  
-            @Override  
-            public void mouseExited(MouseEvent e) { // 鼠标退出  
-                if (state == RUNNING) { // 游戏未结束，则设置其为暂停  
-                    state = PAUSE;  
-                }  
-            }  
-  
-            @Override  
-            public void mouseClicked(MouseEvent e) { // 鼠标点击  
-                switch (state) {  
-                case START:  
-                    state = RUNNING; // 启动状态下运行  
-                    break;  
-                case GAME_OVER: // 游戏结束，清理现场  
-                    flyings = new FlyingObject[0]; // 清空飞行物  
-                    bullets = new Bullet[0]; // 清空子弹  
-                    hero = new Hero(); // 重新创建英雄机  
-                    score = 0; // 清空成绩  
-                    state = START; // 状态设置为启动  
-                    break;  
-                }  
-            }  
-        };  
-        this.addMouseListener(l); // 处理鼠标点击操作  
-        this.addMouseMotionListener(l); // 处理鼠标滑动操作  
+    }
 
-        // 这个代码块是读取手势和人脸识别输入有关的代码
-        /*
-        gesture_timer = new Timer();
-        gesture_timer.schedule(new TimerTask() {
-            @Override  
-            public void run() {  
-                String _ = readString2().replaceAll("\\\\", "");
-                String content = _.substring(1,_.length()-1);
-                try{
-                JSONObject jsonObject=new JSONObject(content);
-                
-                if(state==START){
-                    if(jsonObject.getJSONArray("hands").getJSONObject(0).getJSONObject("gesture").getDouble("thanks") > 50)
-                        state = RUNNING;
-                }
-                else if(state==GAME_OVER){
-                    if(jsonObject.getJSONArray("hands").getJSONObject(0).getJSONObject("gesture").getDouble("victory") > 50)
-                    {                      
-                        flyings = new FlyingObject[0]; // 清空飞行物  
-                        bullets = new Bullet[0]; // 清空子弹  
-                        hero = new Hero(); // 重新创建英雄机  
-                        score = 0; // 清空成绩  
-                        state = START; // 状态设置为启动  
-                    }
-                }
-                else if(state==RUNNING){
-                    if(trick>0){
-                        if(trick==2){
-                            trick = 0;
-                            hero.image = hero0;
-                            hero.setfourFire(0);
-                            hero.setDoubleFire(0);
-                        }
-                        else
-                            trick = trick + 1;
-                    }
-                    else if(jsonObject.getJSONArray("hands").getJSONObject(0).getJSONObject("gesture").getDouble("hand_open") > 80)
-                        state = PAUSE;
-                    else if(jsonObject.getJSONArray("hands").getJSONObject(0).getJSONObject("gesture").getDouble("fist") > 80)
-                    {
-                        hero.image = hero1;
-                        hero.setfourFire(1);
-                        trick++;
-                    }
-                }
-                else if(state==PAUSE){
-                    if(jsonObject.getJSONArray("hands").getJSONObject(0).getJSONObject("gesture").getDouble("thanks") > 50)
-                        state = RUNNING;
-                }
-            
-            }catch(JSONException e){}
-                repaint(); // 重绘，调用paint()方法  
-            }  
-  
-        }, intervel, intervel*100);
+    /**
+     * 在场景中增加一些子弹
+     *
+     * @param projectiles 要增加的子弹数组
+     */
+    public void addProjectiles(Projectile[] projectiles) {
+        // TODO
+    }
 
-        hero_timer = new Timer();
-        hero_timer.schedule(new TimerTask() {  
-            @Override  
-            public void run() {  
-                String content = readString();
-                boolean Check_Input = true;
-                char []c_content = content.toCharArray();
-                for(char c:c_content){
-                    if (!((c>='0'&&c<='9')||(c==' ')))
-                        Check_Input = false;
-                }
-                if(!content.isEmpty()&&Check_Input){
-                String []strs = content.split(" ");
-                int top = Integer.parseInt(strs[0]);
-                int right = Integer.parseInt(strs[1]);
-                int bottom = Integer.parseInt(strs[2]);
-                int left = Integer.parseInt(strs[3]);
-                int newx = WIDTH - 3*left;
-                int newy = bottom*2 + 200;
-                if(former_hero_x < newx - 20)
-                    hero.xdirection = 1 * (1 + (newx-former_hero_x)/100);
-                else if(former_hero_x > newx + 20)
-                    hero.xdirection = -1 * (1 + (former_hero_x-newx)/100);
-                
-                if(former_hero_y < newy - 10)
-                    hero.ydirection = 1 * (1 + (newy-former_hero_y)/100);
-                else if(former_hero_y > newy + 10)
-                    hero.ydirection = -1 * (1 + (former_hero_y-newy)/100);
-                
-                former_hero_x = newx;
-                former_hero_y = newy;
-                //hero.moveTo(WIDTH - 3*left, bottom*2 + 200);  
-                repaint(); // 重绘，调用paint()方法  
-                }
-                else{
-                    repaint();
-                }
-            }  
+    /**
+     * 在场景中增加一些敌人
+     *
+     * @param
+     */
+    public void addEnemies(Enemy[] enemy) {
+        // TODO
+    }
+
+
+    /** 删除越界飞行物，死亡飞行物及子弹 */
+    private void garbageCollection() {
+        // TODO
+    }
   
-        }, intervel, intervel); */
-        
-        /*
-        hero_timer = new Timer();
-        hero_timer.schedule(new TimerTask() {  
-            @Override  
-            public void run() {  
-                String content = readString3();
-                try{
-            JSONObject jsonObject=new JSONObject(content);
-            int Top = jsonObject.getJSONArray("faces").getJSONObject(0).getJSONObject("face_rectangle").getInt("top");
-            int Left = jsonObject.getJSONArray("faces").getJSONObject(0).getJSONObject("face_rectangle").getInt("left");
-            int width = jsonObject.getJSONArray("faces").getJSONObject(0).getJSONObject("face_rectangle").getInt("width");
-            Top = Top + width/2 + 200;
-            Left = (Left + width)*8/13;
-            hero.moveTo(WIDTH - Left, Top);  
-        }catch(JSONException e){}
-                repaint(); // 重绘，调用paint()方法  
-            }  
-  
-        }, intervel, intervel);  
-        */
-        
-        timer = new Timer(); // 主流程控制  
-        timer.schedule(new TimerTask() {  
-            @Override  
-            public void run() {  
-                if (state == RUNNING) { // 运行状态  
-                    enterAction(); // 飞行物入场  
-                    stepAction(); // 走一步  
-                    shootAction(); // 英雄机射击  
-                    bangAction(); // 子弹打飞行物  
-                    outOfBoundsAction(); // 删除越界飞行物及子弹  
-                    checkGameOverAction(); // 检查游戏结束  
-                }  
-                repaint(); // 重绘，调用paint()方法  
-            }  
-  
-        }, intervel, intervel);  
-    }  
-  
-    int flyEnteredIndex = 0; // 飞行物入场计数  
-  
-    /** 飞行物入场 */  
-    public void enterAction() {  
-        flyEnteredIndex++;  
-        
-        if (flyEnteredIndex % 50 == 0) { // 1000毫秒生成一个飞行物--10*40  
-            FlyingObject obj = nextOne(); // 随机生成一个飞行物  
-            flyings = Arrays.copyOf(flyings, flyings.length + 1);  
-            flyings[flyings.length - 1] = obj;  
+    /** 检查游戏结束 */
+    private void checkGameOver() {
+        if (isGameOver()) {
+            state = GAME_OVER; // 改变状态
         }
-        if(score > 500)
-        {
-            if (flyEnteredIndex % 200 == 0) { // 1000毫秒生成一个飞行物--10*40  
-                FlyingObject obj = nextOne(); // 随机生成一个飞行物  
-                flyings = Arrays.copyOf(flyings, flyings.length + 1);  
-                flyings[flyings.length - 1] = obj;  
-            }
-        }
-        if (flyEnteredIndex % 400 == 0) { // 1000毫秒生成一个飞行物--10*40  
-            FlyingObject obj = nextOne(); // 随机生成一个飞行物  
-            flyings = Arrays.copyOf(flyings, flyings.length + 1);  
-            flyings[flyings.length - 1] = obj;  
-        }
-    }  
-  
-    /** 走一步 */  
-    public void stepAction() {  
-        for (int i = 0; i < flyings.length; i++) { // 飞行物走一步  
-            FlyingObject f = flyings[i];  
-            f.step();  
-        }  
-  
-        for (int i = 0; i < bullets.length; i++) { // 子弹走一步  
-            Bullet b = bullets[i];  
-            b.step();  
-        }  
-        hero.step(); // 英雄机走一步  
-    }  
-  
-    /** 飞行物走一步 */  
-    public void flyingStepAction() {  
-        for (int i = 0; i < flyings.length; i++) {  
-            FlyingObject f = flyings[i];  
-            f.step();  
-        }  
-    }  
-  
-    int shootIndex = 0; // 射击计数  
-  
-    /** 射击 */  
-    public void shootAction() {  
-        shootIndex++;  
-        if (shootIndex % 30 == 0) { // 500毫秒发一颗  
-            Bullet[] bs = hero.shoot(); // 英雄打出子弹  
-            bullets = Arrays.copyOf(bullets, bullets.length + bs.length); // 扩容  
-            System.arraycopy(bs, 0, bullets, bullets.length - bs.length,  
-                    bs.length); // 追加数组  
-        }  
-    }  
-  
-    /** 子弹与飞行物碰撞检测 */  
-    public void bangAction() {  
-        for (int i = 0; i < bullets.length; i++) { // 遍历所有子弹  
-            Bullet b = bullets[i];  
-            bang(b); // 子弹和飞行物之间的碰撞检查  
-        }  
-    }  
-  
-    /** 删除越界飞行物及子弹 */  
-    public void outOfBoundsAction() {  
-        int index = 0; // 索引  
-        FlyingObject[] flyingLives = new FlyingObject[flyings.length]; // 活着的飞行物  
-        for (int i = 0; i < flyings.length; i++) {  
-            FlyingObject f = flyings[i];  
-            if (!f.outOfBounds()) {  
-                flyingLives[index++] = f; // 不越界的留着  
-            }  
-        }  
-        flyings = Arrays.copyOf(flyingLives, index); // 将不越界的飞行物都留着  
-  
-        index = 0; // 索引重置为0  
-        Bullet[] bulletLives = new Bullet[bullets.length];  
-        for (int i = 0; i < bullets.length; i++) {  
-            Bullet b = bullets[i];  
-            if (!b.outOfBounds()) {  
-                bulletLives[index++] = b;  
-            }  
-        }  
-        bullets = Arrays.copyOf(bulletLives, index); // 将不越界的子弹留着  
-    }  
-  
-    /** 检查游戏结束 */  
-    public void checkGameOverAction() {  
-        if (isGameOver()==true) {  
-            state = GAME_OVER; // 改变状态  
-        }  
-    }  
-  
-    /** 检查游戏是否结束 */  
-    public boolean isGameOver() {  
-          
-        for (int i = 0; i < flyings.length; i++) {  
-            int index = -1;  
-            FlyingObject obj = flyings[i];  
-            if (hero.hit(obj)) { // 检查英雄机与飞行物是否碰撞  
-                hero.subtractLife(); // 减命  
-                hero.setDoubleFire(0); // 双倍火力解除  
-                index = i; // 记录碰上的飞行物索引  
-            }  
-            if (index != -1) {  
-                FlyingObject t = flyings[index];  
-                flyings[index] = flyings[flyings.length - 1];  
-                flyings[flyings.length - 1] = t; // 碰上的与最后一个飞行物交换  
-  
-                flyings = Arrays.copyOf(flyings, flyings.length - 1); // 删除碰上的飞行物  
-            }  
-        }  
-          
-        return hero.getLife() <= 0;  
-    }  
-  
-    /** 子弹和飞行物之间的碰撞检查 */  
-    public void bang(Bullet bullet) {  
-        int index = -1; // 击中的飞行物索引  
-        for (int i = 0; i < flyings.length; i++) {  
-            FlyingObject obj = flyings[i];  
-            if (obj.shootBy(bullet)) { // 判断是否击中  
-                index = i; // 记录被击中的飞行物的索引  
-                break;  
-            }  
-        }  
-        if (index != -1) { // 有击中的飞行物  
-            FlyingObject one = flyings[index]; // 记录被击中的飞行物  
-  
-            FlyingObject temp = flyings[index]; // 被击中的飞行物与最后一个飞行物交换  
-            flyings[index] = flyings[flyings.length - 1];  
-            flyings[flyings.length - 1] = temp;  
-  
-            flyings = Arrays.copyOf(flyings, flyings.length - 1); // 删除最后一个飞行物(即被击中的)  
-  
-            // 检查one的类型(敌人加分，奖励获取)  
-            if (one instanceof Enemy) { // 检查类型，是敌人，则加分  
-                Enemy e = (Enemy) one; // 强制类型转换  
-                score += e.getScore(); // 加分  
-            } else { // 若为奖励，设置奖励  
-                Award a = (Award) one;  
-                int type = a.getType(); // 获取奖励类型  
-                switch (type) {  
-                case Award.DOUBLE_FIRE:  
-                    hero.addDoubleFire(); // 设置双倍火力  
-                    break;  
-                case Award.LIFE:  
-                    hero.addLife(); // 设置加命  
-                    break;  
-                }  
-            }  
-        }  
-    }  
-  
-    /** 
-     * 随机生成飞行物 
-     *  
-     * @return 飞行物对象 
-     */  
-    public static FlyingObject nextOne() {  
-        Random random = new Random();  
-        int type = random.nextInt(20); // [0,20)  
-        if (type < 2) {  
-            return new Bee();  
-        } else {  
-            return new Airplane();  
-        }  
-    }  
-  
+    }
+
+    private boolean isGameOver() {
+        return player.getLife() <= 0;
+    }
+
 }

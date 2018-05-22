@@ -72,7 +72,7 @@ public class CDL {
                     //Handle escaped double-quote
                     char nextC = x.next();
                     if(nextC != '\"') {
-                        // if our quote was the end of the file, don't step
+                        // if our quote was the end of the file, don't update
                         if(nextC > 0) {
                             x.back();
                         }
