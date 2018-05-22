@@ -1,0 +1,55 @@
+参考Unity游戏引擎，提一些重构的建议
+
+觉得Enemy和Award当接口有点不妥
+
+ShootGame
+
+SceneManager
+
+InputManager
+
+MainMenuPanel
+
+PauseMenuPanel
+
+GameOverPanel
+
+PhysicEngine
+
+关于游戏内物体继承树的设计
+GameObject(FlyingObject)
+ -> Projectile
+    -> Bullet
+    -> Missile
+    ...
+ -> Player(Hero)
+ -> Enemy
+    -> Bee
+    -> Airplane
+    ...
+ -> Item
+
+GameObject 应提供三个抽象方法 
+1. init()
+2. render(Graphics g)
+3. update()
+4. onCollision(GameObject other)
+init()在初始化时调用，render()为绘图函数调用，update()为主循环内更新游戏状态使用
+考虑物理引擎的话还需要一个方法 
+
+扩展功能使用组件(Component，也就是内部成员类)实现
+举例：
+BoxCollider/SphereCollider
+
+用户输入设计一个大类InputManager:
+1. 各个玩家操控的GameObject类的update()方法中用InputManager方法来确定是否有输入
+   boolean getInput(String type);
+   double getMouseX();
+   double getMouseY();
+2. 窗体收到输入存储在InputManager中
+   void    setInput(String type);
+
+
+游戏主菜单为一个继承至JPanel的类，游戏内场景为一个继承至JPanel的类，主窗体负责其切换
+
+速度和位置应该内部用Double型计算，绘图时再转换成int，避免误差使得运动更精确
