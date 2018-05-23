@@ -27,7 +27,9 @@ public class Player extends GameObject {
         life = 10;
         doubleFire = 0;
         x = 300;  
-        y = 500;  
+        y = 500;
+
+        collider = new PhysicsEngine.BoxCollider(this, x, y, width, height);
     }
 
     @Override
@@ -41,8 +43,8 @@ public class Player extends GameObject {
         } else if ((x + width) >= ShootGame.WIDTH) {
             x = ShootGame.WIDTH - width;
         }
-        if (y <= (ShootGame.HEIGHT >> 1)) {
-            y = (ShootGame.HEIGHT >> 1);
+        if (y <= 0) {
+            y = 0;
         } else if (y >= 600) {
             y = 600;
         }
@@ -56,7 +58,10 @@ public class Player extends GameObject {
 
     @Override
     public void onCollision(GameObject other) {
-        // TODO
+        if (other instanceof Enemy) {
+            this.life -= 1;
+            other.enabled = false;
+        }
     }
       
     /** 获取命 */  

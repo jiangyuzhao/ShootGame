@@ -38,6 +38,8 @@ public class Enemy extends GameObject {
         Random rand = new Random();
         x = rand.nextInt(ShootGame.WIDTH - width);
         this.random = (Math.random() > 0.5 ? -1 : 1);
+
+        collider = new PhysicsEngine.BoxCollider(this, x, y, width, height);
     }
 
     @Override
@@ -53,8 +55,11 @@ public class Enemy extends GameObject {
     }
 
     @Override
-    public void onCollision(GameObject object) {
-        // TODO
+    public void onCollision(GameObject other) {
+        if (other instanceof Projectile) {
+            this.enabled = false;
+            game.score += 10;
+        }
     }
     
     /** 获取分数 */

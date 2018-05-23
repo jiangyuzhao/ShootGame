@@ -14,8 +14,12 @@ public class Bullet extends Projectile {
         this.x = x;  
         this.y = y;  
         this.image = ShootGame.bullet;
+        this.width = ShootGame.bullet.getWidth();
+        this.height = ShootGame.bullet.getHeight();
 
         this.velocityY = -3;
+
+        collider = new PhysicsEngine.BoxCollider(this, x, y, width, height);
     }
 
     public Bullet(ShootGame game, double x, double y, boolean b){
@@ -25,9 +29,13 @@ public class Bullet extends Projectile {
         this.y = y;  
         if(b) {
             this.image = ShootGame.bullet1;
+            this.width = ShootGame.bullet.getWidth();
+            this.height = ShootGame.bullet.getHeight();
         }
 
         this.velocityY = -3;
+
+        collider = new PhysicsEngine.BoxCollider(this, x, y, width, height);
     }
 
     @Override
@@ -38,6 +46,7 @@ public class Bullet extends Projectile {
 
     @Override
     public void onCollision(GameObject other) {
-
+        if (other instanceof Enemy)
+            this.enabled = false;
     }
 }

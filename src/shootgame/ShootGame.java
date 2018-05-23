@@ -35,7 +35,7 @@ public class ShootGame extends JPanel {
     private static final int PAUSE = 2;  
     private static final int GAME_OVER = 3;  
   
-    private int score = 0; // 得分
+    public int score = 0; // 得分
 
     private Timer timer; // 定时器
     private int interval = 10; // 时间间隔(毫秒)
@@ -71,7 +71,9 @@ public class ShootGame extends JPanel {
     public PhysicsEngine physicsEngine = new PhysicsEngine(this);
 
     public Projectile[] projectiles = new Projectile[1000]; // 子弹数组
+    public int projectilesLastEmptyPosition; //记录数组留空的位置
     public Enemy[] enemies = new Enemy[100]; // 敌人数组
+    public int enemiesLastEmptyPosition; //记录敌人数组留空的位置
     public Player player = new Player(this); // 玩家
       
     static { // 静态代码块，初始化图片资源  
@@ -175,14 +177,14 @@ public class ShootGame extends JPanel {
 
                     // 依次更新投射物，敌人和玩家的状态
                     for (Projectile proj : projectiles)
-                        proj.update();
+                        if (proj != null) proj.update();
                     for (Enemy enemy : enemies)
-                        enemy.update();
+                        if (enemy != null) enemy.update();
                     player.update();
 
-                    garbageCollection(); // 删除越界飞行物，死亡飞行物及子弹
-
                     physicsEngine.detectCollision(); // 物理引擎检测碰撞
+
+                    garbageCollection(); // 删除越界飞行物，死亡飞行物及子弹
 
                     checkGameOver(); // 检查游戏结束
                 }
@@ -198,10 +200,12 @@ public class ShootGame extends JPanel {
         g.drawImage(background, 0, 0, null); // 画背景图
 
         // 依次绘制投射物，敌人和玩家
-        for (Projectile proj : projectiles)
-            proj.render(g);
-        for (Enemy enemy : enemies)
-            enemy.render(g);
+        for (Projectile proj : projectiles) {
+            if (proj != null && proj.enabled) proj.render(g);
+        }
+        for (Enemy enemy : enemies) {
+            if (enemy != null && enemy.enabled) enemy.render(g);
+        }
         player.render(g);
 
         paintScore(g); // 画分数  
@@ -236,27 +240,108 @@ public class ShootGame extends JPanel {
     }
 
     /**
-     * 在场景中增加一些子弹
-     *
-     * @param projectiles 要增加的子弹数组
+     * 在场景中增加一些子弹，但是可能出现数组满的罕见情况，此时返回false
+     * @param newProjectiles 要增加的子弹数组
+     * @return 如果添加成功返回true, 否则false
      */
-    public void addProjectiles(Projectile[] projectiles) {
-        // TODO
+    public boolean addProjectiles(Projectile[] newProjectiles) {
+        // 对每个子弹，寻找一个数组空位加进去
+        int successfullyAdded = 0;
+
+        OuterLoop:
+        for (Projectile projectile : newProjectiles) {
+            for (int j = projectilesLastEmptyPosition, cnt = 0;
+                 cnt < projectiles.length;
+                 j = (j + 1) % projectiles.length, cnt++) {
+                if (projectiles[j] == null) {
+                    projectiles[j] = projectile;
+                    projectilesLastEmptyPosition = j;
+                    successfullyAdded++;
+                    continue OuterLoop;
+                }
+            }
+        }
+
+        return successfullyAdded == newProjectiles.length;
     }
 
     /**
-     * 在场景中增加一些敌人
-     *
-     * @param
+     * 在场景中增加一些敌人，但是可能出现数组满的罕见情况，此时返回false
+     * @param newEnemies 要增加的敌人数组
+     * @return 如果添加成功返回true, 否则false
      */
-    public void addEnemies(Enemy[] enemy) {
-        // TODO
+    public boolean addEnemies(Enemy[] newEnemies) {
+        // 对每个新敌人，寻找一个数组空位加进去
+        int successfullyAdded = 0;
+
+        OuterLoop:
+        for (Enemy newEnemy : newEnemies) {
+            for (int j = enemiesLastEmptyPosition, cnt = 0;
+                 cnt < enemies.length;
+                 j = (j + 1) % enemies.length, cnt++) {
+                if (enemies[j] == null) {
+                    enemies[j] = newEnemy;
+                    enemiesLastEmptyPosition = j;
+                    successfullyAdded++;
+                    continue OuterLoop;
+                }
+            }
+        }
+
+        return successfullyAdded == newEnemies.length;
     }
 
+    /**
+     * 返回游戏内所有物体
+     * @return 游戏内所有物体的数组
+     */
+    public GameObject[] getGameObjects() {
+        GameObject[] objects = new GameObject[enemies.length + projectiles.length + 1];
+        int i = 0;
+        for (Enemy enemy : enemies) {
+            if (enemy != null && enemy.enabled) {
+                objects[i++] = enemy;
+            }
+        }
+        for (Projectile projectile : projectiles) {
+            if (projectile != null && projectile.enabled) {
+                objects[i++] = projectile;
+            }
+        }
+        objects[i++] = player;
+
+        GameObject[] result = new GameObject[i];
+        for (int j = 0; j < i; j++) {
+            result[j] = objects[j];
+        }
+        return result;
+    }
 
     /** 删除越界飞行物，死亡飞行物及子弹 */
     private void garbageCollection() {
-        // TODO
+
+        for (int i = 0; i < projectiles.length; i++) {
+            if (projectiles[i] == null) continue;
+            if (!projectiles[i].enabled || outOfBounds(projectiles[i])) {
+                projectiles[i] = null;
+                projectilesLastEmptyPosition = i;
+            }
+        }
+
+        for (int i = 0; i < enemies.length; i++) {
+            if (enemies[i] == null) continue;
+            if (!enemies[i].enabled || outOfBounds((enemies[i]))) {
+                enemies[i] = null;
+                enemiesLastEmptyPosition = i;
+            }
+        }
+    }
+
+    private boolean outOfBounds(GameObject object) {
+        return (object.getX() < -object.getWidth()
+                || object.getX() > WIDTH + object.getWidth()
+                || object.getY() < -object.getHeight()
+                || object.getY() > HEIGHT + object.getHeight());
     }
   
     /** 检查游戏结束 */
@@ -268,6 +353,13 @@ public class ShootGame extends JPanel {
 
     private boolean isGameOver() {
         return player.getLife() <= 0;
+    }
+
+    private void printInfo() {
+        for (Projectile projectile : projectiles) {
+            if (projectile == null) continue;
+            System.out.println(projectile.getX() + " " + projectile.getY());
+        }
     }
 
 }

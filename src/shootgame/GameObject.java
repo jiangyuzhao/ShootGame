@@ -11,13 +11,14 @@ import java.awt.image.BufferedImage;
  * @author hehao
  */
 public abstract class GameObject {
-    protected ShootGame game; // 存储指向这个物体所属游戏类的指针
-    protected boolean enabled;// 表示这个物体是否被设置为有效，如果无效则会在下一帧被删除
-    protected double x;       // x坐标，采用double为了计算速度和碰撞更加精确，下同
-    protected double y;       // y坐标
+    public ShootGame game;         // 存储指向这个物体所属游戏类的指针
+    public boolean enabled = true; // 表示这个物体是否被设置为有效，如果无效则会在下一帧被删除
+    protected double x; // x坐标，采用double为了计算速度和碰撞更加精确，下同
+    protected double y; // y坐标
     protected int width;
     protected int height;
     protected BufferedImage image;   //图片
+    protected PhysicsEngine.Collider collider = null; // 是否允许碰撞检测，允许则在子类中设置collider
 
     GameObject(ShootGame game) {
         this.game = game;
@@ -28,7 +29,7 @@ public abstract class GameObject {
      * 因此对于新的游戏物体要表现不同行为的话，只需重载此方法即可
      */
     public void update() {
-        // 故意留空
+
     }
 
     /**
