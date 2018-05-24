@@ -1,6 +1,5 @@
 .DS_Store
 build/
-out/
 nbproject/
 build.xml
 ShootGame.iml

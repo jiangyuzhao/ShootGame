@@ -8,19 +8,19 @@ package shootgame;
  */
 public class Player extends GameObject {
     
-    private double velocityX;
-    private double velocityY;
-    
+    private double velocityX = 5;
+    private double velocityY = 5;
+
+    private int playerId; //标记是哪个玩家，支持多人游戏
     private int life;   //命
     private int doubleFire;
     private long lastShotTime;  // 上一次射击的时间
-    private long shootInterval = 500; // 射击间隔
       
     /** 初始化数据 */  
-    public Player(ShootGame game){
+    public Player(ShootGame game, int playerId){
         super(game);
 
-        image = ShootGame.hero0;
+        image = ResourceManager.getImage("hero0");
         width = image.getWidth();
         height = image.getHeight();
 
@@ -34,9 +34,19 @@ public class Player extends GameObject {
 
     @Override
     public void update() {
+        if (game.inputManager.getInput(InputManager.Key.UP)) {
+            y -= velocityY;
+        }
+        if (game.inputManager.getInput(InputManager.Key.DOWN)) {
+            y += velocityY;
+        }
+        if (game.inputManager.getInput(InputManager.Key.LEFT)) {
+            x -= velocityX;
+        }
+        if (game.inputManager.getInput(InputManager.Key.RIGHT)) {
+            x += velocityX;
+        }
 
-        x += velocityX;
-        y += velocityY;
         // 检查玩家是否移出边界
         if (x <= 0) {
             x = 0;
@@ -50,6 +60,7 @@ public class Player extends GameObject {
         }
 
         // 如果经过的射击间隔足够长，那么再次射击
+        long shootInterval = 300; // 射击间隔
         if (game.currentTime - lastShotTime >= shootInterval) {
             game.addProjectiles(shoot());
             lastShotTime = game.currentTime;
@@ -67,14 +78,6 @@ public class Player extends GameObject {
     /** 获取命 */  
     public int getLife(){  
         return life;
-    }  
-      
-    /** 当前物体移动了一下，相对距离，x,y鼠标位置  */  
-    public void moveTo(int x,int y){     
-        //this.x = x - width/2;  
-        //this.y = y - height/2;  
-        this.x = x;
-        this.y = y;
     }
   
     /** 发射子弹 */  

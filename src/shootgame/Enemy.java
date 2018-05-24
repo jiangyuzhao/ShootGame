@@ -20,12 +20,12 @@ public class Enemy extends GameObject {
         super(game);
 
         BufferedImage[] images = new BufferedImage[] {
-                ShootGame.airplane,
-                ShootGame.airplane0,
-                ShootGame.airplane1,
-                ShootGame.airplane2,
-                ShootGame.airplane3,
-                ShootGame.airplane4,
+                ResourceManager.getImage("airplane"),
+                ResourceManager.getImage("airplane0"),
+                ResourceManager.getImage("airplane1"),
+                ResourceManager.getImage("airplane2"),
+                ResourceManager.getImage("airplane3"),
+                ResourceManager.getImage("airplane4"),
         };
 
         Random random = new Random();

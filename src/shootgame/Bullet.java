@@ -1,5 +1,7 @@
 package shootgame;
 
+import javax.annotation.Resource;
+
 /**
  * 这是一种由玩家射出的最普通子弹
  *
@@ -13,9 +15,9 @@ public class Bullet extends Projectile {
 
         this.x = x;  
         this.y = y;  
-        this.image = ShootGame.bullet;
-        this.width = ShootGame.bullet.getWidth();
-        this.height = ShootGame.bullet.getHeight();
+        this.image = ResourceManager.getImage("bullet");
+        this.width = this.image.getWidth();
+        this.height = this.image.getHeight();
 
         this.velocityY = -3;
 
@@ -28,9 +30,9 @@ public class Bullet extends Projectile {
         this.x = x;  
         this.y = y;  
         if(b) {
-            this.image = ShootGame.bullet1;
-            this.width = ShootGame.bullet.getWidth();
-            this.height = ShootGame.bullet.getHeight();
+            this.image = ResourceManager.getImage("bullet");
+            this.width = this.image.getWidth();
+            this.height = this.image.getHeight();
         }
 
         this.velocityY = -3;

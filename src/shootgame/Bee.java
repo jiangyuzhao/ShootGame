@@ -13,7 +13,7 @@ public class Bee extends GameObject {
     /** 初始化数据 */  
     public Bee(ShootGame game) {
         super(game);
-        this.image = ShootGame.bee;  
+        this.image = ResourceManager.getImage("bee");
         width = image.getWidth();  
         height = image.getHeight();  
         y = -height;
