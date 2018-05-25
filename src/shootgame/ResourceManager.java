@@ -30,54 +30,48 @@ public class ResourceManager {
             BufferedImage nothing = ImageIO.read(ShootGame.class.getResource("/resources/nothing.png"));
             images.put("nothing", nothing);
 
-            BufferedImage background = ImageIO.read(ShootGame.class.getResource("/resources/background_41.jpg"));
-            images.put("background", background);
+            BufferedImage background1 = ImageIO.read(ShootGame.class.getResource("/resources/background1.png"));
+            images.put("background1", background1);
 
-            BufferedImage start = ImageIO.read(ShootGame.class.getResource("/resources/start_4.png"));
-            images.put("start", start);
+            BufferedImage background2 = ImageIO.read(ShootGame.class.getResource("/resources/background2.png"));
+            images.put("background2", background2);
 
-            BufferedImage airplane = ImageIO.read(ShootGame.class.getResource("/resources/airplane_40.png"));
-            images.put("airplane", airplane);
+            BufferedImage background3 = ImageIO.read(ShootGame.class.getResource("/resources/background3.png"));
+            images.put("background3", background3);
 
-            BufferedImage airplane0 = ImageIO.read(ShootGame.class.getResource("/resources/airplane_41.png"));
-            images.put("airplane0", airplane0);
+            BufferedImage enemy1 = ImageIO.read(ShootGame.class.getResource("/resources/enemy1.png"));
+            images.put("enemy1", enemy1);
 
-            BufferedImage airplane1 = ImageIO.read(ShootGame.class.getResource("/resources/airplane_42.png"));
-            images.put("airplane1", airplane1);
+            BufferedImage enemy1Other = ImageIO.read(ShootGame.class.getResource("/resources/enemy1_other.png"));
+            images.put("enemy1_other", enemy1Other);
 
-            BufferedImage airplane2 = ImageIO.read(ShootGame.class.getResource("/resources/airplane_43.png"));
-            images.put("airplane2", airplane2);
+            BufferedImage enemy2 = ImageIO.read(ShootGame.class.getResource("/resources/enemy2.png"));
+            images.put("enemy2", enemy2);
 
-            BufferedImage airplane3 = ImageIO.read(ShootGame.class.getResource("/resources/airplane_44.png"));
-            images.put("airplane3", airplane3);
+            BufferedImage enemy3 = ImageIO.read(ShootGame.class.getResource("/resources/enemy3.png"));
+            images.put("enemy3", enemy3);
 
-            BufferedImage airplane4 = ImageIO.read(ShootGame.class.getResource("/resources/airplane_46.png"));
-            images.put("airplane4", airplane4);
+            BufferedImage boss = ImageIO.read(ShootGame.class.getResource("/resources/boss.png"));
+            images.put("boss", boss);
 
-            BufferedImage bee = ImageIO.read(ShootGame.class.getResource("/resources/airplane_45.png"));
-            images.put("bee", bee);
-
-            BufferedImage bullet = ImageIO.read(ShootGame.class.getResource("/resources/bullet_40.png"));
+            BufferedImage bullet = ImageIO.read(ShootGame.class.getResource("/resources/bullet1.png"));
             images.put("bullet", bullet);
 
-            BufferedImage bullet0 = ImageIO.read(ShootGame.class.getResource("/resources/bullet_40.png"));
+            BufferedImage bullet0 = ImageIO.read(ShootGame.class.getResource("/resources/bullet2.png"));
             images.put("bullet0", bullet0);
 
-            BufferedImage bullet1 = ImageIO.read(ShootGame.class.getResource("/resources/bullet_41.png"));
+            BufferedImage bullet1 = ImageIO.read(ShootGame.class.getResource("/resources/bullet3.png"));
             images.put("bullet1", bullet1);
 
-            BufferedImage hero0 = ImageIO.read(ShootGame.class.getResource("/resources/hero_40.jpg"));
-            images.put("hero0", hero0);
+            BufferedImage player = ImageIO.read(ShootGame.class.getResource("/resources/player.png"));
+            images.put("player", player);
 
-            BufferedImage hero1 = ImageIO.read(ShootGame.class.getResource("/resources/hero_41.png"));
-            images.put("hero1", hero1);
+            BufferedImage explosion1 = ImageIO.read(ShootGame.class.getResource("/resources/explosion1.png"));
+            images.put("explosion1", explosion1);
 
-            BufferedImage pause = ImageIO.read(ShootGame.class.getResource("/resources/pause_4.jpeg"));
-            images.put("pause", pause);
+            BufferedImage explosion2 = ImageIO.read(ShootGame.class.getResource("/resources/explosion2.png"));
+            images.put("explosion2", explosion2);
 
-            BufferedImage gameover = ImageIO
-                    .read(ShootGame.class.getResource("/resources/gameover_4.jpg"));
-            images.put("gameover", gameover);
         } catch (IOException exec) {
             exec.printStackTrace();
         }

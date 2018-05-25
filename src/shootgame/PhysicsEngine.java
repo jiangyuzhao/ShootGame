@@ -33,8 +33,6 @@ public class PhysicsEngine {
         {
             minX = parent.x;
             minY = parent.y;
-            width = parent.width;
-            height = parent.height;
         }
 
     }
