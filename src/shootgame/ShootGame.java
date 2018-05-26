@@ -34,13 +34,11 @@ public class ShootGame extends JPanel {
     private static final int GAME_OVER = 3;
 
     // 资源图片
-    public static BufferedImage background;
     public static BufferedImage start;
     public static BufferedImage pause;
     public static BufferedImage gameover;
 
     static {
-        background = ResourceManager.getImage("background");
         start = ResourceManager.getImage("start");
         pause = ResourceManager.getImage("pause");
         gameover = ResourceManager.getImage("gameover");
@@ -54,6 +52,9 @@ public class ShootGame extends JPanel {
     public long lastUpdatedTime;
     public long currentTime;
     public long deltaTime;
+
+
+    public Background background = new Background(this);
 
     // 管理敌人的生成，道具的生成等操作
     public SceneManager sceneManager = new SceneManager(this);
@@ -76,7 +77,6 @@ public class ShootGame extends JPanel {
         frame.add(game); // 将面板添加到JFrame中
         frame.setSize(WIDTH, HEIGHT); // 设置大小
         frame.requestFocus(); // 让键盘事件有效
-        frame.setAlwaysOnTop(true); // 设置其总在最上
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE); // 默认关闭操作
         frame.setIconImage(new ImageIcon("images/icon.jpg").getImage()); // 设置窗体的图标
         frame.setLocationRelativeTo(null); // 设置窗体初始位置
@@ -137,6 +137,9 @@ public class ShootGame extends JPanel {
                 deltaTime = currentTime - lastUpdatedTime;
 
                 if (state == RUNNING) { // 运行状态
+                    // 移动背景
+                    background.update();
+
                     // 先刷新敌人
                     sceneManager.update();
 
@@ -161,8 +164,8 @@ public class ShootGame extends JPanel {
 
     /** 画 */  
     @Override  
-    public void paint(Graphics g) {  
-        g.drawImage(background, 0, 0, null); // 画背景图
+    public void paint(Graphics g) {
+        background.render(g);
 
         // 依次绘制投射物，敌人和玩家
         for (Projectile proj : projectiles) {
@@ -175,7 +178,7 @@ public class ShootGame extends JPanel {
 
         paintScore(g); // 画分数  
         paintState(g); // 画游戏状态  
-    }  
+    }
 
     /** 画分数 */  
     private void paintScore(Graphics g) {
