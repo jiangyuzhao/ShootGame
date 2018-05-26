@@ -14,4 +14,8 @@ public abstract class Projectile extends GameObject {
     Projectile(ShootGame game) {
         super(game);
     }
+
+    public double getDamage() {
+        return damage;
+    }
 }

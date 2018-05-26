@@ -43,11 +43,11 @@ BoxCollider/SphereCollider
 
 用户输入设计一个大类InputManager:
 1. 各个玩家操控的GameObject类的update()方法中用InputManager方法来确定是否有输入
-   boolean getInput(String type);
+   boolean getInput(String key);
    double getMouseX();
    double getMouseY();
 2. 窗体收到输入存储在InputManager中
-   void    setInput(String type);
+   void    setInput(String key);
 
 
 游戏主菜单为一个继承至JPanel的类，游戏内场景为一个继承至JPanel的类，主窗体负责其切换

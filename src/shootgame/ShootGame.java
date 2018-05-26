@@ -2,12 +2,11 @@ package shootgame;
 
 import java.awt.Font;  
 import java.awt.Color;  
-import java.awt.Graphics;  
-import java.awt.event.MouseAdapter;  
+import java.awt.Graphics;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
-  
-import javax.imageio.ImageIO;
+
 import javax.swing.*;
 import java.lang.*;
 import java.util.Date;
@@ -15,7 +14,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 /**
- * 游戏的主窗体和游戏状态类
+ * 这是整个游戏的核心类
  *
  * @author qinyuxuan, hehao
  */
@@ -29,12 +28,25 @@ public class ShootGame extends JPanel {
     /**
      * 游戏的当前状态: START RUNNING PAUSE GAME_OVER
      */
-    private int state;  
     private static final int START = 0;  
     private static final int RUNNING = 1;  
     private static final int PAUSE = 2;  
-    private static final int GAME_OVER = 3;  
-  
+    private static final int GAME_OVER = 3;
+
+    // 资源图片
+    public static BufferedImage background;
+    public static BufferedImage start;
+    public static BufferedImage pause;
+    public static BufferedImage gameover;
+
+    static {
+        background = ResourceManager.getImage("background");
+        start = ResourceManager.getImage("start");
+        pause = ResourceManager.getImage("pause");
+        gameover = ResourceManager.getImage("gameover");
+    }
+
+    private int state;
     public int score = 0; // 得分
 
     private Timer timer; // 定时器
@@ -43,29 +55,11 @@ public class ShootGame extends JPanel {
     public long currentTime;
     public long deltaTime;
 
-    // 资源图片
-    public static BufferedImage background;  
-    public static BufferedImage start;  
-    public static BufferedImage airplane;  
-    public static BufferedImage airplane0;  
-    public static BufferedImage airplane1;  
-    public static BufferedImage airplane2;  
-    public static BufferedImage airplane3; 
-    public static BufferedImage airplane4;  
-    public static BufferedImage bee;  
-    public static BufferedImage bullet;  
-    public static BufferedImage bullet0;
-    public static BufferedImage bullet1;
-    public static BufferedImage hero0;  
-    public static BufferedImage hero1;  
-    public static BufferedImage pause;  
-    public static BufferedImage gameover;
-
     // 管理敌人的生成，道具的生成等操作
     public SceneManager sceneManager = new SceneManager(this);
 
     // 负责处理用户的输入
-    public InputManager inputManager = new InputManager();
+    public InputManager inputManager = new InputManager(this);
 
     // 负责处理物理
     public PhysicsEngine physicsEngine = new PhysicsEngine(this);
@@ -74,38 +68,14 @@ public class ShootGame extends JPanel {
     public int projectilesLastEmptyPosition; //记录数组留空的位置
     public Enemy[] enemies = new Enemy[100]; // 敌人数组
     public int enemiesLastEmptyPosition; //记录敌人数组留空的位置
-    public Player player = new Player(this); // 玩家
-      
-    static { // 静态代码块，初始化图片资源  
-        try {
-            background = ImageIO.read(ShootGame.class.getResource("/resources/background_41.jpg"));
-            start = ImageIO.read(ShootGame.class.getResource("/resources/start_4.png"));
-            airplane = ImageIO.read(ShootGame.class.getResource("/resources/airplane_40.png"));
-            airplane0 = ImageIO.read(ShootGame.class.getResource("/resources/airplane_41.png"));
-            airplane1 = ImageIO.read(ShootGame.class.getResource("/resources/airplane_42.png"));
-            airplane2 = ImageIO.read(ShootGame.class.getResource("/resources/airplane_43.png"));
-            airplane3 = ImageIO.read(ShootGame.class.getResource("/resources/airplane_44.png"));
-            airplane4 = ImageIO.read(ShootGame.class.getResource("/resources/airplane_46.png"));
-            bee = ImageIO.read(ShootGame.class.getResource("/resources/airplane_45.png"));
-            bullet = ImageIO.read(ShootGame.class.getResource("/resources/bullet_40.png"));
-            bullet0 = ImageIO.read(ShootGame.class.getResource("/resources/bullet_40.png"));
-            bullet1 = ImageIO.read(ShootGame.class.getResource("/resources/bullet_41.png"));
-            
-            hero0 = ImageIO.read(ShootGame.class.getResource("/resources/hero_40.jpg"));
-            hero1 = ImageIO.read(ShootGame.class.getResource("/resources/hero_41.png"));
-            pause = ImageIO.read(ShootGame.class.getResource("/resources/pause_4.jpeg"));
-            gameover = ImageIO  
-                    .read(ShootGame.class.getResource("/resources/gameover_4.jpg"));
-        } catch (Exception e) { 
-            e.printStackTrace();  
-        }  
-    }
+    public Player player = new Player(this, 0); // 玩家
 
     public static void main(String[] args) {
         JFrame frame = new JFrame("Come on! Avangers!");
         ShootGame game = new ShootGame(); // 面板对象
         frame.add(game); // 将面板添加到JFrame中
         frame.setSize(WIDTH, HEIGHT); // 设置大小
+        frame.requestFocus(); // 让键盘事件有效
         frame.setAlwaysOnTop(true); // 设置其总在最上
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE); // 默认关闭操作
         frame.setIconImage(new ImageIcon("images/icon.jpg").getImage()); // 设置窗体的图标
@@ -120,19 +90,12 @@ public class ShootGame extends JPanel {
 
         // 鼠标监听事件
         MouseAdapter l = new MouseAdapter() {
-            @Override
-            public void mouseMoved(MouseEvent e) { // 鼠标移动
-                if (state == RUNNING) { // 运行状态下移动英雄机--随鼠标位置
-                    int x = e.getX();
-                    int y = e.getY();
-                    player.moveTo(x, y);
-                }
-            }
 
             @Override
             public void mouseEntered(MouseEvent e) { // 鼠标进入
                 if (state == PAUSE) { // 暂停状态下运行
                     state = RUNNING;
+                    ShootGame.this.requestFocus();
                 }
             }
 
@@ -148,17 +111,19 @@ public class ShootGame extends JPanel {
                 switch (state) {
                     case START:
                         state = RUNNING; // 启动状态下运行
+                        ShootGame.this.requestFocus();
                         break;
                     case GAME_OVER: // 游戏结束，清理现场
                         enemies = new Enemy[0]; // 清空飞行物
                         projectiles = new Projectile[0]; // 清空子弹
-                        player = new Player(ShootGame.this); // 重新创建英雄机
+                        player = new Player(ShootGame.this, 0); // 重新创建英雄机
                         score = 0; // 清空成绩
                         state = START; // 状态设置为启动
                         break;
                 }
             }
         };
+
         this.addMouseListener(l); // 处理鼠标点击操作
         this.addMouseMotionListener(l); // 处理鼠标滑动操作
 
@@ -173,7 +138,7 @@ public class ShootGame extends JPanel {
 
                 if (state == RUNNING) { // 运行状态
                     // 先刷新敌人
-                    sceneManager.spawnEnemies();
+                    sceneManager.update();
 
                     // 依次更新投射物，敌人和玩家的状态
                     for (Projectile proj : projectiles)
