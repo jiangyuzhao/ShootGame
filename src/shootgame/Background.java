@@ -5,6 +5,8 @@ import java.awt.image.BufferedImage;
 
 /**
  * 实现一个每一帧会移动的背景图片
+ *
+ * @author hehao
  */
 public class Background extends GameObject {
 
