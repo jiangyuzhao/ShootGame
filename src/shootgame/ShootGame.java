@@ -82,28 +82,13 @@ public class ShootGame extends JPanel {
         MouseAdapter l = new MouseAdapter() {
 
             @Override
-            public void mouseEntered(MouseEvent e) { // 鼠标进入
-                if (state == PAUSE) { // 暂停状态下运行
-                    state = RUNNING;
-                    ShootGame.this.requestFocus();
-                }
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) { // 鼠标退出
-                if (state == RUNNING) { // 游戏未结束，则设置其为暂停
-                    state = PAUSE;
-                }
-            }
-
-            @Override
             public void mouseClicked(MouseEvent e) { // 鼠标点击
                 if(state == START) {
                 	state = RUNNING; // 启动状态下运行
                     ShootGame.this.requestFocus();
                 }
                 else {
-                	System.out.println("wrong status!");
+                	//System.out.println("wrong status!");
                 }
             }
         };
@@ -111,36 +96,38 @@ public class ShootGame extends JPanel {
         this.addMouseListener(l); // 处理鼠标点击操作
         this.addMouseMotionListener(l); // 处理鼠标滑动操作
 
-        timer = new Timer(); // 主流程控制
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                // 更新时序信息
-                lastUpdatedTime = currentTime;
-                currentTime = new Date().getTime();
-                deltaTime = currentTime - lastUpdatedTime;
+        if (timer == null) {
+            timer = new Timer(); // 主流程控制
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    // 更新时序信息
+                    lastUpdatedTime = currentTime;
+                    currentTime = new Date().getTime();
+                    deltaTime = currentTime - lastUpdatedTime;
 
-                if (state == RUNNING) { // 运行状态
-                    // 先刷新敌人
-                    sceneManager.update();
+                    if (state == RUNNING) { // 运行状态
+                        // 先刷新敌人
+                        sceneManager.update();
 
-                    // 依次更新投射物，敌人和玩家的状态
-                    for (Projectile proj : projectiles)
-                        if (proj != null) proj.update();
-                    for (Enemy enemy : enemies)
-                        if (enemy != null) enemy.update();
-                    player.update();
+                        // 依次更新投射物，敌人和玩家的状态
+                        for (Projectile proj : projectiles)
+                            if (proj != null) proj.update();
+                        for (Enemy enemy : enemies)
+                            if (enemy != null) enemy.update();
+                        player.update();
 
-                    physicsEngine.detectCollision(); // 物理引擎检测碰撞
+                        physicsEngine.detectCollision(); // 物理引擎检测碰撞
 
-                    garbageCollection(); // 删除越界飞行物，死亡飞行物及子弹
+                        garbageCollection(); // 删除越界飞行物，死亡飞行物及子弹
 
-                    checkGameOver(); // 检查游戏结束
+                        checkGameOver(); // 检查游戏结束
+                    }
+                    repaint(); // 重绘，调用paint()方法
                 }
-                repaint(); // 重绘，调用paint()方法
-            }
 
-        }, interval, interval);
+            }, interval, interval);
+        }
     }
 
     /** 画 */  
@@ -197,7 +184,7 @@ public class ShootGame extends JPanel {
     public boolean addProjectiles(Projectile[] newProjectiles) {
         // 对每个子弹，寻找一个数组空位加进去
         int successfullyAdded = 0;
-        System.out.println("projectile!");
+
         OuterLoop:
         for (Projectile projectile : newProjectiles) {
             for (int j = projectilesLastEmptyPosition, cnt = 0;
@@ -270,10 +257,11 @@ public class ShootGame extends JPanel {
      * 对所有game over之后进行的操作的包装函数
      */
     public void reInit() {
-    	enemies = new Enemy[0]; // 清空飞行物
-        projectiles = new Projectile[0]; // 清空子弹
+    	enemies = new Enemy[100]; // 清空飞行物
+        projectiles = new Projectile[1000]; // 清空子弹
         player = new Player(ShootGame.this, 0); // 重新创建英雄机
         score = 0; // 清空成绩
+        inputManager.clearInput();
         state = START; // 状态设置为启动
     }
     /**

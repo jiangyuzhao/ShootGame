@@ -29,6 +29,7 @@ public class Over extends JPanel {
 			public void mouseClicked(MouseEvent e) {
 				lblReTry.setForeground(Start.onPress);
 				GameFrame.shootPanel.reInit();
+				GameFrame.shootPanel.start();
 				GameFrame.card.show(GameFrame.container, "Start");
 			}
 		});
