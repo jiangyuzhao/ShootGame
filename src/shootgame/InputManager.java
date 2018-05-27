@@ -69,6 +69,13 @@ public class InputManager {
     }
 
     /**
+     * 游戏结束时调用，清空上次游戏的所有输入数据
+     */
+    public void clearInput() {
+        dirMap.clear();
+    }
+
+    /**
      * 将每一种类型绑定一个KeyStroke，这样实现可以快速响应键盘事件
      */
     private void setKeyBindings() {

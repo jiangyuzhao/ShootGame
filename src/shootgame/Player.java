@@ -55,8 +55,8 @@ public class Player extends GameObject {
         }
         if (y <= 0) {
             y = 0;
-        } else if (y >= 600) {
-            y = 600;
+        } else if (y >= ShootGame.HEIGHT) {
+            y = ShootGame.HEIGHT;
         }
 
         // 如果经过的射击间隔足够长，那么再次射击
