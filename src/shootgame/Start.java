@@ -27,6 +27,7 @@ public class Start extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				lblStart.setForeground(onPress);
+				GameFrame.shootPanel.setStateStart();
 				GameFrame.card.show(GameFrame.container, "ShootGame");
 				GameFrame.shootPanel.start();
 			}

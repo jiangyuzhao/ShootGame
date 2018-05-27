@@ -28,7 +28,8 @@ public class Over extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				lblReTry.setForeground(Start.onPress);
-				//GameFrame.shootPanel.reInit();
+				GameFrame.shootPanel.reInit();
+				GameFrame.card.show(GameFrame.container, "Start");
 			}
 		});
 		lblReTry.setFont(new Font("Baoli TC", Font.BOLD | Font.ITALIC, 32));

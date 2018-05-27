@@ -98,18 +98,12 @@ public class ShootGame extends JPanel {
 
             @Override
             public void mouseClicked(MouseEvent e) { // 鼠标点击
-                switch (state) {
-                    case START:
-                        state = RUNNING; // 启动状态下运行
-                        ShootGame.this.requestFocus();
-                        break;
-                    case GAME_OVER: // 游戏结束，清理现场
-                        enemies = new Enemy[0]; // 清空飞行物
-                        projectiles = new Projectile[0]; // 清空子弹
-                        player = new Player(ShootGame.this, 0); // 重新创建英雄机
-                        score = 0; // 清空成绩
-                        state = START; // 状态设置为启动
-                        break;
+                if(state == START) {
+                	state = RUNNING; // 启动状态下运行
+                    ShootGame.this.requestFocus();
+                }
+                else {
+                	System.out.println("wrong status!");
                 }
             }
         };
@@ -203,7 +197,7 @@ public class ShootGame extends JPanel {
     public boolean addProjectiles(Projectile[] newProjectiles) {
         // 对每个子弹，寻找一个数组空位加进去
         int successfullyAdded = 0;
-
+        System.out.println("projectile!");
         OuterLoop:
         for (Projectile projectile : newProjectiles) {
             for (int j = projectilesLastEmptyPosition, cnt = 0;
@@ -272,6 +266,22 @@ public class ShootGame extends JPanel {
         }
         return result;
     }
+    /**
+     * 对所有game over之后进行的操作的包装函数
+     */
+    public void reInit() {
+    	enemies = new Enemy[0]; // 清空飞行物
+        projectiles = new Projectile[0]; // 清空子弹
+        player = new Player(ShootGame.this, 0); // 重新创建英雄机
+        score = 0; // 清空成绩
+        state = START; // 状态设置为启动
+    }
+    /**
+     * 本类向Start类暴露一个修改状态为Start的setter函数（为了可以重新启动游戏）
+     */
+    public void setStateStart() {
+    	state = START;
+    }
 
     /** 删除越界飞行物，死亡飞行物及子弹 */
     private void garbageCollection() {
@@ -304,6 +314,8 @@ public class ShootGame extends JPanel {
     private void checkGameOver() {
         if (isGameOver()) {
             state = GAME_OVER; // 改变状态
+            GameFrame.card.show(GameFrame.container, "Over");
+            System.out.println("game over!");
         }
     }
 
@@ -317,5 +329,5 @@ public class ShootGame extends JPanel {
             System.out.println(projectile.getX() + " " + projectile.getY());
         }
     }
-
+    
 }

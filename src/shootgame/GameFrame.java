@@ -22,16 +22,17 @@ public class GameFrame extends JFrame {
 	 */
 	public GameFrame() {
 		super("Come on! Avangers!");
-		setSize(WIDTH, HEIGHT); // 设置大小
+		setSize(ShootGame.WIDTH, ShootGame.HEIGHT); // 设置大小
         requestFocus(); // 让键盘事件有效
         setAlwaysOnTop(true); // 设置其总在最上
+        setContentPane(container);
+        System.out.println("container set!");
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE); // 默认关闭操作
         setIconImage(new ImageIcon("images/icon.jpg").getImage()); // 设置窗体的图标
-        setLocationRelativeTo(null); // 设置窗体初始位置
         container.add(shootPanel, "ShootGame");
         container.add(new Start(), "Start");
         container.add(pausePanel, "Pause");
-        //container.add(new Over(), "Over");
+        container.add(new Over(), "Over");
         card.show(container, "Start");
 	}
 
