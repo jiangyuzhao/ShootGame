@@ -34,13 +34,11 @@ public class ShootGame extends JPanel {
     private static final int GAME_OVER = 3;
 
     // 资源图片
-    public static BufferedImage background;
     public static BufferedImage start;
     public static BufferedImage pause;
     public static BufferedImage gameover;
 
     static {
-        background = ResourceManager.getImage("background1");
         start = ResourceManager.getImage("start");
         pause = ResourceManager.getImage("pause");
         gameover = ResourceManager.getImage("gameover");
@@ -54,6 +52,8 @@ public class ShootGame extends JPanel {
     public long lastUpdatedTime;
     public long currentTime;
     public long deltaTime;
+
+    public Background background = new Background(this);
 
     // 管理敌人的生成，道具的生成等操作
     public SceneManager sceneManager = new SceneManager(this);
@@ -106,9 +106,12 @@ public class ShootGame extends JPanel {
                     currentTime = new Date().getTime();
                     deltaTime = currentTime - lastUpdatedTime;
 
-                    if (state == RUNNING) { // 运行状态
-                        // 先刷新敌人
-                        sceneManager.update();
+                if (state == RUNNING) { // 运行状态
+                    // 移动背景
+                    background.update();
+
+                    // 先刷新敌人
+                    sceneManager.update();
 
                         // 依次更新投射物，敌人和玩家的状态
                         for (Projectile proj : projectiles)
@@ -132,9 +135,10 @@ public class ShootGame extends JPanel {
 
     /** 画 */  
     @Override  
-    public void paint(Graphics g) {  
-    	//是否需要调用super.paint()?
-        g.drawImage(background, 0, 0, null); // 画背景图
+    public void paint(Graphics g) {
+        //super.paint(g); ?
+
+        background.render(g);
 
         // 依次绘制投射物，敌人和玩家
         for (Projectile proj : projectiles) {
