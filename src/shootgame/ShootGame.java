@@ -34,13 +34,11 @@ public class ShootGame extends JPanel {
     private static final int GAME_OVER = 3;
 
     // 资源图片
-    public static BufferedImage background;
     public static BufferedImage start;
     public static BufferedImage pause;
     public static BufferedImage gameover;
 
     static {
-        background = ResourceManager.getImage("background");
         start = ResourceManager.getImage("start");
         pause = ResourceManager.getImage("pause");
         gameover = ResourceManager.getImage("gameover");
@@ -54,6 +52,8 @@ public class ShootGame extends JPanel {
     public long lastUpdatedTime;
     public long currentTime;
     public long deltaTime;
+
+    public Background background = new Background(this);
 
     // 管理敌人的生成，道具的生成等操作
     public SceneManager sceneManager = new SceneManager(this);
@@ -71,18 +71,8 @@ public class ShootGame extends JPanel {
     public Player player = new Player(this, 0); // 玩家
 
     public static void main(String[] args) {
-        JFrame frame = new JFrame("Come on! Avangers!");
-        ShootGame game = new ShootGame(); // 面板对象
-        frame.add(game); // 将面板添加到JFrame中
-        frame.setSize(WIDTH, HEIGHT); // 设置大小
-        frame.requestFocus(); // 让键盘事件有效
-        frame.setAlwaysOnTop(true); // 设置其总在最上
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE); // 默认关闭操作
-        frame.setIconImage(new ImageIcon("images/icon.jpg").getImage()); // 设置窗体的图标
-        frame.setLocationRelativeTo(null); // 设置窗体初始位置
+    	GameFrame frame = new GameFrame();
         frame.setVisible(true); // 尽快调用paint
-
-        game.start(); // 启动执行
     }
 
     /** 启动执行代码 */
@@ -92,34 +82,13 @@ public class ShootGame extends JPanel {
         MouseAdapter l = new MouseAdapter() {
 
             @Override
-            public void mouseEntered(MouseEvent e) { // 鼠标进入
-                if (state == PAUSE) { // 暂停状态下运行
-                    state = RUNNING;
+            public void mouseClicked(MouseEvent e) { // 鼠标点击
+                if(state == START) {
+                	state = RUNNING; // 启动状态下运行
                     ShootGame.this.requestFocus();
                 }
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) { // 鼠标退出
-                if (state == RUNNING) { // 游戏未结束，则设置其为暂停
-                    state = PAUSE;
-                }
-            }
-
-            @Override
-            public void mouseClicked(MouseEvent e) { // 鼠标点击
-                switch (state) {
-                    case START:
-                        state = RUNNING; // 启动状态下运行
-                        ShootGame.this.requestFocus();
-                        break;
-                    case GAME_OVER: // 游戏结束，清理现场
-                        enemies = new Enemy[0]; // 清空飞行物
-                        projectiles = new Projectile[0]; // 清空子弹
-                        player = new Player(ShootGame.this, 0); // 重新创建英雄机
-                        score = 0; // 清空成绩
-                        state = START; // 状态设置为启动
-                        break;
+                else {
+                	//System.out.println("wrong status!");
                 }
             }
         };
@@ -127,42 +96,49 @@ public class ShootGame extends JPanel {
         this.addMouseListener(l); // 处理鼠标点击操作
         this.addMouseMotionListener(l); // 处理鼠标滑动操作
 
-        timer = new Timer(); // 主流程控制
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                // 更新时序信息
-                lastUpdatedTime = currentTime;
-                currentTime = new Date().getTime();
-                deltaTime = currentTime - lastUpdatedTime;
+        if (timer == null) {
+            timer = new Timer(); // 主流程控制
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    // 更新时序信息
+                    lastUpdatedTime = currentTime;
+                    currentTime = new Date().getTime();
+                    deltaTime = currentTime - lastUpdatedTime;
 
                 if (state == RUNNING) { // 运行状态
+                    // 移动背景
+                    background.update();
+
                     // 先刷新敌人
                     sceneManager.update();
 
-                    // 依次更新投射物，敌人和玩家的状态
-                    for (Projectile proj : projectiles)
-                        if (proj != null) proj.update();
-                    for (Enemy enemy : enemies)
-                        if (enemy != null) enemy.update();
-                    player.update();
+                        // 依次更新投射物，敌人和玩家的状态
+                        for (Projectile proj : projectiles)
+                            if (proj != null) proj.update();
+                        for (Enemy enemy : enemies)
+                            if (enemy != null) enemy.update();
+                        player.update();
 
-                    physicsEngine.detectCollision(); // 物理引擎检测碰撞
+                        physicsEngine.detectCollision(); // 物理引擎检测碰撞
 
-                    garbageCollection(); // 删除越界飞行物，死亡飞行物及子弹
+                        garbageCollection(); // 删除越界飞行物，死亡飞行物及子弹
 
-                    checkGameOver(); // 检查游戏结束
+                        checkGameOver(); // 检查游戏结束
+                    }
+                    repaint(); // 重绘，调用paint()方法
                 }
-                repaint(); // 重绘，调用paint()方法
-            }
 
-        }, interval, interval);
+            }, interval, interval);
+        }
     }
 
     /** 画 */  
     @Override  
-    public void paint(Graphics g) {  
-        g.drawImage(background, 0, 0, null); // 画背景图
+    public void paint(Graphics g) {
+        //super.paint(g); ?
+
+        background.render(g);
 
         // 依次绘制投射物，敌人和玩家
         for (Projectile proj : projectiles) {
@@ -281,6 +257,23 @@ public class ShootGame extends JPanel {
         }
         return result;
     }
+    /**
+     * 对所有game over之后进行的操作的包装函数
+     */
+    public void reInit() {
+    	enemies = new Enemy[100]; // 清空飞行物
+        projectiles = new Projectile[1000]; // 清空子弹
+        player = new Player(ShootGame.this, 0); // 重新创建英雄机
+        score = 0; // 清空成绩
+        inputManager.clearInput();
+        state = START; // 状态设置为启动
+    }
+    /**
+     * 本类向Start类暴露一个修改状态为Start的setter函数（为了可以重新启动游戏）
+     */
+    public void setStateStart() {
+    	state = START;
+    }
 
     /** 删除越界飞行物，死亡飞行物及子弹 */
     private void garbageCollection() {
@@ -313,6 +306,8 @@ public class ShootGame extends JPanel {
     private void checkGameOver() {
         if (isGameOver()) {
             state = GAME_OVER; // 改变状态
+            GameFrame.card.show(GameFrame.container, "Over");
+            System.out.println("game over!");
         }
     }
 
@@ -326,5 +321,5 @@ public class ShootGame extends JPanel {
             System.out.println(projectile.getX() + " " + projectile.getY());
         }
     }
-
+    
 }
