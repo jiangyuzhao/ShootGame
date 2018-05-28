@@ -314,6 +314,7 @@ public class ShootGame extends JPanel {
     private void checkGameOver() {
         if (isGameOver()) {
             state = GAME_OVER; // 改变状态
+            Over.update(score);
             GameFrame.card.show(GameFrame.container, "Over");
             System.out.println("game over!");
         }

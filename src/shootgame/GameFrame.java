@@ -17,6 +17,7 @@ public class GameFrame extends JFrame {
 	public static ShootGame shootPanel = new ShootGame();
 	public static Pause pausePanel = new Pause();
 	public static GameFrame frame;
+	public static ScoreBoard scoreboard = new ScoreBoard();
 	/**
 	 * Create the frame.
 	 * 在构建函数中进行Frame的设置操作
@@ -37,6 +38,8 @@ public class GameFrame extends JFrame {
         container.add(new Over(), "Over");
         container.add(new Options(), "Options");
         container.add(new Help(), "Help");
+        container.add(scoreboard, "Scoreboard");
+        
         card.show(container, "Start");
 	}
 

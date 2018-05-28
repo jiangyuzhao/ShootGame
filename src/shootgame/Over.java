@@ -10,12 +10,20 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
 public class Over extends JPanel {
-
 	/**
 	 * Create the panel.
 	 */
+	private static double thisScore = 0;
 	public Over() {
 		setLayout(null);
 		
@@ -44,7 +52,8 @@ public class Over extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				lblBoard.setForeground(Start.onPress);
-				
+				GameFrame.scoreboard.onShow();
+				GameFrame.card.show(GameFrame.container, "Scoreboard");
 			}
 		});
 		lblBoard.setFont(new Font("Baoli TC", Font.BOLD | Font.ITALIC, 32));
@@ -69,5 +78,77 @@ public class Over extends JPanel {
 	public void paint(Graphics g) {
 		g.drawImage(ShootGame.gameover, 0, 0, null);
 		super.paint(g);
+	}
+	
+	public static double getThisScore() {
+		return thisScore;
+	}
+	
+	/**
+	 * 将本次对局信息加入到积分榜中
+	 * @author teddy
+	 * @param score
+	 */
+	public static void update(double score) {
+		thisScore = score;
+		File file = new File(ScoreBoard.scoreboardPath);
+		if(!file.exists()) {
+			try {  
+                file.createNewFile();// 如果文件不存在创建文件  
+            } catch (IOException e) {  
+                e.printStackTrace();  
+            }  
+		}
+		double []scoreboard = new double[20];
+        synchronized (file) {
+        	try {  
+                FileInputStream fileInputStream = new FileInputStream(file);  
+                InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream, "GBK");  
+                BufferedReader reader = new BufferedReader(inputStreamReader);  
+                String lineContent = "";  
+                int i = 0;
+                while ((lineContent = reader.readLine()) != null && i < 10) {  
+                    scoreboard[i++] = Double.parseDouble(lineContent);  
+                }
+                fileInputStream.close();  
+                inputStreamReader.close();  
+                reader.close();  
+            } catch (FileNotFoundException e) {  
+                e.printStackTrace();  
+            } catch (IOException e) {  
+                e.printStackTrace();  
+            }
+        	
+        	try {
+            	FileWriter fw = new FileWriter(ScoreBoard.scoreboardPath);  
+				fw.write(Double.toString(score));
+				fw.close(); 
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} 
+        	insertIntoScoreboard(scoreboard, score);
+            try {
+            	FileWriter fw = new FileWriter(ScoreBoard.scoreboardPath); 
+            	for(int i = 0; i < 10; i++) {
+            		fw.write(Double.toString(scoreboard[i])+"\n");
+            	}
+				fw.close(); 
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} 
+        } 
+	}
+	private static void insertIntoScoreboard(double []scoreboard, double record) {
+		for(int i = 0; i < 10; i++) {
+			if(record > scoreboard[i]) {
+				for(int j = 8;j > i; j--) {
+					scoreboard[j] = scoreboard[j-1];
+				}
+				scoreboard[i] = record;
+				break;
+			}
+		}
 	}
 }
