@@ -30,6 +30,8 @@ public class Pause extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				lblReturn.setForeground(Start.onPress);
+				GameFrame.card.show(GameFrame.container, "ShootGame");
+				GameFrame.shootPanel.setStateRunning();
 			}
 		});
 		lblReturn.setFont(new Font("Baoli TC", Font.BOLD | Font.ITALIC, 32));
@@ -52,6 +54,8 @@ public class Pause extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				lblExit.setForeground(Start.onPress);
+				GameFrame.shootPanel.setStateOver();
+				GameFrame.card.show(GameFrame.container, "Over");
 			}
 		});
 		lblExit.setFont(new Font("Baoli TC", Font.BOLD | Font.ITALIC, 32));

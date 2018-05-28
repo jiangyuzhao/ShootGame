@@ -83,13 +83,15 @@ public class ShootGame extends JPanel {
 
             @Override
             public void mouseClicked(MouseEvent e) { // 鼠标点击
-                if(state == START) {
-                	state = RUNNING; // 启动状态下运行
-                    ShootGame.this.requestFocus();
-                }
-                else {
-                	//System.out.println("wrong status!");
-                }
+            	switch(state){
+            		case START:
+            			state = RUNNING; // 启动状态下运行
+                        ShootGame.this.requestFocus();
+                        break;
+            		case RUNNING:
+            			state = PAUSE;
+            			GameFrame.card.show(GameFrame.container, "Pause");
+            	}
             }
         };
 
@@ -274,6 +276,12 @@ public class ShootGame extends JPanel {
     public void setStateStart() {
     	state = START;
     }
+    public void setStateRunning() {
+    	state = RUNNING;
+    }
+    public void setStateOver() {
+    	state = GAME_OVER;
+    }
 
     /** 删除越界飞行物，死亡飞行物及子弹 */
     private void garbageCollection() {
@@ -306,6 +314,7 @@ public class ShootGame extends JPanel {
     private void checkGameOver() {
         if (isGameOver()) {
             state = GAME_OVER; // 改变状态
+            Over.update(score);
             GameFrame.card.show(GameFrame.container, "Over");
             System.out.println("game over!");
         }
