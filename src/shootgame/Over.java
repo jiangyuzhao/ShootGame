@@ -5,6 +5,8 @@ import java.awt.Graphics;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
+
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -48,6 +50,19 @@ public class Over extends JPanel {
 		lblBoard.setFont(new Font("Baoli TC", Font.BOLD | Font.ITALIC, 32));
 		lblBoard.setBounds(78, 249, 164, 45);
 		add(lblBoard);
+		
+		JLabel lblExit = new JLabel("退出");
+		lblExit.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				lblExit.setForeground(Start.onPress);
+				GameFrame.frame.dispose();
+			}
+		});
+		lblExit.setForeground(Color.BLACK);
+		lblExit.setFont(new Font("Baoli TC", Font.BOLD | Font.ITALIC, 32));
+		lblExit.setBounds(78, 353, 164, 45);
+		add(lblExit);
 		
 	}
 	@Override

@@ -35,7 +35,7 @@ public class Start extends JPanel {
 		
 		lblStart.setForeground(new Color(0, 0, 0));
 		lblStart.setFont(new Font("Baoli TC", Font.BOLD | Font.ITALIC, 32));
-		lblStart.setBounds(158, 436, 146, 48);
+		lblStart.setBounds(158, 376, 146, 48);
 		add(lblStart);
 		
 		JLabel lblOptions = new JLabel("选项");
@@ -43,12 +43,12 @@ public class Start extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				lblOptions.setForeground(onPress);
-				
+				GameFrame.card.show(GameFrame.container, "Options");
 			}
 		});
 		lblOptions.setFont(new Font("Baoli TC", Font.BOLD | Font.ITALIC, 32));
 		lblOptions.setForeground(new Color(0, 0, 0));
-		lblOptions.setBounds(158, 508, 106, 45);
+		lblOptions.setBounds(158, 438, 106, 45);
 		add(lblOptions);
 		
 		JLabel lblHelp = new JLabel("帮助");
@@ -56,11 +56,12 @@ public class Start extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				lblHelp.setForeground(onPress);
+				GameFrame.card.show(GameFrame.container, "Help");
 			}
 		});
 		lblHelp.setForeground(Color.BLACK);
 		lblHelp.setFont(new Font("Baoli TC", Font.BOLD | Font.ITALIC, 32));
-		lblHelp.setBounds(158, 580, 106, 45);
+		lblHelp.setBounds(158, 500, 106, 45);
 		add(lblHelp);
 		
 		JLabel lblExit = new JLabel("退出");
@@ -68,18 +69,12 @@ public class Start extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				lblExit.setForeground(onPress);
-				//等待其它进程终止后退出
-				try {
-					wait();
-				} catch (InterruptedException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+				GameFrame.frame.dispose();
 			}
 		});
 		lblExit.setForeground(Color.BLACK);
 		lblExit.setFont(new Font("Baoli TC", Font.BOLD | Font.ITALIC, 32));
-		lblExit.setBounds(158, 662, 106, 45);
+		lblExit.setBounds(158, 562, 106, 45);
 		add(lblExit);
 		
 	}
