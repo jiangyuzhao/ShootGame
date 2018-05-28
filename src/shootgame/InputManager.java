@@ -28,7 +28,8 @@ public class InputManager {
         LEFT("Left", KeyEvent.VK_LEFT),
         RIGHT("Right", KeyEvent.VK_RIGHT),
         UP("Up", KeyEvent.VK_UP),
-        DOWN("Down", KeyEvent.VK_DOWN);
+        DOWN("Down", KeyEvent.VK_DOWN),
+        ESCAPE("Escape", KeyEvent.VK_ESCAPE);
 
         private String name;
         private int keyCode;
