@@ -105,7 +105,7 @@ public class Start extends JPanel {
 			}
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				GameFrame.frame.dispose();
+				System.exit(0);
 			}
 			@Override
 			public void mouseReleased(MouseEvent e) {
