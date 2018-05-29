@@ -16,12 +16,15 @@ public class GameFrame extends JFrame {
 	public static JPanel container = new JPanel(card);
 	public static ShootGame shootPanel = new ShootGame();
 	public static Pause pausePanel = new Pause();
+	public static GameFrame frame;
+	public static ScoreBoard scoreboard = new ScoreBoard();
 	/**
 	 * Create the frame.
 	 * 在构建函数中进行Frame的设置操作
 	 */
 	public GameFrame() {
 		super("Come on! Avangers!");
+		frame = this;
 		setSize(ShootGame.WIDTH, ShootGame.HEIGHT); // 设置大小
         requestFocus(); // 让键盘事件有效
         setAlwaysOnTop(true); // 设置其总在最上
@@ -33,6 +36,10 @@ public class GameFrame extends JFrame {
         container.add(new Start(), "Start");
         container.add(pausePanel, "Pause");
         container.add(new Over(), "Over");
+        container.add(new Options(), "Options");
+        container.add(new Help(), "Help");
+        container.add(scoreboard, "Scoreboard");
+        
         card.show(container, "Start");
 	}
 

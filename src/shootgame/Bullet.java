@@ -1,6 +1,6 @@
 package shootgame;
 
-import javax.annotation.Resource;
+//import javax.annotation.Resource;
 
 /**
  * 这是一种由玩家射出的最普通子弹
