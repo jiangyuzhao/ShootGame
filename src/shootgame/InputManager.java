@@ -29,7 +29,12 @@ public class InputManager {
         RIGHT("Right", KeyEvent.VK_RIGHT),
         UP("Up", KeyEvent.VK_UP),
         DOWN("Down", KeyEvent.VK_DOWN),
-        ESCAPE("Escape", KeyEvent.VK_ESCAPE);
+        ESCAPE("Escape", KeyEvent.VK_ESCAPE),
+        Z("Z", KeyEvent.VK_Z),
+        X("X", KeyEvent.VK_X),
+        C("C", KeyEvent.VK_C),
+        V("V", KeyEvent.VK_V);
+
 
         private String name;
         private int keyCode;
