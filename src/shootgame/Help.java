@@ -2,6 +2,8 @@ package shootgame;
 
 import javax.swing.JPanel;
 import javax.swing.JLabel;
+
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.ScrollPane;
 import javax.swing.JTextField;
@@ -41,9 +43,20 @@ public class Help extends JPanel {
 		JLabel lblReturn = new JLabel("返回");
 		lblReturn.addMouseListener(new MouseAdapter() {
 			@Override
-			public void mouseClicked(MouseEvent e) {
+			public void mouseEntered(MouseEvent e) {
 				lblReturn.setForeground(Start.onPress);
+			}
+			@Override
+			public void mouseClicked(MouseEvent e) {
 				GameFrame.card.show(GameFrame.container, "Start");
+			}
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				lblReturn.setForeground(Color.BLACK);
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				lblReturn.setForeground(Color.BLACK);
 			}
 		});
 		lblReturn.setFont(new Font("Baoli TC", Font.BOLD | Font.ITALIC, 32));
