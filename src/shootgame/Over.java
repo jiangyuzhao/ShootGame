@@ -89,9 +89,7 @@ public class Over extends JPanel {
 				lblExit.setForeground(Start.onPress);
 			}
 			@Override
-			public void mouseClicked(MouseEvent e) {
-				GameFrame.frame.dispose();
-			}
+			public void mouseClicked(MouseEvent e) { System.exit(0); }
 			@Override
 			public void mouseReleased(MouseEvent e) {
 				lblExit.setForeground(Color.BLACK);
