@@ -2,7 +2,11 @@ package shootgame;
 
 import javax.swing.JPanel;
 import javax.swing.JLabel;
+
+import java.awt.Color;
 import java.awt.Font;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -38,6 +42,29 @@ public class ScoreBoard extends JPanel {
 		textArea.setEditable(false);
 		scrollPane.setViewportView(textArea);
 		textArea.setColumns(10);
+		
+		JLabel lblReturn = new JLabel("返回");
+		lblReturn.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				lblReturn.setForeground(Start.onPress);
+			}
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				GameFrame.card.show(GameFrame.container, "Over");
+			}
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				lblReturn.setForeground(new Color(0,0,0));
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				lblReturn.setForeground(Color.BLACK);
+			}
+		});
+		lblReturn.setFont(new Font("Baoli TC", Font.BOLD | Font.ITALIC, 32));
+		lblReturn.setBounds(10, 4, 127, 52);
+		add(lblReturn);
 
 	}
 	public void onShow() {

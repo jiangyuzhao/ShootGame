@@ -36,11 +36,22 @@ public class Over extends JPanel {
 		JLabel lblReTry = new JLabel("从头再来");
 		lblReTry.addMouseListener(new MouseAdapter() {
 			@Override
-			public void mouseClicked(MouseEvent e) {
+			public void mouseEntered(MouseEvent e) {
 				lblReTry.setForeground(Start.onPress);
+			}
+			@Override
+			public void mouseClicked(MouseEvent e) {
 				GameFrame.shootPanel.reInit();
 				GameFrame.shootPanel.start();
 				GameFrame.card.show(GameFrame.container, "Start");
+			}
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				lblReTry.setForeground(Color.BLACK);
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				lblReTry.setForeground(Color.BLACK);
 			}
 		});
 		lblReTry.setFont(new Font("Baoli TC", Font.BOLD | Font.ITALIC, 32));
@@ -50,10 +61,21 @@ public class Over extends JPanel {
 		JLabel lblBoard = new JLabel("查看积分榜");
 		lblBoard.addMouseListener(new MouseAdapter() {
 			@Override
-			public void mouseClicked(MouseEvent e) {
+			public void mouseEntered(MouseEvent e) {
 				lblBoard.setForeground(Start.onPress);
+			}
+			@Override
+			public void mouseClicked(MouseEvent e) {
 				GameFrame.scoreboard.onShow();
 				GameFrame.card.show(GameFrame.container, "Scoreboard");
+			}
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				lblBoard.setForeground(Color.BLACK);
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				lblBoard.setForeground(Color.BLACK);
 			}
 		});
 		lblBoard.setFont(new Font("Baoli TC", Font.BOLD | Font.ITALIC, 32));
@@ -63,9 +85,18 @@ public class Over extends JPanel {
 		JLabel lblExit = new JLabel("退出");
 		lblExit.addMouseListener(new MouseAdapter() {
 			@Override
-			public void mouseClicked(MouseEvent e) {
+			public void mouseEntered(MouseEvent e) {
 				lblExit.setForeground(Start.onPress);
-				GameFrame.frame.dispose();
+			}
+			@Override
+			public void mouseClicked(MouseEvent e) { System.exit(0); }
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				lblExit.setForeground(Color.BLACK);
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				lblExit.setForeground(Color.BLACK);
 			}
 		});
 		lblExit.setForeground(Color.BLACK);

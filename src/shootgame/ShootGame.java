@@ -3,6 +3,8 @@ package shootgame;
 import java.awt.Font;  
 import java.awt.Color;  
 import java.awt.Graphics;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
@@ -86,17 +88,13 @@ public class ShootGame extends JPanel {
             	switch(state){
             		case START:
             			state = RUNNING; // 启动状态下运行
-                        ShootGame.this.requestFocus();
                         break;
-            		case RUNNING:
-            			state = PAUSE;
-            			GameFrame.card.show(GameFrame.container, "Pause");
             	}
             }
         };
 
+        this.removeMouseListener(l); // 阻止多个Listener的情况
         this.addMouseListener(l); // 处理鼠标点击操作
-        this.addMouseMotionListener(l); // 处理鼠标滑动操作
 
         if (timer == null) {
             timer = new Timer(); // 主流程控制
@@ -129,6 +127,13 @@ public class ShootGame extends JPanel {
                         checkGameOver(); // 检查游戏结束
                     }
                     repaint(); // 重绘，调用paint()方法
+
+                    // 处理用户输入
+                    if (inputManager.getInput(InputManager.Key.ESCAPE)) {
+                        state = PAUSE;
+                        inputManager.clearInput();
+                        GameFrame.card.show(GameFrame.container, "Pause");
+                    }
                 }
 
             }, interval, interval);

@@ -28,10 +28,21 @@ public class Pause extends JPanel {
 		JLabel lblReturn = new JLabel("返回游戏");
 		lblReturn.addMouseListener(new MouseAdapter() {
 			@Override
-			public void mouseClicked(MouseEvent e) {
+			public void mouseEntered(MouseEvent e) {
 				lblReturn.setForeground(Start.onPress);
+			}
+			@Override
+			public void mouseClicked(MouseEvent e) {
 				GameFrame.card.show(GameFrame.container, "ShootGame");
 				GameFrame.shootPanel.setStateRunning();
+			}
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				lblReturn.setForeground(Color.BLACK);
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				lblReturn.setForeground(Color.BLACK);
 			}
 		});
 		lblReturn.setFont(new Font("Baoli TC", Font.BOLD | Font.ITALIC, 32));
@@ -41,8 +52,20 @@ public class Pause extends JPanel {
 		JLabel lblSaveExit = new JLabel("保存并退出");
 		lblSaveExit.addMouseListener(new MouseAdapter() {
 			@Override
-			public void mouseClicked(MouseEvent e) {
+			public void mouseEntered(MouseEvent e) {
 				lblSaveExit.setForeground(Start.onPress);
+			}
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				
+			}
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				lblSaveExit.setForeground(Color.BLACK);
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				lblSaveExit.setForeground(Color.BLACK);
 			}
 		});
 		lblSaveExit.setFont(new Font("Baoli TC", Font.BOLD | Font.ITALIC, 32));
@@ -52,10 +75,21 @@ public class Pause extends JPanel {
 		JLabel lblExit = new JLabel("清除进度");
 		lblExit.addMouseListener(new MouseAdapter() {
 			@Override
-			public void mouseClicked(MouseEvent e) {
+			public void mouseEntered(MouseEvent e) {
 				lblExit.setForeground(Start.onPress);
+			}
+			@Override
+			public void mouseClicked(MouseEvent e) {
 				GameFrame.shootPanel.setStateOver();
 				GameFrame.card.show(GameFrame.container, "Over");
+			}
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				lblExit.setForeground(Color.BLACK);
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				lblExit.setForeground(Color.BLACK);
 			}
 		});
 		lblExit.setFont(new Font("Baoli TC", Font.BOLD | Font.ITALIC, 32));
