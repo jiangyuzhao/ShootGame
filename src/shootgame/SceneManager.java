@@ -1,4 +1,6 @@
 package shootgame;
+import shootgame.gameobjects.enemies.*;
+
 import java.util.Random;
 /**
  * 控制整个场景中敌人的生成，做这块的同学可以根据游戏类信息，设计成更多丰富多彩的敌人生成方式

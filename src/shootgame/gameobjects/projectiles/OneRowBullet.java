@@ -1,4 +1,8 @@
-package shootgame;
+package shootgame.gameobjects.projectiles;
+
+import shootgame.*;
+import shootgame.gameobjects.GameObject;
+import shootgame.gameobjects.Projectile;
 
 import java.awt.Graphics;
 /**
@@ -10,12 +14,13 @@ public class OneRowBullet extends Projectile {
     
   /** 初始化数据 */  
 	
-  public OneRowBullet(ShootGame game,double x,double y){
+  public OneRowBullet(ShootGame game, double x, double y){
       super(game);
       this.image = ResourceManager.getImage("manybullet");
       this.width = game.WIDTH-10;
       this.height = 10;
       this.velocityY = -3;
+      this.damage = 5;
       this.x=5;
       this.y=y;
       collider = new PhysicsEngine.BoxCollider(this, x, y, width, height);

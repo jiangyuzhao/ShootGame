@@ -1,7 +1,14 @@
-package shootgame;
+package shootgame.gameobjects.enemies;
+
+import shootgame.*;
+import shootgame.gameobjects.GameObject;
+import shootgame.gameobjects.Player;
+import shootgame.gameobjects.projectiles.Bullet;
+import shootgame.gameobjects.projectiles.Explosion;
+import shootgame.gameobjects.projectiles.ForwardFire;
+import shootgame.gameobjects.projectiles.OneRowBullet;
 
 import java.awt.Graphics;
-import java.awt.image.BufferedImage;
 import java.util.Random;
 
 /**
@@ -12,8 +19,8 @@ public class Enemy1 extends Enemy{
 	
 	public Enemy1(ShootGame game) {
 		super(game);
-		velocityX = 7;
-		velocityY = 7;
+		velocityX = 5;
+		velocityY = 5;
 		this.image = ResourceManager.getImage("enemy1");
 		width = 50;	
 		height = 50;
@@ -37,7 +44,7 @@ public class Enemy1 extends Enemy{
 	}
 
 	/**爆炸，参数是生成爆炸的位置*/
-	private Explosion[] explode(double x,double y){
+	private Explosion[] explode(double x, double y){
 	     Explosion [] explosion = new Explosion[1];
 	     explosion[0] = new Explosion(game, x,y,this.velocityX,this.velocityY);
 	     return  explosion;

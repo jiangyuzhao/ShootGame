@@ -1,6 +1,14 @@
-package shootgame;
+package shootgame.gameobjects.enemies;
 
-import java.awt.Graphics;
+import shootgame.*;
+import shootgame.gameobjects.GameObject;
+import shootgame.gameobjects.Player;
+import shootgame.gameobjects.Projectile;
+import shootgame.gameobjects.projectiles.Explosion;
+import shootgame.gameobjects.projectiles.LargeExplosion;
+import shootgame.gameobjects.projectiles.EnemyMissile;
+
+import java.awt.*;
 import java.util.Random;
 /**
  * Boss:目前只把boss改了一张图片
@@ -8,7 +16,8 @@ import java.util.Random;
  * @author:panxinglu
  */
 public class Boss extends Enemy {
-    
+
+	public static final int MAX_LIFE = 1000;
     private double velocityX = 5;
     private double velocityY = 0;
     private int life;   //命
@@ -20,7 +29,7 @@ public class Boss extends Enemy {
         image = ResourceManager.getImage("boss");
         width = 100;
 		height =100;
-        this.life = 10000;
+        this.life = MAX_LIFE;
         y = height;
 	    Random random = new Random();
 	    x = random.nextInt(ShootGame.WIDTH - width);
@@ -39,7 +48,7 @@ public class Boss extends Enemy {
 	        velocityX = 2 * random;
 	    }
 	    
-	    long shootInterval = 600; // 射击间隔
+	    long shootInterval = 1000; // 射击间隔
 	    if (game.currentTime - lastShotTime >= shootInterval) {
 	    	game.addProjectiles(shootMissile());
 	    	lastShotTime = game.currentTime;
@@ -47,44 +56,50 @@ public class Boss extends Enemy {
 	}
 
     /**爆炸，参数是生成爆炸的位置*/
-	private Explosion[] explode(double x,double y){
+	private Explosion[] explode(double x, double y){
 	     Explosion [] explosion = new Explosion[1];
 	     explosion[0] = new Explosion(game, x,y,this.velocityX,this.velocityY);
 	     return  explosion;
 	}
+
+	private LargeExplosion[] explode(double x, double y, int width, int height) {
+		LargeExplosion [] explosion = new LargeExplosion[1];
+		explosion[0] = new LargeExplosion(game, x,y,this.velocityX,this.velocityY);
+		explosion[0].scale(width, height);
+		return explosion;
+	}
       
 	/**发射导弹*/
-    private Missile[] shootMissile(){
+    private EnemyMissile[] shootMissile(){
 		 int xStep = width / 4;    
 	     int yStep = 104;  
-	     Missile[] missiles = new Missile[1];  
-	     missiles[0] = new Missile(game, x + 2*xStep,y+yStep);
-	     return  missiles;  
+	     EnemyMissile[] enemyMissiles = new EnemyMissile[1];
+	     enemyMissiles[0] = new EnemyMissile(game, x + 2*xStep,y+yStep);
+	     return enemyMissiles;
 	}
     
     @Override
     public void onCollision(GameObject other) {
 		
-		if (other instanceof Bullet) {//被子弹射到，由于图片原因，将y位置向后偏移，不然还没碰到物体就爆炸
-			game.addProjectiles(explode(other.x,other.y-50));
+		if (other instanceof Projectile) {//被子弹射到，由于图片原因，将y位置向后偏移，不然还没碰到物体就爆炸
+			game.addProjectiles(explode(other.x,other.y-10));
+			this.life -= ((Projectile) other).getDamage();
+		}else if(other instanceof Player) {
+			game.addProjectiles(explode(other.x, other.y));
 			this.life--;
-		}else if(other instanceof Player){
-			game.addProjectiles(explode(other.x,other.y));
-			this.life--;
-		}else if(other instanceof OneRowBullet){
-			game.addProjectiles(explode(x,y));
-			this.life-=3;
-		}else if(other instanceof ForwardFire){
-			this.life-=2;
 		}
 		if(this.life<=0){
 			this.enabled=false;
 			game.score += 100;
+			game.addProjectiles(explode(x, y, width, height));
 		}
 	}
     
     public void render(Graphics g) {
         g.drawImage(image, getX(), getY(), width,height, null);
+		// 画血条
+		g.setColor(Color.RED);
+		g.fillRect(getX(), getY() - 5, width * life / MAX_LIFE, 5);
     }
 	
 }

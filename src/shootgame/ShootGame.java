@@ -1,13 +1,17 @@
 package shootgame;
 
-import java.awt.Font;  
+import shootgame.gameobjects.Background;
+import shootgame.gameobjects.GameObject;
+import shootgame.gameobjects.Player;
+import shootgame.gameobjects.Projectile;
+import shootgame.gameobjects.enemies.Enemy;
+import shootgame.panels.Over;
+
+import java.awt.Font;
 import java.awt.Color;  
 import java.awt.Graphics;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.image.BufferedImage;
 
 import javax.swing.*;
 import java.lang.*;
@@ -34,17 +38,6 @@ public class ShootGame extends JPanel {
     private static final int RUNNING = 1;  
     private static final int PAUSE = 2;  
     private static final int GAME_OVER = 3;
-
-    // 资源图片
-    public static BufferedImage start;
-    public static BufferedImage pause;
-    public static BufferedImage gameover;
-
-    static {
-        start = ResourceManager.getImage("start");
-        pause = ResourceManager.getImage("pause");
-        gameover = ResourceManager.getImage("gameover");
-    }
 
     private int state;
     public int score = 0; // 得分
@@ -156,35 +149,32 @@ public class ShootGame extends JPanel {
         }
         player.render(g);
 
-        paintScore(g); // 画分数  
-        paintState(g); // 画游戏状态  
+        paintText(g); //
     }  
 
-    /** 画分数 */  
-    private void paintScore(Graphics g) {
+    /** 画必要的文字信息 */
+    private void paintText(Graphics g) {
         int x = 10; // x坐标  
         int y = 25; // y坐标  
         Font font = new Font(Font.SANS_SERIF, Font.BOLD, 22); // 字体  
         g.setColor(new Color(0xFF0000));  
         g.setFont(font); // 设置字体  
         g.drawString("SCORE:" + score, x, y); // 画分数  
-        y=y+20; // y坐标增20  
+        y += 20; // y坐标增20
         g.drawString("LIFE:" + player.getLife(), x, y); // 画命
-    }  
-  
-    /** 画游戏状态 */  
-    private void paintState(Graphics g) {
-        switch (state) {  
-        case START: // 启动状态  
-            g.drawImage(start, 0, 0, null);  
-            break;  
-        case PAUSE: // 暂停状态  
-            g.drawImage(pause, 0, 0, null);  
-            break;  
-        case GAME_OVER: // 游戏终止状态  
-            g.drawImage(gameover, 0, 0, null);  
-            break;  
-        }  
+
+        y = HEIGHT - 45;
+        if (player.getRowShootEnergy() < player.ROW_SHOOT_CHARGE_TIME) {
+            g.drawString("ROW SHOOT: " + player.getRowShootEnergy(), x, y);
+        } else {
+            g.drawString("ROW SHOOT: READY!!!", x, y);
+        }
+        y -= 20;
+        if (player.getForwardExplosionEnergy() < player.FORWARD_FIRE_CHARGE_TIME) {
+            g.drawString("FORWARD FIRE: " + player.getForwardExplosionEnergy(), x, y);
+        } else {
+            g.drawString("FORWARD FIRE: READY!!!", x, y);
+        }
     }
 
     /**

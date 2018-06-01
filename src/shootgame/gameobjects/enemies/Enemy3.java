@@ -1,6 +1,11 @@
-package shootgame;
+package shootgame.gameobjects.enemies;
 
-import java.awt.Graphics;
+import shootgame.*;
+import shootgame.gameobjects.GameObject;
+import shootgame.gameobjects.Player;
+import shootgame.gameobjects.projectiles.*;
+
+import java.awt.*;
 import java.util.Random;
 /**
  * 第三种敌人：血量较高，既会射子弹又会射导弹，体积较大，速度较慢
@@ -8,6 +13,7 @@ import java.util.Random;
  * @author:panxinglu
  */
 public class Enemy3 extends Enemy{
+	private final int MAX_LIFE = 15;
 	private int life = 15;
 	private long lastShotTime;
 	private int emit=0;//发射子弹还是导弹
@@ -57,41 +63,54 @@ public class Enemy3 extends Enemy{
     }
 	
 	/**射导弹*/
-	private Missile[] shootMissile(){
+	private EnemyMissile[] shootMissile(){
 		 int xStep = width / 4;  
 	     int yStep = 104; 
-	     Missile[] missiles = new Missile[1];  
-	     missiles[0] = new Missile(game, x + 2*xStep,y+yStep);
-	     return  missiles;  
+	     EnemyMissile[] enemyMissiles = new EnemyMissile[1];
+	     enemyMissiles[0] = new EnemyMissile(game, x + 2*xStep,y+yStep);
+	     return enemyMissiles;
 	}
 	
 	/**爆炸，参数是生成爆炸的位置*/
-	private Explosion[] explode(double x,double y){
+	private Explosion[] explode(double x, double y){
 	     Explosion [] explosion = new Explosion[1];
 	     explosion[0] = new Explosion(game, x,y,this.velocityX,this.velocityY);
 	     return  explosion;
 	}
 
+	private LargeExplosion[] explode(double x, double y, int width, int height) {
+		LargeExplosion [] explosion = new LargeExplosion[1];
+		explosion[0] = new LargeExplosion(game, x,y,this.velocityX,this.velocityY);
+		explosion[0].scale(width, height);
+		return explosion;
+	}
+
 	public void onCollision(GameObject other) {
 		if (other instanceof Bullet) {//遇到player射的子弹，爆炸位置设成子弹的位置，由于图片原因，y往后移一些
-			game.addProjectiles(explode(other.x,other.y-50));
+			game.addProjectiles(explode(other.getX(),other.getY()-50));
 			this.life--;
-			if(this.life<=0){
-				this.enabled=false;
-				game.score += 20;
-			}
 		}else if(other instanceof Player){
-			game.addProjectiles(explode(other.x,other.y));
+			game.addProjectiles(explode(other.getX(),other.getY()));
 			this.enabled = false;
 		}else if(other instanceof OneRowBullet){
 			game.addProjectiles(explode(x,y));
-			this.enabled = false;
+			this.life -= ((OneRowBullet) other).getDamage();
 		}else if(other instanceof ForwardFire){
-			this.enabled = false;
+			this.life -= ((ForwardFire) other).getDamage();
+		}
+
+		if(this.life<=0){
+			this.enabled=false;
+			game.score += 20;
+			game.addProjectiles(explode(x, y, width, height));
 		}
 	}
 	
 	 public void render(Graphics g) {
-	        g.drawImage(image, getX(), getY(), width,height, null);
+		 // 画本体
+		 g.drawImage(image, getX(), getY(), width,height, null);
+		 // 画血条
+		 g.setColor(Color.RED);
+		 g.fillRect(getX(), getY() - 5, width * life / MAX_LIFE, 5);
 	 }
 }

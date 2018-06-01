@@ -1,6 +1,9 @@
-package shootgame;
+package shootgame.gameobjects.projectiles;
 
-import javax.annotation.Resource;
+import shootgame.*;
+import shootgame.gameobjects.GameObject;
+import shootgame.gameobjects.Projectile;
+import shootgame.gameobjects.enemies.Enemy;
 
 /**
  * 这是一种由玩家射出的最普通子弹
@@ -19,7 +22,7 @@ public class Bullet extends Projectile {
         this.image = ResourceManager.getImage("bullet0");
         this.width = this.image.getWidth();
         this.height = this.image.getHeight();
-
+        this.damage = 1;
         this.velocityY = -3;
 
         collider = new PhysicsEngine.BoxCollider(this, x, y, width, height);
@@ -37,7 +40,7 @@ public class Bullet extends Projectile {
         	this.enabled = false;
         }else if(other instanceof Enemy){
         	this.enabled = false;
-        }else if(other instanceof Missile){
+        }else if(other instanceof EnemyMissile){
         	this.enabled = false;
         }
     }

@@ -1,7 +1,7 @@
-package shootgame;
+package shootgame.gameobjects.enemies;
 
-import java.awt.image.BufferedImage;
-import java.util.Random;
+import shootgame.gameobjects.GameObject;
+import shootgame.ShootGame;
 
 /**
  * 敌人类目前只有一个类，但是计划将其拓展成多种敌人类

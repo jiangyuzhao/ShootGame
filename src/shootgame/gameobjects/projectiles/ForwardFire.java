@@ -1,4 +1,8 @@
-package shootgame;
+package shootgame.gameobjects.projectiles;
+
+import shootgame.*;
+import shootgame.gameobjects.GameObject;
+import shootgame.gameobjects.Projectile;
 
 import java.awt.Graphics;
 
@@ -15,7 +19,7 @@ public class ForwardFire extends Projectile {
       this.image = ResourceManager.getImage("explosion3");
       this.width = this.image.getWidth();
       this.height = this.image.getHeight();
-
+      this.damage = 1;
       this.velocityY = -3;
       collider = new PhysicsEngine.BoxCollider(this, x, y, width, height);
   }

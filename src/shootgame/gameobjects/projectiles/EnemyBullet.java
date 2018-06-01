@@ -1,4 +1,9 @@
-package shootgame;
+package shootgame.gameobjects.projectiles;
+
+import shootgame.*;
+import shootgame.gameobjects.GameObject;
+import shootgame.gameobjects.Player;
+import shootgame.gameobjects.Projectile;
 
 /**
  * 这是由敌人射出的子弹
@@ -15,6 +20,7 @@ public class EnemyBullet extends Projectile {
       this.width = this.image.getWidth();
       this.height = this.image.getHeight();
       this.velocityY = 3;
+      this.damage = 1;
 
       collider = new PhysicsEngine.BoxCollider(this, x, y, width, height);
   }
@@ -32,7 +38,7 @@ public class EnemyBullet extends Projectile {
       }else if(other instanceof Bullet){
       	this.enabled = false;
       }else if(other instanceof OneRowBullet){
-			this.enabled = false;
+          this.enabled = false;
 	  }
   }
 }

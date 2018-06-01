@@ -1,5 +1,8 @@
 package shootgame;
 
+import shootgame.panels.Over;
+import shootgame.panels.Start;
+
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 

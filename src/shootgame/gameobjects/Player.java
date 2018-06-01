@@ -1,5 +1,10 @@
 
-package shootgame;
+package shootgame.gameobjects;
+
+import shootgame.*;
+import shootgame.gameobjects.projectiles.*;
+import shootgame.gameobjects.enemies.Enemy1;
+import shootgame.gameobjects.enemies.Enemy2;
 
 import java.awt.Graphics;
 
@@ -9,6 +14,9 @@ import java.awt.Graphics;
  * @author qinyuxuan, hehao ,panxinglu
  */
 public class Player extends GameObject {
+
+    public final int ROW_SHOOT_CHARGE_TIME = 600;
+    public final int FORWARD_FIRE_CHARGE_TIME = 300;
     
     private double velocityX = 5;
     private double velocityY = 5;
@@ -17,6 +25,9 @@ public class Player extends GameObject {
     private int life;   //命
     private int doubleFire;
     private long lastShotTime;  // 上一次射击的时间
+    private int rowShootEnergy = 0;
+    private int forwardFireEnergy = 0;
+
       
     /** 初始化数据 */  
     public Player(ShootGame game, int playerId){
@@ -46,15 +57,25 @@ public class Player extends GameObject {
         if (game.inputManager.getInput(InputManager.Key.RIGHT)) {
             x += velocityX;
         }
-        
+
+        // 技能充能
+        if (rowShootEnergy < ROW_SHOOT_CHARGE_TIME) {
+            rowShootEnergy += 1;
+        }
+        if (forwardFireEnergy < FORWARD_FIRE_CHARGE_TIME) {
+            forwardFireEnergy += 1;
+        }
+
         /**按Z键发射一行子弹*/
-        if (game.inputManager.getInput(InputManager.Key.Z)) {
+        if (game.inputManager.getInput(InputManager.Key.Z) && rowShootEnergy >= ROW_SHOOT_CHARGE_TIME) {
         	game.addProjectiles(rowshoot());
+        	rowShootEnergy = 0;
         }
         
         /**按X键喷火*/
-        if (game.inputManager.getInput(InputManager.Key.X)) {
+        if (game.inputManager.getInput(InputManager.Key.X) && forwardFireEnergy >= FORWARD_FIRE_CHARGE_TIME) {
         	game.addProjectiles(forwardfire());
+        	forwardFireEnergy = 0;
         }
         
         // 检查玩家是否移出边界
@@ -85,16 +106,27 @@ public class Player extends GameObject {
         }else if (other instanceof Enemy2) {
             this.life -= 2;
         }else if (other instanceof EnemyBullet) {
-            this.life -= 1;
-        }else if (other instanceof Missile) {
-            this.life -= 2;
+            this.life -= ((Projectile) other).getDamage();
+            game.addProjectiles(explode(other.x,other.y));
+        }else if (other instanceof EnemyMissile) {
+            this.life -= ((Projectile) other).getDamage();
+            game.addProjectiles(explode(other.x,other.y));
         }
+    }
+
+    @Override
+    public void render(Graphics g) {
+        g.drawImage(image, getX(), getY(), width,height, null);
     }
       
     /** 获取命 */  
     public int getLife(){  
         return life;
     }
+
+    public int getRowShootEnergy() { return rowShootEnergy; }
+
+    public int getForwardExplosionEnergy() { return forwardFireEnergy; }
   
     /** 发射子弹 */  
     private Bullet[] shoot(){
@@ -111,11 +143,23 @@ public class Player extends GameObject {
             return bullets;  
         }  
     }
+
+    /**爆炸，参数是生成爆炸的位置*/
+    private Explosion[] explode(double x, double y){
+        Explosion [] explosion = new Explosion[1];
+        explosion[0] = new Explosion(game, x,y, 0, 0);
+        return  explosion;
+    }
     
     /**发射一行子弹*/
-    private OneRowBullet[] rowshoot(){
-        OneRowBullet[] bullets = new OneRowBullet[1];  
-        bullets[0] = new OneRowBullet(game, x ,y);
+    private Bullet[] rowshoot(){
+        Bullet[] bullets = new Bullet[40];
+        for (int i = 0; i < 20; ++i) {
+            bullets[i] = new Bullet(game, ShootGame.WIDTH * i / 20, y);
+        }
+        for (int i = 20; i < 40; ++i) {
+            bullets[i] = new Bullet(game, ShootGame.WIDTH * (i - 20) / 20, y - 40);
+        }
         return bullets;  
     }
     
@@ -124,10 +168,5 @@ public class Player extends GameObject {
     	ForwardFire[] bullets = new ForwardFire[1];  
         bullets[0] = new ForwardFire(game, x ,y-120);
         return bullets;  
-    }
-    
-    
-    public void render(Graphics g) {
-        g.drawImage(image, getX(), getY(), width,height, null);
     }
 }
