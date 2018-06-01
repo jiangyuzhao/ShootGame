@@ -11,60 +11,28 @@ import java.util.Random;
  */
 public class Enemy extends GameObject {
     
-    private double velocityX = 2;   //x坐标移动速度
-    private double velocityY = 2;   //y坐标移动速度
-    private int random;
+    protected double velocityX ;   //x坐标移动速度
+    protected double velocityY ;   //y坐标移动速度
+    protected int random;
 
     /** 初始化数据 */
     public Enemy(ShootGame game) {
         super(game);
-
-        BufferedImage[] images = new BufferedImage[] {
-                ResourceManager.getImage("airplane"),
-                ResourceManager.getImage("airplane0"),
-                ResourceManager.getImage("airplane1"),
-                ResourceManager.getImage("airplane2"),
-                ResourceManager.getImage("airplane3"),
-                ResourceManager.getImage("airplane4"),
-        };
-
-        Random random = new Random();
-        int s = random.nextInt(images.length);
-        this.image = images[s];
-        width = image.getWidth();
-        height = image.getHeight();
-        y = -height;
-
-        Random rand = new Random();
-        x = rand.nextInt(ShootGame.WIDTH - width);
-        this.random = (Math.random() > 0.5 ? -1 : 1);
-
-        collider = new PhysicsEngine.BoxCollider(this, x, y, width, height);
     }
 
     @Override
     public void update() {
-        x += velocityX * random;
-        y += velocityY;
-        if(x > ShootGame.WIDTH-width){
-            velocityX = -2 * random;
-        }
-        if(x < 0){
-            velocityX = 2 * random;
-        }
+
     }
 
     @Override
     public void onCollision(GameObject other) {
-        if (other instanceof Projectile) {
-            this.enabled = false;
-            game.score += 10;
-        }
+    	
     }
     
     /** 获取分数 */
     public int getScore() {  
         return 5;
     }
-
 }
+
