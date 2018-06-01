@@ -27,8 +27,8 @@ public class Boss extends Enemy {
     public Boss(ShootGame game){
         super(game);
         image = ResourceManager.getImage("boss");
-        width = 100;
-		height =100;
+        width = 150;
+		height =150;
         this.life = MAX_LIFE;
         y = height;
 	    Random random = new Random();
