@@ -79,6 +79,7 @@ public class Enemy2 extends Enemy{
 		else if(other instanceof Player){
 			game.addProjectiles(explode(other.x,other.y));
 			this.enabled = false;
+			game.addProjectiles(explode(x, y, width, height));
 		}else if(other instanceof OneRowBullet){
 			game.addProjectiles(explode(x,y));
 			this.life -= ((OneRowBullet) other).getDamage();

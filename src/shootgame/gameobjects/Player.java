@@ -33,8 +33,8 @@ public class Player extends GameObject {
     public Player(ShootGame game, int playerId){
         super(game);
         image = ResourceManager.getImage("player");
-        width = 100;
-		height =100;
+        width = 80;
+		height = 80;
         life = 100;
         doubleFire = 0;
         x = 300;  
