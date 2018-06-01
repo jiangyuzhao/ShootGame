@@ -1,10 +1,12 @@
 
 package shootgame;
 
+import java.awt.Graphics;
+
 /**
  * 表示玩家的游戏物体
  *
- * @author qinyuxuan, hehao
+ * @author qinyuxuan, hehao ,panxinglu
  */
 public class Player extends GameObject {
     
@@ -19,12 +21,10 @@ public class Player extends GameObject {
     /** 初始化数据 */  
     public Player(ShootGame game, int playerId){
         super(game);
-
-        image = ResourceManager.getImage("hero0");
-        width = image.getWidth();
-        height = image.getHeight();
-
-        life = 10;
+        image = ResourceManager.getImage("player");
+        width = 100;
+		height =100;
+        life = 100;
         doubleFire = 0;
         x = 300;  
         y = 500;
@@ -46,7 +46,17 @@ public class Player extends GameObject {
         if (game.inputManager.getInput(InputManager.Key.RIGHT)) {
             x += velocityX;
         }
-
+        
+        /**按Z键发射一行子弹*/
+        if (game.inputManager.getInput(InputManager.Key.Z)) {
+        	game.addProjectiles(rowshoot());
+        }
+        
+        /**按X键喷火*/
+        if (game.inputManager.getInput(InputManager.Key.X)) {
+        	game.addProjectiles(forwardfire());
+        }
+        
         // 检查玩家是否移出边界
         if (x <= 0) {
             x = 0;
@@ -59,6 +69,7 @@ public class Player extends GameObject {
             y = ShootGame.HEIGHT;
         }
 
+        
         // 如果经过的射击间隔足够长，那么再次射击
         long shootInterval = 300; // 射击间隔
         if (game.currentTime - lastShotTime >= shootInterval) {
@@ -69,9 +80,14 @@ public class Player extends GameObject {
 
     @Override
     public void onCollision(GameObject other) {
-        if (other instanceof Enemy) {
+        if (other instanceof Enemy1) {
             this.life -= 1;
-            other.enabled = false;
+        }else if (other instanceof Enemy2) {
+            this.life -= 2;
+        }else if (other instanceof EnemyBullet) {
+            this.life -= 1;
+        }else if (other instanceof Missile) {
+            this.life -= 2;
         }
     }
       
@@ -83,7 +99,7 @@ public class Player extends GameObject {
     /** 发射子弹 */  
     private Bullet[] shoot(){
         int xStep = width / 4;      //4半
-        int yStep = 20;  //步
+        int yStep = 30;  //步
         if (doubleFire > 0){  //双倍火力
             Bullet[] bullets = new Bullet[2];  
             bullets[0] = new Bullet(game, x + xStep,y - yStep);  //y-yStep(子弹距飞机的位置)
@@ -94,5 +110,24 @@ public class Player extends GameObject {
             bullets[0] = new Bullet(game, x + 2*xStep,y - yStep);
             return bullets;  
         }  
+    }
+    
+    /**发射一行子弹*/
+    private OneRowBullet[] rowshoot(){
+        OneRowBullet[] bullets = new OneRowBullet[1];  
+        bullets[0] = new OneRowBullet(game, x ,y);
+        return bullets;  
+    }
+    
+    /**喷火*/
+    private ForwardFire[] forwardfire(){
+    	ForwardFire[] bullets = new ForwardFire[1];  
+        bullets[0] = new ForwardFire(game, x ,y-120);
+        return bullets;  
+    }
+    
+    
+    public void render(Graphics g) {
+        g.drawImage(image, getX(), getY(), width,height, null);
     }
 }
