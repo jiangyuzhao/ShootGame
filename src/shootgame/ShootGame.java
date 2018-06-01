@@ -136,7 +136,6 @@ public class ShootGame extends JPanel {
     /** 画 */  
     @Override  
     public void paint(Graphics g) {
-        //super.paint(g); ?
 
         background.render(g);
 

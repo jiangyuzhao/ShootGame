@@ -1,10 +1,12 @@
 package shootgame.panels;
 
 import shootgame.GameFrame;
+import shootgame.ResourceManager;
 
 import java.awt.Graphics;
 
 import javax.swing.JPanel;
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import java.awt.Font;
 import java.awt.Color;
@@ -18,8 +20,6 @@ public class Start extends JPanel {
 	 * Create the panel.
 	 */
 	public Start() {
-		setBackground(new Color(255, 255, 255));
-		setForeground(new Color(255, 255, 255));
 		setLayout(null);
 		
 		JLabel lblStart = new JLabel("开始");
@@ -46,7 +46,7 @@ public class Start extends JPanel {
 		
 		lblStart.setForeground(Color.BLACK);
 		lblStart.setFont(new Font("Baoli TC", Font.BOLD | Font.ITALIC, 32));
-		lblStart.setBounds(158, 376, 146, 48);
+		lblStart.setBounds(140, 376, 146, 48);
 		add(lblStart);
 		
 		JLabel lblOptions = new JLabel("选项");
@@ -70,7 +70,7 @@ public class Start extends JPanel {
 		});
 		lblOptions.setFont(new Font("Baoli TC", Font.BOLD | Font.ITALIC, 32));
 		lblOptions.setForeground(Color.BLACK);
-		lblOptions.setBounds(158, 438, 106, 45);
+		lblOptions.setBounds(140, 438, 106, 45);
 		add(lblOptions);
 		
 		JLabel lblHelp = new JLabel("帮助");
@@ -94,7 +94,7 @@ public class Start extends JPanel {
 		});
 		lblHelp.setForeground(Color.BLACK);
 		lblHelp.setFont(new Font("Baoli TC", Font.BOLD | Font.ITALIC, 32));
-		lblHelp.setBounds(158, 500, 106, 45);
+		lblHelp.setBounds(140, 500, 106, 45);
 		add(lblHelp);
 		
 		JLabel lblExit = new JLabel("退出");
@@ -118,12 +118,15 @@ public class Start extends JPanel {
 		});
 		lblExit.setForeground(Color.BLACK);
 		lblExit.setFont(new Font("Baoli TC", Font.BOLD | Font.ITALIC, 32));
-		lblExit.setBounds(158, 562, 106, 45);
+		lblExit.setBounds(140, 562, 106, 45);
 		add(lblExit);
 		
 	}
 	@Override
-	public void paint(Graphics g) {
-		super.paint(g);
+	public void paintComponent(Graphics g) {
+		super.paintComponent(g);
+		g.drawImage(ResourceManager.getImage("startBackground"),
+				0, 0, this.getWidth(), this.getHeight(), null);
+		//System.out.println("drew!");
 	}
 }

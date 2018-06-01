@@ -1,6 +1,7 @@
 package shootgame.panels;
 
 import shootgame.GameFrame;
+import shootgame.ResourceManager;
 
 import java.awt.Graphics;
 
@@ -106,8 +107,10 @@ public class Pause extends JPanel {
 
 	}
 	@Override
-	public void paint(Graphics g) {
-		super.paint(g);
+	public void paintComponent(Graphics g) {
+		super.paintComponent(g);
+		g.drawImage(ResourceManager.getImage("pauseBackground"),
+				0, 0, this.getWidth(), this.getHeight(), null);
 	}
 	//
 	public static void pause() {

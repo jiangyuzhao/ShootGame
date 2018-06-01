@@ -1,6 +1,7 @@
 package shootgame.panels;
 
 import shootgame.GameFrame;
+import shootgame.ResourceManager;
 import shootgame.ScoreBoard;
 
 import java.awt.Graphics;
@@ -33,6 +34,7 @@ public class Over extends JPanel {
 		lblOver.setFont(new Font("Baoli SC", Font.BOLD | Font.ITALIC, 60));
 		lblOver.setHorizontalAlignment(SwingConstants.CENTER);
 		lblOver.setBounds(127, 6, 181, 96);
+		lblOver.setForeground(new Color(255,255,255));
 		add(lblOver);
 		
 		JLabel lblReTry = new JLabel("从头再来");
@@ -57,7 +59,7 @@ public class Over extends JPanel {
 			}
 		});
 		lblReTry.setFont(new Font("Baoli TC", Font.BOLD | Font.ITALIC, 32));
-		lblReTry.setBounds(78, 143, 164, 45);
+		lblReTry.setBounds(90, 143, 164, 45);
 		add(lblReTry);
 		
 		JLabel lblBoard = new JLabel("查看积分榜");
@@ -81,7 +83,7 @@ public class Over extends JPanel {
 			}
 		});
 		lblBoard.setFont(new Font("Baoli TC", Font.BOLD | Font.ITALIC, 32));
-		lblBoard.setBounds(78, 249, 164, 45);
+		lblBoard.setBounds(90, 249, 164, 45);
 		add(lblBoard);
 		
 		JLabel lblExit = new JLabel("退出");
@@ -103,7 +105,7 @@ public class Over extends JPanel {
 		});
 		lblExit.setForeground(Color.BLACK);
 		lblExit.setFont(new Font("Baoli TC", Font.BOLD | Font.ITALIC, 32));
-		lblExit.setBounds(78, 353, 164, 45);
+		lblExit.setBounds(90, 353, 164, 45);
 		add(lblExit);
 		
 	}
@@ -182,5 +184,12 @@ public class Over extends JPanel {
 				break;
 			}
 		}
+	}
+	
+	@Override
+	public void paintComponent(Graphics g) {
+		super.paintComponent(g);
+		g.drawImage(ResourceManager.getImage("overBackground"),
+				0, 0, this.getWidth(), this.getHeight(), null);
 	}
 }
