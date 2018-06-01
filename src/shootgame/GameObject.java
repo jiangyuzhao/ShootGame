@@ -19,7 +19,7 @@ public abstract class GameObject {
     protected int height;
     protected BufferedImage image;   //图片
     protected PhysicsEngine.Collider collider = null; // 是否允许碰撞检测，允许则在子类中设置collider
-
+    
     GameObject(ShootGame game) {
         this.game = game;
     }

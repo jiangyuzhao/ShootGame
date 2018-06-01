@@ -62,7 +62,13 @@ public class ResourceManager {
 
             BufferedImage bullet1 = ImageIO.read(ShootGame.class.getResource("/resources/bullet3.png"));
             images.put("bullet1", bullet1);
-
+            
+            BufferedImage manybullet = ImageIO.read(ShootGame.class.getResource("/resources/manybullet.png"));
+            images.put("manybullet", manybullet);
+            
+            BufferedImage missile = ImageIO.read(ShootGame.class.getResource("/resources/missile.png"));
+            images.put("missile", missile);
+            
             BufferedImage player = ImageIO.read(ShootGame.class.getResource("/resources/player.png"));
             images.put("player", player);
 
@@ -71,6 +77,9 @@ public class ResourceManager {
 
             BufferedImage explosion2 = ImageIO.read(ShootGame.class.getResource("/resources/explosion2.png"));
             images.put("explosion2", explosion2);
+            
+            BufferedImage explosion3 = ImageIO.read(ShootGame.class.getResource("/resources/explosion3.png"));
+            images.put("explosion3", explosion3);
 
         } catch (IOException exec) {
             exec.printStackTrace();
@@ -90,5 +99,4 @@ public class ResourceManager {
             return images.get("nothing");
         return image;
     }
-
 }
