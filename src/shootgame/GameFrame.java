@@ -1,14 +1,13 @@
 package shootgame;
 
-import java.awt.BorderLayout;
+import shootgame.panels.*;
+
 import java.awt.CardLayout;
-import java.awt.EventQueue;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
-import javax.swing.border.EmptyBorder;
 
 public class GameFrame extends JFrame {
 	//暴露这两个组件供切换Panel时使用

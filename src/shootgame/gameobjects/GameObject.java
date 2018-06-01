@@ -1,5 +1,8 @@
 
-package shootgame;
+package shootgame.gameobjects;
+
+import shootgame.PhysicsEngine;
+import shootgame.ShootGame;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -13,14 +16,14 @@ import java.awt.image.BufferedImage;
 public abstract class GameObject {
     public ShootGame game;         // 存储指向这个物体所属游戏类的指针
     public boolean enabled = true; // 表示这个物体是否被设置为有效，如果无效则会在下一帧被删除
-    protected double x; // x坐标，采用double为了计算速度和碰撞更加精确，下同
-    protected double y; // y坐标
+    public double x; // x坐标，采用double为了计算速度和碰撞更加精确，下同
+    public double y; // y坐标
     protected int width;
     protected int height;
     protected BufferedImage image;   //图片
-    protected PhysicsEngine.Collider collider = null; // 是否允许碰撞检测，允许则在子类中设置collider
-
-    GameObject(ShootGame game) {
+    public PhysicsEngine.Collider collider = null; // 是否允许碰撞检测，允许则在子类中设置collider
+    
+    public GameObject(ShootGame game) {
         this.game = game;
     }
 

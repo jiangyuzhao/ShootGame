@@ -1,6 +1,9 @@
-package shootgame;
+package shootgame.gameobjects.projectiles;
 
-//import javax.annotation.Resource;
+import shootgame.*;
+import shootgame.gameobjects.GameObject;
+import shootgame.gameobjects.Projectile;
+import shootgame.gameobjects.enemies.Enemy;
 
 /**
  * 这是一种由玩家射出的最普通子弹
@@ -10,36 +13,21 @@ package shootgame;
 public class Bullet extends Projectile {
       
     /** 初始化数据 */  
+	
     public Bullet(ShootGame game, double x, double y){
         super(game);
 
         this.x = x;  
         this.y = y;  
-        this.image = ResourceManager.getImage("bullet");
+        this.image = ResourceManager.getImage("bullet0");
         this.width = this.image.getWidth();
         this.height = this.image.getHeight();
-
+        this.damage = 1;
         this.velocityY = -3;
 
         collider = new PhysicsEngine.BoxCollider(this, x, y, width, height);
     }
-
-    public Bullet(ShootGame game, double x, double y, boolean b){
-        super(game);
-
-        this.x = x;  
-        this.y = y;  
-        if(b) {
-            this.image = ResourceManager.getImage("bullet");
-            this.width = this.image.getWidth();
-            this.height = this.image.getHeight();
-        }
-
-        this.velocityY = -3;
-
-        collider = new PhysicsEngine.BoxCollider(this, x, y, width, height);
-    }
-
+    
     @Override
     public void update() {
         x += velocityX;
@@ -48,7 +36,12 @@ public class Bullet extends Projectile {
 
     @Override
     public void onCollision(GameObject other) {
-        if (other instanceof Enemy)
-            this.enabled = false;
+        if(other instanceof EnemyBullet){
+        	this.enabled = false;
+        }else if(other instanceof Enemy){
+        	this.enabled = false;
+        }else if(other instanceof EnemyMissile){
+        	this.enabled = false;
+        }
     }
 }

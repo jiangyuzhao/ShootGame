@@ -1,4 +1,6 @@
-package shootgame;
+package shootgame.panels;
+
+import shootgame.GameFrame;
 
 import java.awt.Graphics;
 
@@ -6,8 +8,6 @@ import javax.swing.JPanel;
 import javax.swing.JLabel;
 import java.awt.Font;
 import java.awt.Color;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -124,7 +124,6 @@ public class Start extends JPanel {
 	}
 	@Override
 	public void paint(Graphics g) {
-		g.drawImage(ShootGame.start, 0, 0, null);
 		super.paint(g);
 	}
 }

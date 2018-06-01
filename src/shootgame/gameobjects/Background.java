@@ -1,4 +1,8 @@
-package shootgame;
+package shootgame.gameobjects;
+
+import shootgame.ResourceManager;
+import shootgame.ShootGame;
+import shootgame.gameobjects.GameObject;
 
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;

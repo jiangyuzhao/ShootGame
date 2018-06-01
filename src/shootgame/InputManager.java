@@ -24,7 +24,7 @@ public class InputManager {
     /**
      * 处理的输入的类型，以后可以再拓展，例如技能按键，特殊攻击按键等等
      */
-    enum Key {
+    public enum Key {
         LEFT("Left", KeyEvent.VK_LEFT),
         RIGHT("Right", KeyEvent.VK_RIGHT),
         UP("Up", KeyEvent.VK_UP),

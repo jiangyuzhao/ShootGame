@@ -1,4 +1,7 @@
-package shootgame;
+package shootgame.panels;
+
+import shootgame.GameFrame;
+import shootgame.ScoreBoard;
 
 import java.awt.Graphics;
 
@@ -14,7 +17,6 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -107,7 +109,6 @@ public class Over extends JPanel {
 	}
 	@Override
 	public void paint(Graphics g) {
-		g.drawImage(ShootGame.gameover, 0, 0, null);
 		super.paint(g);
 	}
 	

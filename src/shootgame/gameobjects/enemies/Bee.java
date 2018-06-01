@@ -1,4 +1,8 @@
-package shootgame;
+package shootgame.gameobjects.enemies;
+
+import shootgame.gameobjects.GameObject;
+import shootgame.ResourceManager;
+import shootgame.ShootGame;
 
 import java.util.Random;
 

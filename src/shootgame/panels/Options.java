@@ -1,4 +1,6 @@
-package shootgame;
+package shootgame.panels;
+
+import shootgame.GameFrame;
 
 import javax.swing.JPanel;
 import javax.swing.JLabel;

@@ -1,11 +1,12 @@
-package shootgame;
+package shootgame.panels;
+
+import shootgame.GameFrame;
 
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.ScrollPane;
 import javax.swing.JTextField;
 import javax.swing.JScrollPane;
 import java.awt.event.MouseAdapter;
