@@ -40,6 +40,8 @@ public class ShootGame extends JPanel {
     private static final int GAME_OVER = 3;
 
     private int state;
+    public boolean bossDied = false;
+    public long bossDiedTime;
     public int score = 0; // 得分
 
     private Timer timer; // 定时器
@@ -265,6 +267,7 @@ public class ShootGame extends JPanel {
         score = 0; // 清空成绩
         inputManager.clearInput();
         state = START; // 状态设置为启动
+        bossDied = false;
     }
     /**
      * 本类向Start类暴露一个修改状态为Start的setter函数（为了可以重新启动游戏）
@@ -317,7 +320,7 @@ public class ShootGame extends JPanel {
     }
 
     private boolean isGameOver() {
-        return player.getLife() <= 0;
+        return player.getLife() <= 0 || (bossDied && currentTime - bossDiedTime >= 3000);
     }
 
     private void printInfo() {

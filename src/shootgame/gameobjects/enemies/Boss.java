@@ -93,6 +93,8 @@ public class Boss extends Enemy {
 			this.enabled=false;
 			game.score += 100;
 			game.addProjectiles(explode(x, y, width, height));
+			game.bossDied = true;
+			game.bossDiedTime = game.currentTime;
 		}
 	}
     

@@ -28,11 +28,6 @@ public class SceneManager {
      * 做场景设计的后续可以加以修改
      */
     void update() {
-        /*
-         * 按理说敌人的位置也应该在这里控制生成的
-         * 但是这部分代码目前在敌人类里
-         * 请写敌人代码的同学决定应该如何做
-         */
     	if(isFinal)return;
         Enemy[] enemies = new Enemy[1];
         timeToSeeBoss--;
