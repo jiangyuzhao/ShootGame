@@ -268,6 +268,7 @@ public class ShootGame extends JPanel {
         inputManager.clearInput();
         state = START; // 状态设置为启动
         bossDied = false;
+        sceneManager.init();
     }
     /**
      * 本类向Start类暴露一个修改状态为Start的setter函数（为了可以重新启动游戏）

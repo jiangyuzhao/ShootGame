@@ -70,9 +70,11 @@ public class Boss extends Enemy {
 	/**发射导弹*/
     private EnemyMissile[] shootMissile(){
 		 int xStep = width / 4;    
-	     int yStep = 104;  
-	     EnemyMissile[] enemyMissiles = new EnemyMissile[1];
+	     int yStep = 52;
+	     EnemyMissile[] enemyMissiles = new EnemyMissile[3];
 	     enemyMissiles[0] = new EnemyMissile(game, x + 2*xStep,y+yStep);
+		 enemyMissiles[1] = new EnemyMissile(game, x + 3*xStep,y+yStep*2);
+		 enemyMissiles[2] = new EnemyMissile(game, x + 2*xStep,y+yStep*3);
 	     return enemyMissiles;
 	}
     
