@@ -4,9 +4,7 @@ import shootgame.*;
 import shootgame.gameobjects.GameObject;
 import shootgame.gameobjects.Player;
 import shootgame.gameobjects.Projectile;
-import shootgame.gameobjects.projectiles.Explosion;
-import shootgame.gameobjects.projectiles.LargeExplosion;
-import shootgame.gameobjects.projectiles.EnemyMissile;
+import shootgame.gameobjects.projectiles.*;
 
 import java.awt.*;
 import java.util.Random;
@@ -81,10 +79,13 @@ public class Boss extends Enemy {
     @Override
     public void onCollision(GameObject other) {
 		
-		if (other instanceof Projectile) {//被子弹射到，由于图片原因，将y位置向后偏移，不然还没碰到物体就爆炸
+		if (other instanceof Bullet) {//被子弹射到，由于图片原因，将y位置向后偏移，不然还没碰到物体就爆炸
 			game.addProjectiles(explode(other.x,other.y-10));
 			this.life -= ((Projectile) other).getDamage();
-		}else if(other instanceof Player) {
+		} else if (other instanceof ForwardFire) {
+			game.addProjectiles(explode(other.x,other.y-10));
+			this.life -= ((Projectile) other).getDamage();
+		} else if(other instanceof Player) {
 			game.addProjectiles(explode(other.x, other.y));
 			this.life--;
 		}

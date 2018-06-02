@@ -164,15 +164,17 @@ public class ShootGame extends JPanel {
 
         y = HEIGHT - 45;
         if (player.getRowShootEnergy() < player.ROW_SHOOT_CHARGE_TIME) {
-            g.drawString("ROW SHOOT: " + player.getRowShootEnergy(), x, y);
+            g.drawString("ROW SHOOT(Z): " +
+                    player.getRowShootEnergy() * 100 / player.ROW_SHOOT_CHARGE_TIME + "%", x, y);
         } else {
-            g.drawString("ROW SHOOT: READY!!!", x, y);
+            g.drawString("ROW SHOOT(Z): READY!!!", x, y);
         }
         y -= 20;
         if (player.getForwardExplosionEnergy() < player.FORWARD_FIRE_CHARGE_TIME) {
-            g.drawString("FORWARD FIRE: " + player.getForwardExplosionEnergy(), x, y);
+            g.drawString("FORWARD FIRE(X): " + player
+                    .getForwardExplosionEnergy() * 100 / player.FORWARD_FIRE_CHARGE_TIME + "%", x, y);
         } else {
-            g.drawString("FORWARD FIRE: READY!!!", x, y);
+            g.drawString("FORWARD FIRE(X): READY!!!", x, y);
         }
     }
 
