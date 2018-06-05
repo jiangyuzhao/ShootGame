@@ -39,6 +39,9 @@ public class ShootGame extends JPanel {
     private static final int PAUSE = 2;  
     private static final int GAME_OVER = 3;
 
+    private static final int MAX_ENEMY = 30;
+    private static final int MAX_PROJECTILE = 300;
+
     private int state;
     public boolean bossDied = false;
     public long bossDiedTime;
@@ -61,9 +64,9 @@ public class ShootGame extends JPanel {
     // 负责处理物理
     public PhysicsEngine physicsEngine = new PhysicsEngine(this);
 
-    public Projectile[] projectiles = new Projectile[1000]; // 子弹数组
+    public Projectile[] projectiles = new Projectile[MAX_PROJECTILE]; // 子弹数组
     public int projectilesLastEmptyPosition; //记录数组留空的位置
-    public Enemy[] enemies = new Enemy[100]; // 敌人数组
+    public Enemy[] enemies = new Enemy[MAX_ENEMY]; // 敌人数组
     public int enemiesLastEmptyPosition; //记录敌人数组留空的位置
     public Player player = new Player(this, 0); // 玩家
 
@@ -261,8 +264,8 @@ public class ShootGame extends JPanel {
      * 对所有game over之后进行的操作的包装函数
      */
     public void reInit() {
-    	enemies = new Enemy[100]; // 清空飞行物
-        projectiles = new Projectile[1000]; // 清空子弹
+    	enemies = new Enemy[MAX_ENEMY]; // 清空飞行物
+        projectiles = new Projectile[MAX_PROJECTILE]; // 清空子弹
         player = new Player(ShootGame.this, 0); // 重新创建英雄机
         score = 0; // 清空成绩
         inputManager.clearInput();
