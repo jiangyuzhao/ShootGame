@@ -34,7 +34,6 @@
 ### 敌人设计
 
 #### 敌人一：
-<img width="150" height="150" src="https://github.com/pkupxl/ShootGame/blob/master/resources/enemy1.png"/>
 
 HP：一枪就死
 
@@ -47,8 +46,6 @@ HP：一枪就死
 伤害方式：碰到玩家自爆
 
 #### 敌人二：
-<img width="150" height="150" src="https://github.com/pkupxl/ShootGame/blob/master/resources/enemy2.png"/>
-
 
 HP：5（血量适中）
 
@@ -62,7 +59,6 @@ HP：5（血量适中）
 
 #### 敌人三：
 
-<img width="150" height="150" src="https://github.com/pkupxl/ShootGame/blob/master/resources/enemy3.png"/>
 HP：15（比较高)
 
 武器：既有子弹又会射导弹
@@ -74,7 +70,7 @@ HP：15（比较高)
 不流动，只会在画面上方左右晃，碰到玩家什么都不会发生
 
 #### BOSS
-<img width="150" height="150" src="https://github.com/pkupxl/ShootGame/blob/master/resources/boss.png"/>
+
 HP：非常高
 
 技能：和玩家一样
@@ -96,12 +92,16 @@ BOSS仅在上半屏幕活动
 ### 玩家 
 
 敌人一
+<img width="150" height="150" src="https://github.com/pkupxl/ShootGame/blob/master/resources/enemy1.png"/>
 
 敌人二
+<img width="150" height="150" src="https://github.com/pkupxl/ShootGame/blob/master/resources/enemy2.png"/>
 
 敌人三
+<img width="150" height="150" src="https://github.com/pkupxl/ShootGame/blob/master/resources/enemy3.png"/>
 
 BOSS
+<img width="150" height="150" src="https://github.com/pkupxl/ShootGame/blob/master/resources/boss.png"/>
 
 ### 精灵动画
 
