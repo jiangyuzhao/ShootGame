@@ -262,7 +262,7 @@ private EnemyMissile[] shootMissile(){...}
 
 HP：非常高
 
-技能：会发射导弹,导弹会自动最终玩家一段时间
+技能：会发射导弹,导弹会自动追踪玩家一段时间
 
 ``` java
 private EnemyMissile[] shootMissile(){...}
