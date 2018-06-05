@@ -121,19 +121,23 @@ timer.schedule(new TimerTask() {
 
 技能一：射出大范围一屏幕子弹（范围大伤害低）
 
-<div style="float:left;border:solid 1px 000;margin:2px;"><img width="20" height="20"
-src="https://github.com/pkupxl/ShootGame/blob/master/resources/bullet.png"/><div>
-<div style="float:left;border:solid 1px 000;margin:2px;"><img width="20" height="20" src="https://github.com/pkupxl/ShootGame/blob/master/resources/bullet.png"/><div>
-<div style="float:left;border:solid 1px 000;margin:2px;"><img width="20" height="20" src="https://github.com/pkupxl/ShootGame/blob/master/resources/bullet.png"/><div>
-<div style="float:left;border:solid 1px 000;margin:2px;"><img width="20" height="20" src="https://github.com/pkupxl/ShootGame/blob/master/resources/bullet.png"/><div>
-<div style="float:left;border:solid 1px 000;margin:2px;"><img width="20" height="20" src="https://github.com/pkupxl/ShootGame/blob/master/resources/bullet.png"/><div>
-<div style="float:left;border:solid 1px 000;margin:2px;"><img width="20" height="20" src="https://github.com/pkupxl/ShootGame/blob/master/resources/bullet.png"/><div>
+<div style="float:left;border:solid 1px 000;margin:2px;">
+<img width="20" height="20" src="https://github.com/pkupxl/ShootGame/blob/master/resources/bullet2.png"/>
+<img width="20" height="20" src="https://github.com/pkupxl/ShootGame/blob/master/resources/bullet2.png"/>
+<img width="20" height="20" src="https://github.com/pkupxl/ShootGame/blob/master/resources/bullet2.png"/>
+<img width="20" height="20" src="https://github.com/pkupxl/ShootGame/blob/master/resources/bullet2.png"/>
+<img width="20" height="20" src="https://github.com/pkupxl/ShootGame/blob/master/resources/bullet2.png"/>
+<img width="20" height="20" src="https://github.com/pkupxl/ShootGame/blob/master/resources/bullet2.png"/>
+<img width="20" height="20" src="https://github.com/pkupxl/ShootGame/blob/master/resources/bullet2.png"/>
+<img width="20" height="20" src="https://github.com/pkupxl/ShootGame/blob/master/resources/bullet2.png"/>
+<div>
 
 技能二：发射一个持续高伤害的火球（范围小伤害高）
 
 <img width="20" height="20" src="https://github.com/pkupxl/ShootGame/blob/master/resources/explosion3.png"/>
 
 ### 敌人设计：
+
 主要想通过对武器,速度,体积等因素的不同设置，设计出几种不同种类的敌人，使得游戏场景更加丰富一些。
 
 #### 敌人一：
