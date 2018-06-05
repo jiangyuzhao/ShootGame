@@ -233,7 +233,7 @@ private EnemyBullet[] shootBullet(){...}
 
 碰到玩家也会自爆并赋予伤害
 
-#### 敌人三：
+#### 敌人三(Enemy3)：
 
 <img width="150" height="150" src="https://github.com/pkupxl/ShootGame/blob/master/resources/enemy3.png"/>
 
@@ -241,15 +241,15 @@ HP：15（比较高)
 
 武器：既有子弹又会射导弹
 
+<div style="float:left;border:solid 1px 000;margin:2px;">
+<img width="10" height="20" src="https://github.com/pkupxl/ShootGame/blob/master/resources/bullet3.png"/>  子弹
+<img width="12" height="25" src="https://github.com/pkupxl/ShootGame/blob/master/resources/missile.png"/>  导弹
+<div>
+    
 ``` java
 private EnemyBullet[] shootBullet(){...}
 private EnemyMissile[] shootMissile(){...}
 ```
-<div style="float:left;border:solid 1px 000;margin:2px;">
-<img width="10" height="20" src="https://github.com/pkupxl/ShootGame/blob/master/resources/bullet3.png"/>子弹
-<img width="12" height="25" src="https://github.com/pkupxl/ShootGame/blob/master/resources/missile.png"/>导弹
-<div>
-
 体积：大
 
 速度：慢
@@ -262,13 +262,20 @@ private EnemyMissile[] shootMissile(){...}
 
 HP：非常高
 
-技能：和玩家一样
+技能：会发射导弹
 
-操作：非常灵活，会根据不同情况做出反应
+``` java
+private EnemyMissile[] shootMissile(){...}
+```
+
+操作：随机左右移动
 
 BOSS仅在上半屏幕活动
 
+
 #### 投射物
+
+<div><img width="12" height="25" src="https://github.com/pkupxl/ShootGame/blob/master/resources/missile.png"/>  导弹<div>
 
 #### 敌人管理器
 
@@ -281,10 +288,11 @@ BOSS仅在上半屏幕活动
 <img width="150" height="150" src="https://github.com/pkupxl/ShootGame/blob/master/resources/explosion2.png"/>
 
 1. 子弹命中时的爆炸效果（小）
-2. 敌人死亡时的爆炸效果（大）
-
 ``` java
-private EnemyBullet[] shootBullet(){...}
+private Explosion[] explode(double x, double y){...}
+```
+2. 敌人死亡时的爆炸效果（大）
+``` java
 private LargeExplosion[] explode(double x, double y, int width, int height) {...}
 ```
 
