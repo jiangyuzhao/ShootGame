@@ -31,15 +31,11 @@ public class Help extends JPanel {
 		add(scrollPane);
 		
 		textField = new JTextField();
-		textField.setFont(new Font("Lucida Grande", Font.PLAIN, 97));
+		textField.setFont(new Font("Lucida Grande", Font.PLAIN, 24));
 		scrollPane.setViewportView(textField);
 		textField.setColumns(10);
 		textField.setEditable(false);
-		textField.setText("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
-				+ "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
-				+ "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
-				+ "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
-				+ "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+		textField.setText("按↑↓←→键移动\r\n使用Z和X释放技能");
 		
 		JLabel lblReturn = new JLabel("返回");
 		lblReturn.addMouseListener(new MouseAdapter() {

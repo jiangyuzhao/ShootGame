@@ -19,8 +19,8 @@ public class Enemy1 extends Enemy{
 	
 	public Enemy1(ShootGame game) {
 		super(game);
-		velocityX = 5;
-		velocityY = 5;
+		velocityX = 3;
+		velocityY = 3;
 		this.image = ResourceManager.getImage("enemy1");
 		width = 50;	
 		height = 50;

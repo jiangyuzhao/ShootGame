@@ -4,9 +4,7 @@ import shootgame.*;
 import shootgame.gameobjects.GameObject;
 import shootgame.gameobjects.Player;
 import shootgame.gameobjects.Projectile;
-import shootgame.gameobjects.projectiles.Explosion;
-import shootgame.gameobjects.projectiles.LargeExplosion;
-import shootgame.gameobjects.projectiles.EnemyMissile;
+import shootgame.gameobjects.projectiles.*;
 
 import java.awt.*;
 import java.util.Random;
@@ -72,19 +70,24 @@ public class Boss extends Enemy {
 	/**发射导弹*/
     private EnemyMissile[] shootMissile(){
 		 int xStep = width / 4;    
-	     int yStep = 104;  
-	     EnemyMissile[] enemyMissiles = new EnemyMissile[1];
+	     int yStep = 52;
+	     EnemyMissile[] enemyMissiles = new EnemyMissile[3];
 	     enemyMissiles[0] = new EnemyMissile(game, x + 2*xStep,y+yStep);
+		 enemyMissiles[1] = new EnemyMissile(game, x + 3*xStep,y+yStep*2);
+		 enemyMissiles[2] = new EnemyMissile(game, x + 2*xStep,y+yStep*3);
 	     return enemyMissiles;
 	}
     
     @Override
     public void onCollision(GameObject other) {
 		
-		if (other instanceof Projectile) {//被子弹射到，由于图片原因，将y位置向后偏移，不然还没碰到物体就爆炸
+		if (other instanceof Bullet) {//被子弹射到，由于图片原因，将y位置向后偏移，不然还没碰到物体就爆炸
 			game.addProjectiles(explode(other.x,other.y-10));
 			this.life -= ((Projectile) other).getDamage();
-		}else if(other instanceof Player) {
+		} else if (other instanceof ForwardFire) {
+			//game.addProjectiles(explode(other.x,other.y-10));
+			this.life -= ((Projectile) other).getDamage();
+		} else if(other instanceof Player) {
 			game.addProjectiles(explode(other.x, other.y));
 			this.life--;
 		}
@@ -92,6 +95,8 @@ public class Boss extends Enemy {
 			this.enabled=false;
 			game.score += 100;
 			game.addProjectiles(explode(x, y, width, height));
+			game.bossDied = true;
+			game.bossDiedTime = game.currentTime;
 		}
 	}
     

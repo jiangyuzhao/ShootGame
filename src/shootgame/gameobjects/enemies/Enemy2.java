@@ -18,8 +18,8 @@ public class Enemy2 extends Enemy{
 	private long lastShotTime = 0;
 	public Enemy2(ShootGame game) {
 		super(game);
-		velocityX = 2;
-		velocityY = 2;
+		velocityX = 1;
+		velocityY = 1;
 		this.image = ResourceManager.getImage("enemy2");
 		width = 100;
 		height =100;

@@ -22,7 +22,7 @@ public class GameFrame extends JFrame {
 	 * 在构建函数中进行Frame的设置操作
 	 */
 	public GameFrame() {
-		super("Come on! Avangers!");
+		super("Shoot! Game");
 		frame = this;
 		setSize(ShootGame.WIDTH, ShootGame.HEIGHT); // 设置大小
         requestFocus(); // 让键盘事件有效
