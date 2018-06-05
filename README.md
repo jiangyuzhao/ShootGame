@@ -122,7 +122,7 @@ BOSS
 
 ![](architecture.png)
 
-设计游戏的底层架构是一件非常具有挑战性的事情，因为游戏各个模块之间关联性非常大，稍加不慎代码就会乱成一团。此外，游戏又经常需要往各种五花八门的方向扩展，这就使得我们设计时要非常小心。如果可扩展性太强，则代码难以阅读、维护和编写；但是要是太弱，又使得代码不灵活，新需求出现时常常需要重构。因此我必须寻找一个适合我们需求的平衡点。考虑我们游戏的实现需求，我们将游戏划分成上图所示的模块。每个模块可以由一个人或多个人维护，模块与模块之间耦合度低，可以由不同人完成。这样我们就能很好地完成分工。
+考虑我们游戏的实现需求，我们将游戏划分成上图所示的模块。每个模块可以由一个人或多个人维护，模块与模块之间耦合度低，可以由不同人完成。这样我们就能很好地完成分工。游戏分为以下部分：核心类`ShootGame`，开始和结束游戏的窗体类，还有游戏上层场景。在场景中存在各种各样的`GameObject`来实现整个游戏的功能。游戏核心类`ShootGame`还负责和其他类进行通讯。
 
 ### 游戏物件设计
 
@@ -207,9 +207,61 @@ timer.schedule(new TimerTask() {
 
 #### 如何灵敏地处理键盘输入
 
-Java自带的`KeyAdapter`的实时性非常差。
+Java自带的`KeyListener/KeyAdapter`的实时性非常差。如果直接使用`KeyAdapter`中的`KeyPressed`等方法，大概只能每0.几秒响应一次，完全无法做到流畅的飞机控制。
+
+因此，为了实现游戏的即时性，我们必须使用更加底层的API，自己设计另一种模式的用户输入才行。因此，我们设计了一个`InputManager类来处理用户输入。`在`JFrame`中，我们可以自定义其`InputMap`和`ActionMap`，对每一种按键定义一个`KeyStroke`，将其绑定到`InputMap`和`ActionMap`上，然后在`InputManager`类中实现一张表，存储当前帧被监听的按键是被按下了还是被松开了。这样，我们就可以在游戏主循环中直接调用`InputManager`的接口获取一个按键是否被按下的信息，实现非常流畅的键盘响应。这种输入线程只负责维护一张表，在游戏主线程中处理用户输入的方式在游戏中非常常用。
+
+伪代码如下：
+
+``` java
+public class InputManager {
+    public enum Key {
+        LEFT("Left", KeyEvent.VK_LEFT),
+        RIGHT("Right", KeyEvent.VK_RIGHT),
+        UP("Up", KeyEvent.VK_UP),
+        DOWN("Down", KeyEvent.VK_DOWN),
+        // ... More Key Bindings and Methods
+    }
+    private Map<Key, Boolean> dirMap = new EnumMap<>(Key.class);
+    public boolean getInput(Key key) { 
+        // Access dirMap
+    }
+    private void setKeyBindings() {
+        // Bind DirAction with KeyStroke
+    }
+    private class DirAction extends AbstractAction {
+        @Override
+        public void actionPerformed(ActionEvent evt) {
+            // Update dirMap using event info
+        }
+    }
+}
+```
 
 #### 如何很好地管理大量图片资源
+
+我们在编程的过程中会涉及到大量的图片文件，如何组织这些图片文件是个很大的问题。为了打包成`jar`文件的时的美观，我们必须将图片文件打包进`jar`文件中。为了实现这一点，必须使用`class.getResource(URL url)`方法。
+
+此外，为了让所有人都可以方便地添加、删除各种图片，我们设计了一个`ResourceManager`类，在这个类中可以包装一个接口，在程序开始时预读取所有图片文件，每个图片文件标记一个唯一的`tag`，各个`GameObject`获取资源时直接根据`tag`读取指针即可。如果`GameObject`请求不到资源，可以返回一个占位符图片而不至于使得整个游戏因为缺失资源而崩溃。
+
+伪代码如下
+
+```java
+public class ResourceManager {
+    private static HashMap<String, BufferedImage> images = new HashMap<>();
+    static {
+        imgA = ImageIO.read....;
+        images.put("some tag", imgA);
+        ....
+    }
+    public static BufferedImage getImage(String tag) {
+        BufferedImage image = images.get(tag);
+        if (image == null)
+            return images.get("nothing");
+        return image;
+    }
+}
+```
 
 ### 参考资料
 
