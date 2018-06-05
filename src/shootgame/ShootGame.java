@@ -1,13 +1,17 @@
 package shootgame;
 
-import java.awt.Font;  
+import shootgame.gameobjects.Background;
+import shootgame.gameobjects.GameObject;
+import shootgame.gameobjects.Player;
+import shootgame.gameobjects.Projectile;
+import shootgame.gameobjects.enemies.Enemy;
+import shootgame.panels.Over;
+
+import java.awt.Font;
 import java.awt.Color;  
 import java.awt.Graphics;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.image.BufferedImage;
 
 import javax.swing.*;
 import java.lang.*;
@@ -35,18 +39,12 @@ public class ShootGame extends JPanel {
     private static final int PAUSE = 2;  
     private static final int GAME_OVER = 3;
 
-    // 资源图片
-    public static BufferedImage start;
-    public static BufferedImage pause;
-    public static BufferedImage gameover;
-
-    static {
-        start = ResourceManager.getImage("start");
-        pause = ResourceManager.getImage("pause");
-        gameover = ResourceManager.getImage("gameover");
-    }
+    private static final int MAX_ENEMY = 30;
+    private static final int MAX_PROJECTILE = 300;
 
     private int state;
+    public boolean bossDied = false;
+    public long bossDiedTime;
     public int score = 0; // 得分
 
     private Timer timer; // 定时器
@@ -66,9 +64,9 @@ public class ShootGame extends JPanel {
     // 负责处理物理
     public PhysicsEngine physicsEngine = new PhysicsEngine(this);
 
-    public Projectile[] projectiles = new Projectile[1000]; // 子弹数组
+    public Projectile[] projectiles = new Projectile[MAX_PROJECTILE]; // 子弹数组
     public int projectilesLastEmptyPosition; //记录数组留空的位置
-    public Enemy[] enemies = new Enemy[100]; // 敌人数组
+    public Enemy[] enemies = new Enemy[MAX_ENEMY]; // 敌人数组
     public int enemiesLastEmptyPosition; //记录敌人数组留空的位置
     public Player player = new Player(this, 0); // 玩家
 
@@ -143,7 +141,6 @@ public class ShootGame extends JPanel {
     /** 画 */  
     @Override  
     public void paint(Graphics g) {
-        //super.paint(g); ?
 
         background.render(g);
 
@@ -156,35 +153,34 @@ public class ShootGame extends JPanel {
         }
         player.render(g);
 
-        paintScore(g); // 画分数  
-        paintState(g); // 画游戏状态  
+        paintText(g); //
     }  
 
-    /** 画分数 */  
-    private void paintScore(Graphics g) {
+    /** 画必要的文字信息 */
+    private void paintText(Graphics g) {
         int x = 10; // x坐标  
         int y = 25; // y坐标  
         Font font = new Font(Font.SANS_SERIF, Font.BOLD, 22); // 字体  
         g.setColor(new Color(0xFF0000));  
         g.setFont(font); // 设置字体  
         g.drawString("SCORE:" + score, x, y); // 画分数  
-        y=y+20; // y坐标增20  
+        y += 20; // y坐标增20
         g.drawString("LIFE:" + player.getLife(), x, y); // 画命
-    }  
-  
-    /** 画游戏状态 */  
-    private void paintState(Graphics g) {
-        switch (state) {  
-        case START: // 启动状态  
-            g.drawImage(start, 0, 0, null);  
-            break;  
-        case PAUSE: // 暂停状态  
-            g.drawImage(pause, 0, 0, null);  
-            break;  
-        case GAME_OVER: // 游戏终止状态  
-            g.drawImage(gameover, 0, 0, null);  
-            break;  
-        }  
+
+        y = HEIGHT - 45;
+        if (player.getRowShootEnergy() < player.ROW_SHOOT_CHARGE_TIME) {
+            g.drawString("ROW SHOOT(Z): " +
+                    player.getRowShootEnergy() * 100 / player.ROW_SHOOT_CHARGE_TIME + "%", x, y);
+        } else {
+            g.drawString("ROW SHOOT(Z): READY!!!", x, y);
+        }
+        y -= 20;
+        if (player.getForwardExplosionEnergy() < player.FORWARD_FIRE_CHARGE_TIME) {
+            g.drawString("FORWARD FIRE(X): " + player
+                    .getForwardExplosionEnergy() * 100 / player.FORWARD_FIRE_CHARGE_TIME + "%", x, y);
+        } else {
+            g.drawString("FORWARD FIRE(X): READY!!!", x, y);
+        }
     }
 
     /**
@@ -268,12 +264,14 @@ public class ShootGame extends JPanel {
      * 对所有game over之后进行的操作的包装函数
      */
     public void reInit() {
-    	enemies = new Enemy[100]; // 清空飞行物
-        projectiles = new Projectile[1000]; // 清空子弹
+    	enemies = new Enemy[MAX_ENEMY]; // 清空飞行物
+        projectiles = new Projectile[MAX_PROJECTILE]; // 清空子弹
         player = new Player(ShootGame.this, 0); // 重新创建英雄机
         score = 0; // 清空成绩
         inputManager.clearInput();
         state = START; // 状态设置为启动
+        bossDied = false;
+        sceneManager.init();
     }
     /**
      * 本类向Start类暴露一个修改状态为Start的setter函数（为了可以重新启动游戏）
@@ -326,7 +324,7 @@ public class ShootGame extends JPanel {
     }
 
     private boolean isGameOver() {
-        return player.getLife() <= 0;
+        return player.getLife() <= 0 || (bossDied && currentTime - bossDiedTime >= 3000);
     }
 
     private void printInfo() {

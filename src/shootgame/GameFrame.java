@@ -1,14 +1,13 @@
 package shootgame;
 
-import java.awt.BorderLayout;
+import shootgame.panels.*;
+
 import java.awt.CardLayout;
-import java.awt.EventQueue;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
-import javax.swing.border.EmptyBorder;
 
 public class GameFrame extends JFrame {
 	//暴露这两个组件供切换Panel时使用
@@ -23,7 +22,7 @@ public class GameFrame extends JFrame {
 	 * 在构建函数中进行Frame的设置操作
 	 */
 	public GameFrame() {
-		super("Come on! Avangers!");
+		super("Shoot! Game");
 		frame = this;
 		setSize(ShootGame.WIDTH, ShootGame.HEIGHT); // 设置大小
         requestFocus(); // 让键盘事件有效

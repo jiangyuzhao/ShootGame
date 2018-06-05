@@ -1,5 +1,7 @@
 package shootgame;
 
+import shootgame.gameobjects.GameObject;
+
 import java.util.ArrayList;
 
 /**

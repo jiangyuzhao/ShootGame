@@ -1,4 +1,6 @@
 package shootgame;
+import shootgame.gameobjects.enemies.*;
+
 import java.util.Random;
 /**
  * 控制整个场景中敌人的生成，做这块的同学可以根据游戏类信息，设计成更多丰富多彩的敌人生成方式
@@ -19,18 +21,19 @@ public class SceneManager {
      * 干一些控制敌人生成一类的事情
      */
     boolean isFinal=false;//是否到了和boss对决的时候
+
+    public void init() {
+        isFinal = false;
+        lastSpawnedTime = 0;
+        timeToSeeBoss = 5000;
+    }
     
     /*
      * 目前先随机生成enemy1,enemy2,enemy3
      * 一定时间后生成boss，不再生成其他敌人
      * 做场景设计的后续可以加以修改
      */
-    void update() {
-        /*
-         * 按理说敌人的位置也应该在这里控制生成的
-         * 但是这部分代码目前在敌人类里
-         * 请写敌人代码的同学决定应该如何做
-         */
+    public void update() {
     	if(isFinal)return;
         Enemy[] enemies = new Enemy[1];
         timeToSeeBoss--;

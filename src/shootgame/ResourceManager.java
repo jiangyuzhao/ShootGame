@@ -29,6 +29,15 @@ public class ResourceManager {
         try {
             BufferedImage nothing = ImageIO.read(ShootGame.class.getResource("/resources/nothing.png"));
             images.put("nothing", nothing);
+            
+            BufferedImage startBackground = ImageIO.read(ShootGame.class.getResource("/resources/startBackground.png"));
+            images.put("startBackground", startBackground);
+            
+            BufferedImage pauseBackground = ImageIO.read(ShootGame.class.getResource("/resources/pauseBackground.png"));
+            images.put("pauseBackground", pauseBackground);
+            
+            BufferedImage overBackground = ImageIO.read(ShootGame.class.getResource("/resources/overBackground.png"));
+            images.put("overBackground", overBackground);
 
             BufferedImage background1 = ImageIO.read(ShootGame.class.getResource("/resources/background1.png"));
             images.put("background1", background1);
