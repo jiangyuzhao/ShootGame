@@ -262,7 +262,7 @@ private EnemyMissile[] shootMissile(){...}
 
 HP：非常高
 
-技能：会发射导弹
+技能：会发射导弹,导弹会自动最终玩家一段时间
 
 ``` java
 private EnemyMissile[] shootMissile(){...}
@@ -275,8 +275,14 @@ BOSS仅在上半屏幕活动
 
 #### 投射物
 
-<div><img width="12" height="25" src="https://github.com/pkupxl/ShootGame/blob/master/resources/missile.png"/>  导弹<div>
-
+<div style="float:left;border:solid 1px 000;margin:2px;">
+<img width="12" height="25" src="https://github.com/pkupxl/ShootGame/blob/master/resources/bullet2.png"/>  子弹
+<img width="12" height="25" src="https://github.com/pkupxl/ShootGame/blob/master/resources/bullet3.png"/>  敌人子弹
+<img width="12" height="25" src="https://github.com/pkupxl/ShootGame/blob/master/resources/missile.png"/>  导弹
+<img width="12" height="25" src="https://github.com/pkupxl/ShootGame/blob/master/resources/explosion3.png"/>  火球
+<div>
+以及以上的一些组合,比如精灵动画的爆炸效果,一行子弹等等
+    
 #### 敌人管理器
 
 怎么控制敌人出来
@@ -318,6 +324,8 @@ Java自带的`KeyAdapter`的实时性非常差。
 #### 如何初始化射出的子弹的位置,使得效果更加逼真
 
 java图片的位置设置要手动设置,如果设置得不合理的话显示效果比较差
+
+#### 如何处理精灵动画,更好显示爆炸效果
 
 ### 参考资料
 
