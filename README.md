@@ -34,7 +34,7 @@
 ### 敌人设计
 
 #### 敌人一：
-![](https://github.com/pkupxl/ShootGame/blob/master/resources/enemy1.png)
+<img width="150" height="150" src="https://github.com/pkupxl/ShootGame/blob/master/resources/enemy1.png"/>
 
 HP：一枪就死
 
