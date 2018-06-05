@@ -85,7 +85,7 @@ public class Boss extends Enemy {
 			game.addProjectiles(explode(other.x,other.y-10));
 			this.life -= ((Projectile) other).getDamage();
 		} else if (other instanceof ForwardFire) {
-			game.addProjectiles(explode(other.x,other.y-10));
+			//game.addProjectiles(explode(other.x,other.y-10));
 			this.life -= ((Projectile) other).getDamage();
 		} else if(other instanceof Player) {
 			game.addProjectiles(explode(other.x, other.y));
