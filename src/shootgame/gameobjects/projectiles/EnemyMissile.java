@@ -21,23 +21,33 @@ public class EnemyMissile extends Projectile {
         this.image = ResourceManager.getImage("missile");
         this.width = 20;
         this.height = 40;
-        this.damage = 2;
+		this.damage = 2;
         collider = new PhysicsEngine.BoxCollider(this, x, y, width, height);
 
         // 让导弹向着玩家方向前进
         double playerX = game.player.x;
         double playerY = game.player.y;
-        double vx = playerX - this.x;
-        double vy = playerY - this.y;
-        double len = Math.sqrt(vx*vx + vy*vy);
-		vx = 3 * vx / len;
-		vy = 3 * vy / len;
-		this.velocityX = vx;
-		this.velocityY = vy;
+        // double vx = playerX - this.x;
+        // double vy = playerY - this.y;
+        // double len = Math.sqrt(vx*vx + vy*vy);
+		// vx = 3 * vx / len;
+		// vy = 3 * vy / len;
+		this.velocityX = 0;
+		this.velocityY = 3;
 	}
 	public void update() {
-		x += velocityX;
-	    y += velocityY;
+		double dx = (game.player.x - this.x);
+		double dy = (game.player.y - this.y);
+
+		if (dy > 0) {
+			dy += Math.abs(dx);
+			double len = Math.sqrt(dx * dx + dy * dy);
+			this.velocityX = 3 * dx / len;
+			this.velocityY = 3 * dy / len;
+		}
+
+		this.x += this.velocityX;
+	    this.y += this.velocityY;
 	}
 
 	@Override
