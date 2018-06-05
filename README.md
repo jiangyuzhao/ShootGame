@@ -25,15 +25,31 @@
 
 ### 玩家设计
 
-主武器：直线射击子弹
+<img width="150" height="150" src="https://github.com/pkupxl/ShootGame/blob/master/resources/player.png"/>
+
+主武器：直线射击的子弹
+
+<img width="150" height="150" src="https://github.com/pkupxl/ShootGame/blob/master/resources/bullet.png"/>
 
 技能一：射出大范围一屏幕子弹（范围大伤害低）
 
+<img width="150" height="150" src="https://github.com/pkupxl/ShootGame/blob/master/resources/bullet.png"/>
+<img width="150" height="150" src="https://github.com/pkupxl/ShootGame/blob/master/resources/bullet.png"/>
+<img width="150" height="150" src="https://github.com/pkupxl/ShootGame/blob/master/resources/bullet.png"/>
+<img width="150" height="150" src="https://github.com/pkupxl/ShootGame/blob/master/resources/bullet.png"/>
+<img width="150" height="150" src="https://github.com/pkupxl/ShootGame/blob/master/resources/bullet.png"/>
+<img width="150" height="150" src="https://github.com/pkupxl/ShootGame/blob/master/resources/bullet.png"/>
+<img width="150" height="150" src="https://github.com/pkupxl/ShootGame/blob/master/resources/bullet.png"/>
+
 技能二：发射一个持续高伤害的火球（范围小伤害高）
 
-### 敌人设计
+<img width="150" height="150" src="https://github.com/pkupxl/ShootGame/blob/master/resources/explosion3.png"/>
+
+### 敌人设计：
 
 #### 敌人一：
+
+<img width="150" height="150" src="https://github.com/pkupxl/ShootGame/blob/master/resources/enemy1.png"/>
 
 HP：一枪就死
 
@@ -43,9 +59,11 @@ HP：一枪就死
 
 速度：快
 
-伤害方式：碰到玩家自爆
+伤害方式：碰到玩家自爆并赋予伤害
 
 #### 敌人二：
+
+<img width="150" height="150" src="https://github.com/pkupxl/ShootGame/blob/master/resources/enemy2.png"/>
 
 HP：5（血量适中）
 
@@ -59,6 +77,8 @@ HP：5（血量适中）
 
 #### 敌人三：
 
+<img width="150" height="150" src="https://github.com/pkupxl/ShootGame/blob/master/resources/enemy3.png"/>
+
 HP：15（比较高)
 
 武器：既有子弹又会射导弹
@@ -71,6 +91,8 @@ HP：15（比较高)
 
 #### BOSS
 
+<img width="150" height="150" src="https://github.com/pkupxl/ShootGame/blob/master/resources/boss.png"/>
+
 HP：非常高
 
 技能：和玩家一样
@@ -81,27 +103,11 @@ BOSS仅在上半屏幕活动
 
 #### 投射物
 
-每个设计敌人和玩家的人设计自己的投射物类。
-
 #### 敌人管理器
 
 怎么控制敌人出来
 
 ## 游戏画面
-
-### 玩家 
-
-敌人一
-<img width="150" height="150" src="https://github.com/pkupxl/ShootGame/blob/master/resources/enemy1.png"/>
-
-敌人二
-<img width="150" height="150" src="https://github.com/pkupxl/ShootGame/blob/master/resources/enemy2.png"/>
-
-敌人三
-<img width="150" height="150" src="https://github.com/pkupxl/ShootGame/blob/master/resources/enemy3.png"/>
-
-BOSS
-<img width="150" height="150" src="https://github.com/pkupxl/ShootGame/blob/master/resources/boss.png"/>
 
 ### 精灵动画
 
