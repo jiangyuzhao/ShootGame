@@ -105,6 +105,8 @@ BOSS
 
 ### 精灵动画
 
+<img width="150" height="150" src="https://github.com/pkupxl/ShootGame/blob/master/resources/explosion2.png"/>
+
 1. 子弹命中时的爆炸效果（小）
 2. 敌人死亡时的爆炸效果（大）
 
@@ -214,6 +216,8 @@ timer.schedule(new TimerTask() {
 Java自带的`KeyAdapter`的实时性非常差。
 
 #### 如何很好地管理大量图片资源
+
+#### 如何初始化射出的子弹的位置,使得效果更加逼真
 
 ### 参考资料
 
