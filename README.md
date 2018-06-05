@@ -111,14 +111,71 @@ timer.schedule(new TimerTask() {
 
 ## 游戏机制
 
-### 玩家设计
+### 玩家设计:
 
 <img width="150" height="150" src="https://github.com/pkupxl/ShootGame/blob/master/resources/player.png"/>
 
-主武器：直线射击的子弹
+玩家主要通过键盘来控制上下左右的移动,并且会不断地发射主武器子弹,打击敌人并充能,同时根据充能情况通过键盘发射特殊技能.
+这部分主要在玩家的updata函数中调用inputManager类中的方法实现：
+
+``` java
+ @Override
+    public void update() {
+        //根据不同按键移动
+        if (game.inputManager.getInput(...)) ...
+        if (game.inputManager.getInput(...)) ...
+        ...
+        
+        // 技能充能
+        if (rowShootEnergy < ROW_SHOOT_CHARGE_TIME) ...
+        if (forwardFireEnergy < FORWARD_FIRE_CHARGE_TIME) ...
+        
+        /**按Z键发射一行子弹*/
+        if (game.inputManager.getInput(InputManager.Key.Z) && rowShootEnergy >= ROW_SHOOT_CHARGE_TIME) {
+        	game.addProjectiles(rowshoot());
+        	rowShootEnergy = 0;
+        }
+        
+        /**按X键喷火*/
+        if (game.inputManager.getInput(InputManager.Key.X) && forwardFireEnergy >= FORWARD_FIRE_CHARGE_TIME) {
+        	game.addProjectiles(forwardfire());
+        	forwardFireEnergy = 0;
+        }
+        
+        // 检查玩家是否移出边界
+        if (x <= 0)...
+        else if ((x + width) >= ShootGame.WIDTH) ...
+        if (y <= 0) ...
+        else if (y >= ShootGame.HEIGHT) ...
+        
+        // 固定间隔发射主武器
+        long shootInterval = 300; // 射击间隔
+        if (game.currentTime - lastShotTime >= shootInterval) {
+            game.addProjectiles(shoot());
+            lastShotTime = game.currentTime;
+        }
+    }
+```
+
+同时玩家会有碰撞检测和生成图片的方法：
+
+``` java
+ @Override
+ public void onCollision(GameObject other) {...}
+ 
+ Override
+ public void render(Graphics g) {
+        g.drawImage(image, getX(), getY(), width,height, null);
+  }
+```
+
+玩家的主武器：直线射击的子弹
 
 <img width="10" height="20" src="https://github.com/pkupxl/ShootGame/blob/master/resources/bullet2.png"/>
 
+``` java
+private Bullet[] shoot(){...}
+```
 技能一：射出大范围一屏幕子弹（范围大伤害低）
 
 <div style="float:left;border:solid 1px 000;margin:2px;">
@@ -141,10 +198,18 @@ timer.schedule(new TimerTask() {
 <img width="10" height="20" src="https://github.com/pkupxl/ShootGame/blob/master/resources/bullet2.png"/>
 <img width="10" height="20" src="https://github.com/pkupxl/ShootGame/blob/master/resources/bullet2.png"/>
 <div>
+    
+``` java
+private Bullet[] rowshoot(){...}
+```
 
 技能二：发射一个持续高伤害的火球（范围小伤害高）
 
 <img width="40" height="40" src="https://github.com/pkupxl/ShootGame/blob/master/resources/explosion3.png"/>
+
+``` java
+private ForwardFire[] forwardfire(){...}
+```
 
 ### 敌人设计：
 
