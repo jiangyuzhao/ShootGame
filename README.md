@@ -21,113 +21,6 @@
 
 秦雨轩、缪舜、潘兴禄：玩家和敌人类的设计，包括投射物的设计
 
-## 游戏机制
-
-### 玩家设计
-
-<img width="150" height="150" src="https://github.com/pkupxl/ShootGame/blob/master/resources/player.png"/>
-
-主武器：直线射击的子弹
-
-<img width="150" height="150" src="https://github.com/pkupxl/ShootGame/blob/master/resources/bullet.png"/>
-
-技能一：射出大范围一屏幕子弹（范围大伤害低）
-
-<img width="150" height="150" src="https://github.com/pkupxl/ShootGame/blob/master/resources/bullet.png"/>
-<img width="150" height="150" src="https://github.com/pkupxl/ShootGame/blob/master/resources/bullet.png"/>
-<img width="150" height="150" src="https://github.com/pkupxl/ShootGame/blob/master/resources/bullet.png"/>
-<img width="150" height="150" src="https://github.com/pkupxl/ShootGame/blob/master/resources/bullet.png"/>
-<img width="150" height="150" src="https://github.com/pkupxl/ShootGame/blob/master/resources/bullet.png"/>
-<img width="150" height="150" src="https://github.com/pkupxl/ShootGame/blob/master/resources/bullet.png"/>
-<img width="150" height="150" src="https://github.com/pkupxl/ShootGame/blob/master/resources/bullet.png"/>
-
-技能二：发射一个持续高伤害的火球（范围小伤害高）
-
-<img width="150" height="150" src="https://github.com/pkupxl/ShootGame/blob/master/resources/explosion3.png"/>
-
-### 敌人设计：
-
-#### 敌人一：
-
-<img width="150" height="150" src="https://github.com/pkupxl/ShootGame/blob/master/resources/enemy1.png"/>
-
-HP：一枪就死
-
-武器：没有
-
-体积：小
-
-速度：快
-
-伤害方式：碰到玩家自爆并赋予伤害
-
-#### 敌人二：
-
-<img width="150" height="150" src="https://github.com/pkupxl/ShootGame/blob/master/resources/enemy2.png"/>
-
-HP：5（血量适中）
-
-武器：会隔一段时间射出一个子弹
-
-体积：中等
-
-速度：中等
-
-碰到玩家也会自爆并赋予伤害
-
-#### 敌人三：
-
-<img width="150" height="150" src="https://github.com/pkupxl/ShootGame/blob/master/resources/enemy3.png"/>
-
-HP：15（比较高)
-
-武器：既有子弹又会射导弹
-
-体积：大
-
-速度：慢
-
-不流动，只会在画面上方左右晃，碰到玩家什么都不会发生
-
-#### BOSS
-
-<img width="150" height="150" src="https://github.com/pkupxl/ShootGame/blob/master/resources/boss.png"/>
-
-HP：非常高
-
-技能：和玩家一样
-
-操作：非常灵活，会根据不同情况做出反应
-
-BOSS仅在上半屏幕活动
-
-#### 投射物
-
-#### 敌人管理器
-
-怎么控制敌人出来
-
-## 游戏画面
-
-### 精灵动画
-
-<img width="150" height="150" src="https://github.com/pkupxl/ShootGame/blob/master/resources/explosion2.png"/>
-
-1. 子弹命中时的爆炸效果（小）
-2. 敌人死亡时的爆炸效果（大）
-
-#### 开始界面
-
-单独的JFrame窗体，要有开始，选项，帮助，退出等功能，开始游戏后调出主游戏的JPanel
-
-#### 暂停界面
-
-一个浮在游戏上方的JPanel，提供退出，回到游戏主界面等功能
-
-#### 结束界面
-
-单独的JFrame窗体，显示玩家的分数和杀敌数，评价等信息，点击返回回到开始界面
-
 ## 底层架构
 
 负责人：何昊
@@ -215,6 +108,114 @@ timer.schedule(new TimerTask() {
 
 综上所述，本游戏程序的设计中，如果某些变量需要大量修改并且对其修改不会破坏游戏的状态，则会将其暴露为`public`，不提供`getter()`和`setter()`。而对于对游戏状态的正确性确实很敏感的变量，设置为`private`，并且也不提供`getter()`和`setter()`，只允许其他`public`方法更新其值。
 
+
+## 游戏机制
+
+### 玩家设计
+
+<img width="150" height="150" src="https://github.com/pkupxl/ShootGame/blob/master/resources/player.png"/>
+
+主武器：直线射击的子弹
+
+<img width="20" height="20" src="https://github.com/pkupxl/ShootGame/blob/master/resources/bullet2.png"/>
+
+技能一：射出大范围一屏幕子弹（范围大伤害低）
+
+<div style="float:left;border:solid 1px 000;margin:2px;"><img width="20" height="20"
+src="https://github.com/pkupxl/ShootGame/blob/master/resources/bullet.png"/><div>
+<div style="float:left;border:solid 1px 000;margin:2px;"><img width="20" height="20" src="https://github.com/pkupxl/ShootGame/blob/master/resources/bullet.png"/><div>
+<div style="float:left;border:solid 1px 000;margin:2px;"><img width="20" height="20" src="https://github.com/pkupxl/ShootGame/blob/master/resources/bullet.png"/><div>
+<div style="float:left;border:solid 1px 000;margin:2px;"><img width="20" height="20" src="https://github.com/pkupxl/ShootGame/blob/master/resources/bullet.png"/><div>
+<div style="float:left;border:solid 1px 000;margin:2px;"><img width="20" height="20" src="https://github.com/pkupxl/ShootGame/blob/master/resources/bullet.png"/><div>
+<div style="float:left;border:solid 1px 000;margin:2px;"><img width="20" height="20" src="https://github.com/pkupxl/ShootGame/blob/master/resources/bullet.png"/><div>
+
+技能二：发射一个持续高伤害的火球（范围小伤害高）
+
+<img width="20" height="20" src="https://github.com/pkupxl/ShootGame/blob/master/resources/explosion3.png"/>
+
+### 敌人设计：
+主要想通过对武器,速度,体积等因素的不同设置，设计出几种不同种类的敌人，使得游戏场景更加丰富一些。
+
+#### 敌人一：
+
+<img width="100" height="100" src="https://github.com/pkupxl/ShootGame/blob/master/resources/enemy1.png"/>
+
+HP：一枪就死
+
+武器：没有
+
+体积：小
+
+速度：快
+
+伤害方式：碰到玩家自爆并赋予伤害
+
+#### 敌人二：
+
+<img width="120" height="120" src="https://github.com/pkupxl/ShootGame/blob/master/resources/enemy2.png"/>
+
+HP：5（血量适中）
+
+武器：会隔一段时间射出一个子弹
+
+体积：中等
+
+速度：中等
+
+碰到玩家也会自爆并赋予伤害
+
+#### 敌人三：
+
+<img width="150" height="150" src="https://github.com/pkupxl/ShootGame/blob/master/resources/enemy3.png"/>
+
+HP：15（比较高)
+
+武器：既有子弹又会射导弹
+
+体积：大
+
+速度：慢
+
+不流动，只会在画面上方左右晃，碰到玩家什么都不会发生
+
+#### BOSS
+
+<img width="150" height="150" src="https://github.com/pkupxl/ShootGame/blob/master/resources/boss.png"/>
+
+HP：非常高
+
+技能：和玩家一样
+
+操作：非常灵活，会根据不同情况做出反应
+
+BOSS仅在上半屏幕活动
+
+#### 投射物
+
+#### 敌人管理器
+
+怎么控制敌人出来
+
+## 游戏画面
+
+### 精灵动画
+
+<img width="150" height="150" src="https://github.com/pkupxl/ShootGame/blob/master/resources/explosion2.png"/>
+
+1. 子弹命中时的爆炸效果（小）
+2. 敌人死亡时的爆炸效果（大）
+
+#### 开始界面
+
+单独的JFrame窗体，要有开始，选项，帮助，退出等功能，开始游戏后调出主游戏的JPanel
+
+#### 暂停界面
+
+一个浮在游戏上方的JPanel，提供退出，回到游戏主界面等功能
+
+#### 结束界面
+
+单独的JFrame窗体，显示玩家的分数和杀敌数，评价等信息，点击返回回到开始界面
 ### 开发中遇到的问题
 
 #### 如何灵敏地处理键盘输入
@@ -224,6 +225,8 @@ Java自带的`KeyAdapter`的实时性非常差。
 #### 如何很好地管理大量图片资源
 
 #### 如何初始化射出的子弹的位置,使得效果更加逼真
+
+java图片的位置设置要手动设置,如果设置得不合理的话显示效果比较差
 
 ### 参考资料
 
