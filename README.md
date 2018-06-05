@@ -115,14 +115,12 @@ timer.schedule(new TimerTask() {
 
 <img width="150" height="150" src="https://github.com/pkupxl/ShootGame/blob/master/resources/player.png"/>
 
-玩家主要通过键盘来控制上下左右的移动,并且会不断地发射主武器子弹,打击敌人并充能,同时根据充能情况通过键盘发射特殊技能.
-这部分主要在玩家的updata函数中调用inputManager类中的方法实现：
+玩家类继承GameObject类，主要通过键盘来控制上下左右的移动,并且会不断地发射主武器子弹来打击敌人并充能,同时根据充能情况通过键盘发射特殊技能.这部分主要在玩家的updata函数中调用inputManager类中的方法实现：
 
 ``` java
- @Override
+    @Override
     public void update() {
         //根据不同按键移动
-        if (game.inputManager.getInput(...)) ...
         if (game.inputManager.getInput(...)) ...
         ...
         
@@ -131,16 +129,10 @@ timer.schedule(new TimerTask() {
         if (forwardFireEnergy < FORWARD_FIRE_CHARGE_TIME) ...
         
         /**按Z键发射一行子弹*/
-        if (game.inputManager.getInput(InputManager.Key.Z) && rowShootEnergy >= ROW_SHOOT_CHARGE_TIME) {
-        	game.addProjectiles(rowshoot());
-        	rowShootEnergy = 0;
-        }
+        if (game.inputManager.getInput(InputManager.Key.Z) && rowShootEnergy >= ROW_SHOOT_CHARGE_TIME) ...
         
         /**按X键喷火*/
-        if (game.inputManager.getInput(InputManager.Key.X) && forwardFireEnergy >= FORWARD_FIRE_CHARGE_TIME) {
-        	game.addProjectiles(forwardfire());
-        	forwardFireEnergy = 0;
-        }
+        if (game.inputManager.getInput(InputManager.Key.X) && forwardFireEnergy >= FORWARD_FIRE_CHARGE_TIME) ...
         
         // 检查玩家是否移出边界
         if (x <= 0)...
@@ -150,10 +142,7 @@ timer.schedule(new TimerTask() {
         
         // 固定间隔发射主武器
         long shootInterval = 300; // 射击间隔
-        if (game.currentTime - lastShotTime >= shootInterval) {
-            game.addProjectiles(shoot());
-            lastShotTime = game.currentTime;
-        }
+        if (game.currentTime - lastShotTime >= shootInterval)...
     }
 ```
 
@@ -187,11 +176,6 @@ private Bullet[] shoot(){...}
 <img width="10" height="20" src="https://github.com/pkupxl/ShootGame/blob/master/resources/bullet2.png"/>
 <img width="10" height="20" src="https://github.com/pkupxl/ShootGame/blob/master/resources/bullet2.png"/>
 <img width="10" height="20" src="https://github.com/pkupxl/ShootGame/blob/master/resources/bullet2.png"/>
-<div>
- <div style="float:left;border:solid 1px 000;margin:2px;">
-<img width="10" height="20" src="https://github.com/pkupxl/ShootGame/blob/master/resources/bullet2.png"/>
-<img width="10" height="20" src="https://github.com/pkupxl/ShootGame/blob/master/resources/bullet2.png"/>
-<img width="10" height="20" src="https://github.com/pkupxl/ShootGame/blob/master/resources/bullet2.png"/>
 <img width="10" height="20" src="https://github.com/pkupxl/ShootGame/blob/master/resources/bullet2.png"/>
 <img width="10" height="20" src="https://github.com/pkupxl/ShootGame/blob/master/resources/bullet2.png"/>
 <img width="10" height="20" src="https://github.com/pkupxl/ShootGame/blob/master/resources/bullet2.png"/>
@@ -213,9 +197,11 @@ private ForwardFire[] forwardfire(){...}
 
 ### 敌人设计：
 
-主要想通过对武器,速度,体积等因素的不同设置，设计出几种不同种类的敌人，使得游戏场景更加丰富一些。
+对于敌人类的设计,主要想通过对武器,速度,体积等因素的不同设置，设计出几种不同种类的敌人，使得游戏场景更加丰富一些。
+敌人类Enemy继承自GameObject,在updata()函数中进行相应的行动设置,同样有onCollision()碰撞检测,render()生成图像.
+具体的敌人类继承自Enemy类,它们的特定如下:
 
-#### 敌人一：
+#### 敌人一(Enemy1)：
 
 <img width="100" height="100" src="https://github.com/pkupxl/ShootGame/blob/master/resources/enemy1.png"/>
 
@@ -229,13 +215,17 @@ HP：一枪就死
 
 伤害方式：碰到玩家自爆并赋予伤害
 
-#### 敌人二：
+#### 敌人二(Enemy2)：
 
 <img width="120" height="120" src="https://github.com/pkupxl/ShootGame/blob/master/resources/enemy2.png"/>
 
 HP：5（血量适中）
 
 武器：会隔一段时间射出一个子弹
+
+``` java
+private EnemyBullet[] shootBullet(){...}
+```
 
 体积：中等
 
@@ -250,6 +240,15 @@ HP：5（血量适中）
 HP：15（比较高)
 
 武器：既有子弹又会射导弹
+
+``` java
+private EnemyBullet[] shootBullet(){...}
+private EnemyMissile[] shootMissile(){...}
+```
+<div style="float:left;border:solid 1px 000;margin:2px;">
+<img width="10" height="20" src="https://github.com/pkupxl/ShootGame/blob/master/resources/bullet3.png"/>子弹
+<img width="12" height="25" src="https://github.com/pkupxl/ShootGame/blob/master/resources/missile.png"/>导弹
+<div>
 
 体积：大
 
@@ -283,6 +282,11 @@ BOSS仅在上半屏幕活动
 
 1. 子弹命中时的爆炸效果（小）
 2. 敌人死亡时的爆炸效果（大）
+
+``` java
+private EnemyBullet[] shootBullet(){...}
+private LargeExplosion[] explode(double x, double y, int width, int height) {...}
+```
 
 #### 开始界面
 
