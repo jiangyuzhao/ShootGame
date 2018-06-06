@@ -268,3 +268,218 @@ public class ResourceManager {
 1. Unity Game Engine.
 2. Robert Nystrom. Game Programming Patterns. China Posts & Telecom Press. 2016.
 3. Jason Gregory. Game Engine Architecture. Publishing House of Electronic Industry. 2015.
+
+
+## 游戏机制
+
+### 玩家设计:
+
+<img width="150" height="150" src="https://github.com/pkupxl/ShootGame/blob/master/resources/player.png"/>
+
+玩家类继承GameObject类，主要通过键盘来控制上下左右的移动,并且会不断地发射主武器子弹来打击敌人并充能,同时根据充能情况通过键盘发射特殊技能.这部分主要在玩家的updata函数中调用inputManager类中的方法实现：
+
+​``` java
+    @Override
+    public void update() {
+        //根据不同按键移动
+        if (game.inputManager.getInput(...)) ...
+        ...
+        
+        // 技能充能
+        if (rowShootEnergy < ROW_SHOOT_CHARGE_TIME) ...
+        if (forwardFireEnergy < FORWARD_FIRE_CHARGE_TIME) ...
+        
+        /**按Z键发射一行子弹*/
+        if (game.inputManager.getInput(InputManager.Key.Z) && rowShootEnergy >= ROW_SHOOT_CHARGE_TIME) ...
+        
+        /**按X键喷火*/
+        if (game.inputManager.getInput(InputManager.Key.X) && forwardFireEnergy >= FORWARD_FIRE_CHARGE_TIME) ...
+        
+        // 检查玩家是否移出边界
+        if (x <= 0)...
+        else if ((x + width) >= ShootGame.WIDTH) ...
+        if (y <= 0) ...
+        else if (y >= ShootGame.HEIGHT) ...
+        
+        // 固定间隔发射主武器
+        long shootInterval = 300; // 射击间隔
+        if (game.currentTime - lastShotTime >= shootInterval)...
+    }
+​```
+
+同时玩家会有碰撞检测和生成图片的方法：
+
+​``` java
+ @Override
+ public void onCollision(GameObject other) {...}
+
+ Override
+ public void render(Graphics g) {
+        g.drawImage(image, getX(), getY(), width,height, null);
+  }
+​```
+
+玩家的主武器：直线射击的子弹
+
+<img width="10" height="20" src="https://github.com/pkupxl/ShootGame/blob/master/resources/bullet2.png"/>
+
+​``` java
+private Bullet[] shoot(){...}
+​```
+技能一：射出大范围一屏幕子弹（范围大伤害低）
+
+<div style="float:left;border:solid 1px 000;margin:2px;">
+<img width="10" height="20" src="https://github.com/pkupxl/ShootGame/blob/master/resources/bullet2.png"/>
+<img width="10" height="20" src="https://github.com/pkupxl/ShootGame/blob/master/resources/bullet2.png"/>
+<img width="10" height="20" src="https://github.com/pkupxl/ShootGame/blob/master/resources/bullet2.png"/>
+<img width="10" height="20" src="https://github.com/pkupxl/ShootGame/blob/master/resources/bullet2.png"/>
+<img width="10" height="20" src="https://github.com/pkupxl/ShootGame/blob/master/resources/bullet2.png"/>
+<img width="10" height="20" src="https://github.com/pkupxl/ShootGame/blob/master/resources/bullet2.png"/>
+<img width="10" height="20" src="https://github.com/pkupxl/ShootGame/blob/master/resources/bullet2.png"/>
+<img width="10" height="20" src="https://github.com/pkupxl/ShootGame/blob/master/resources/bullet2.png"/>
+<img width="10" height="20" src="https://github.com/pkupxl/ShootGame/blob/master/resources/bullet2.png"/>
+<img width="10" height="20" src="https://github.com/pkupxl/ShootGame/blob/master/resources/bullet2.png"/>
+<img width="10" height="20" src="https://github.com/pkupxl/ShootGame/blob/master/resources/bullet2.png"/>
+<img width="10" height="20" src="https://github.com/pkupxl/ShootGame/blob/master/resources/bullet2.png"/>
+<img width="10" height="20" src="https://github.com/pkupxl/ShootGame/blob/master/resources/bullet2.png"/>
+<div>
+    
+​``` java
+private Bullet[] rowshoot(){...}
+​```
+
+技能二：发射一个持续高伤害的火球（范围小伤害高）
+
+<img width="40" height="40" src="https://github.com/pkupxl/ShootGame/blob/master/resources/explosion3.png"/>
+
+​``` java
+private ForwardFire[] forwardfire(){...}
+​```
+
+### 敌人设计：
+
+对于敌人类的设计,主要想通过对武器,速度,体积等因素的不同设置，设计出几种不同种类的敌人，使得游戏场景更加丰富一些。
+敌人类Enemy继承自GameObject,在updata()函数中进行相应的行动设置,同样有onCollision()碰撞检测,render()生成图像.
+具体的敌人类继承自Enemy类,它们的特定如下:
+
+#### 敌人一(Enemy1)：
+
+<img width="100" height="100" src="https://github.com/pkupxl/ShootGame/blob/master/resources/enemy1.png"/>
+
+HP：一枪就死
+
+武器：没有
+
+体积：小
+
+速度：快
+
+伤害方式：碰到玩家自爆并赋予伤害
+
+#### 敌人二(Enemy2)：
+
+<img width="120" height="120" src="https://github.com/pkupxl/ShootGame/blob/master/resources/enemy2.png"/>
+
+HP：5（血量适中）
+
+武器：会隔一段时间射出一个子弹
+
+​``` java
+private EnemyBullet[] shootBullet(){...}
+​```
+
+体积：中等
+
+速度：中等
+
+碰到玩家也会自爆并赋予伤害
+
+#### 敌人三(Enemy3)：
+
+<img width="150" height="150" src="https://github.com/pkupxl/ShootGame/blob/master/resources/enemy3.png"/>
+
+HP：15（比较高)
+
+武器：既有子弹又会射导弹
+
+<div style="float:left;border:solid 1px 000;margin:2px;">
+<img width="10" height="20" src="https://github.com/pkupxl/ShootGame/blob/master/resources/bullet3.png"/>  子弹
+<img width="12" height="25" src="https://github.com/pkupxl/ShootGame/blob/master/resources/missile.png"/>  导弹
+<div>
+    
+​``` java
+private EnemyBullet[] shootBullet(){...}
+private EnemyMissile[] shootMissile(){...}
+​```
+体积：大
+
+速度：慢
+
+不流动，只会在画面上方左右晃，碰到玩家什么都不会发生
+
+#### BOSS
+
+<img width="150" height="150" src="https://github.com/pkupxl/ShootGame/blob/master/resources/boss.png"/>
+
+HP：非常高
+
+技能：会发射导弹,导弹会自动追踪玩家一段时间
+
+​``` java
+private EnemyMissile[] shootMissile(){...}
+​```
+
+操作：随机左右移动
+
+BOSS仅在上半屏幕活动
+
+
+#### 投射物
+
+<div style="float:left;border:solid 1px 000;margin:2px;">
+<img width="12" height="25" src="https://github.com/pkupxl/ShootGame/blob/master/resources/bullet2.png"/>  子弹
+<img width="12" height="25" src="https://github.com/pkupxl/ShootGame/blob/master/resources/bullet3.png"/>  敌人子弹
+<img width="12" height="25" src="https://github.com/pkupxl/ShootGame/blob/master/resources/missile.png"/>  导弹
+<img width="12" height="25" src="https://github.com/pkupxl/ShootGame/blob/master/resources/explosion3.png"/>  火球
+<div>
+以及以上的一些组合,比如精灵动画的爆炸效果,一行子弹等等
+    
+#### 敌人管理器
+
+怎么控制敌人出来
+
+## 游戏画面
+
+### 精灵动画
+
+<img width="150" height="150" src="https://github.com/pkupxl/ShootGame/blob/master/resources/explosion2.png"/>
+
+1. 子弹命中时的爆炸效果（小）
+​``` java
+private Explosion[] explode(double x, double y){...}
+​```
+2. 敌人死亡时的爆炸效果（大）
+​``` java
+private LargeExplosion[] explode(double x, double y, int width, int height) {...}
+​```
+
+#### 开始界面
+
+单独的JFrame窗体，要有开始，选项，帮助，退出等功能，开始游戏后调出主游戏的JPanel
+
+#### 暂停界面
+
+一个浮在游戏上方的JPanel，提供退出，回到游戏主界面等功能
+
+#### 结束界面
+
+单独的JFrame窗体，显示玩家的分数和杀敌数，评价等信息，点击返回回到开始界面
+### 开发中遇到的问题
+
+#### 如何初始化射出的子弹的位置,使得效果更加逼真
+
+java图片的位置设置要手动设置,如果设置得不合理的话显示效果比较差
+
+#### 如何处理精灵动画,更好显示爆炸效果
+
+
