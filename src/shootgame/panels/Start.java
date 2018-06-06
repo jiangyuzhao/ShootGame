@@ -30,7 +30,7 @@ public class Start extends JPanel {
 			}
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				GameFrame.shootPanel.setStateStart();
+				GameFrame.shootPanel.setStateRunning();
 				GameFrame.card.show(GameFrame.container, "ShootGame");
 				GameFrame.shootPanel.start();
 			}
