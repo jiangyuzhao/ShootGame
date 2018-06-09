@@ -375,15 +375,20 @@ private LargeExplosion[] explode(double x, double y, int width, int height) {...
 游戏整体使用一个JFrame对象，panel使用CardLayout，在panel中添加对应于主页面和各种辅助功能的panel，共包括：
 游戏主界面、开始界面、暂停界面、结束界面、选项界面、帮助界面、积分榜界面。
 ```java
-
+public static CardLayout card = new CardLayout();
+public static JPanel container = new JPanel(card);
 ```
 所有按钮统一成label类型的对象以获得更多样化的样式；
-```java
-
-```
 按钮在鼠标滑到上方的时候会高亮显示（用mouseEntered & mouseExited实现）
 ```java
-
+@Override
+public void mouseEntered(MouseEvent e) {
+		lblOptions.setForeground(Start.onPress);
+}
+@Override
+public void mouseExited(MouseEvent e) {
+	lblOptions.setForeground(Color.BLACK);
+}
 ```
 
 #### 开始界面
@@ -399,7 +404,11 @@ private LargeExplosion[] explode(double x, double y, int width, int height) {...
 单独的panel，包括继续、放弃等功能。
 当在主游戏界面中按下esc键，将会触发暂停界面
 ```java
-
+if (inputManager.getInput(InputManager.Key.ESCAPE)) {
+    state = PAUSE;
+    inputManager.clearInput();
+    GameFrame.card.show(GameFrame.container, "Pause");
+}
 ```
    点击继续按键将会返回到游戏主界面；
    点击放弃按键将会丢弃全部进度并跳转到结束界面。
@@ -410,21 +419,17 @@ private LargeExplosion[] explode(double x, double y, int width, int height) {...
 单独的panel，包括重新开始、查看积分榜、退出等功能。
    点击重新开始将会把全部游戏状态清空至初始状态，并将界面顶层panel替换为游戏主界面；
 ```java
-
+GameFrame.shootPanel.reInit();
+GameFrame.shootPanel.start();
+GameFrame.card.show(GameFrame.container, "Start");
 ```
    点击查看积分榜将会跳转到积分榜的显示界面；
    点击退出按键将会调用exit函数结束程序。
 
 #### 积分榜
 积分榜是一个文件读写相关的部分。我们为此维护了一个dat格式文件以存储高分榜中每个高分。
-每次游戏结束之后的得分会传递给#某个地方的某方法#，该方法会将当前分数（如果需要）插入到积分榜前十名中。
-```java
-
-```
+每次游戏结束之后的得分会传递给Over类的update方法，该方法会将当前分数（如果需要）插入到积分榜前十名中。
 将积分榜放到CardLayout最顶端的时候，scoreboard类中的onshow方法将读取文件中的前十个高分记录，并显示在一个滚动窗口中
-```java
-
-```
 积分榜显示界面有返回按键，点击可以返回到结束界面。
 
 
