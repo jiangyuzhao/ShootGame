@@ -46,7 +46,7 @@ public class Boss extends Enemy {
 	        velocityX = 2 * random;
 	    }
 	    
-	    long shootInterval = 1000; // 射击间隔
+	    long shootInterval = 1500; // 射击间隔
 	    if (game.currentTime - lastShotTime >= shootInterval) {
 	    	game.addProjectiles(shootMissile());
 	    	lastShotTime = game.currentTime;
