@@ -168,7 +168,7 @@ public class ResourceManager {
 }
 ```
 
-### 3.4.3 参考资料
+### 3.5 参考资料
 
 1. Unity Game Engine.
 2. Robert Nystrom. Game Programming Patterns. China Posts & Telecom Press. 2016.
@@ -299,7 +299,7 @@ private EnemyBullet[] shootBullet(){...}
 
 碰到玩家也会自爆并赋予伤害
 
-#### 4.3.3 敌人三(Enemy3)
+#### 4.2.3 敌人三(Enemy3)
 
 <img width="150" height="150" src="resources/enemy3.png"/>
 
@@ -322,7 +322,7 @@ private EnemyMissile[] shootMissile(){...}
 
 不流动，只会在画面上方左右晃，碰到玩家什么都不会发生
 
-#### 4.4.4 BOSS
+#### 4.2.4 BOSS
 
 <img width="150" height="150" src="resources/boss.png"/>
 
@@ -339,7 +339,7 @@ private EnemyMissile[] shootMissile(){...}
 BOSS仅在上半屏幕活动
 
 
-#### 4.4.5 投射物
+#### 4.2.5 投射物
 
 <div style="float:left;border:solid 1px 000;margin:2px;">
 <img width="12" height="25" src="resources/bullet2.png"/>  子弹
@@ -348,7 +348,7 @@ BOSS仅在上半屏幕活动
 <img width="12" height="25" src="resources/explosion3.png"/>  火球
 <div>
 以及以上的一些组合,比如精灵动画的爆炸效果,一行子弹等等
-#### 4.5 敌人管理器
+#### 4.3 敌人管理器
 
 怎么控制敌人出来
 
