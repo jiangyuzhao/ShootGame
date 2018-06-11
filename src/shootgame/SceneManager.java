@@ -47,12 +47,12 @@ public class SceneManager {
         if (game.currentTime - lastSpawnedTime > 1500) {
             lastSpawnedTime = game.currentTime;
             Random rand = new Random();
-            int type = rand.nextInt(3);
-            if(type<1){
+            int type = 5000 + rand.nextInt(10000) - (int)timeToSeeBoss;
+            if(type<5000){
             	enemies[0] = new Enemy1(game);
-            }else if(type<2){
+            }else if(type<10000){
             	enemies[0] = new Enemy2(game);
-            }else if(type<3){
+            }else if(type<15000){
             	enemies[0] = new Enemy3(game);
             }
             game.addEnemies(enemies);

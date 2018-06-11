@@ -42,10 +42,10 @@ public class Enemy3 extends Enemy{
 	        velocityX = 2 * random;
 	    }
 	    
-	    long shootInterval = 600; // 射击间隔
+	    long shootInterval = 800; // 射击间隔
 	    if (game.currentTime - lastShotTime >= shootInterval) {//目前射两个子弹后射一个导弹
-	    	emit=(emit+1)%3;
-	    	if(emit%3==0)
+	    	emit=(emit+1)%5;
+	    	if(emit%5==0)
 	    		game.addProjectiles(shootMissile());
 	    	else
 	    		game.addProjectiles(shootBullet());

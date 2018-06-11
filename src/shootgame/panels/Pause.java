@@ -5,12 +5,10 @@ import shootgame.ResourceManager;
 
 import java.awt.Graphics;
 
-import javax.swing.JPanel;
-import javax.swing.JLabel;
+import javax.swing.*;
 
 import java.awt.Color;
 import java.awt.Font;
-import javax.swing.SwingConstants;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -28,11 +26,11 @@ public class Pause extends JPanel {
 	public Pause() {
 		setLayout(null);
 		
-		JLabel lblReturn = new JLabel("返回游戏");
-		lblReturn.addMouseListener(new MouseAdapter() {
+		JButton btnReturn = new JButton("返回游戏");
+		btnReturn.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				lblReturn.setForeground(Start.onPress);
+				btnReturn.setForeground(Start.onPress);
 			}
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -41,22 +39,22 @@ public class Pause extends JPanel {
 			}
 			@Override
 			public void mouseReleased(MouseEvent e) {
-				lblReturn.setForeground(Color.BLACK);
+				btnReturn.setForeground(Color.BLACK);
 			}
 			@Override
 			public void mouseExited(MouseEvent e) {
-				lblReturn.setForeground(Color.BLACK);
+				btnReturn.setForeground(Color.BLACK);
 			}
 		});
-		lblReturn.setFont(new Font("Baoli TC", Font.BOLD | Font.ITALIC, 32));
-		lblReturn.setBounds(72, 90, 164, 45);
-		add(lblReturn);
-		
-		JLabel lblSaveExit = new JLabel("保存并退出");
-		lblSaveExit.addMouseListener(new MouseAdapter() {
+		btnReturn.setFont(new Font("Baoli TC", Font.BOLD | Font.ITALIC, 32));
+		btnReturn.setBounds(72, 90, 180, 45);
+		add(btnReturn);
+
+		JButton btnSaveExit = new JButton("保存并退出");
+		btnSaveExit.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				lblSaveExit.setForeground(Start.onPress);
+				btnSaveExit.setForeground(Start.onPress);
 			}
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -64,22 +62,22 @@ public class Pause extends JPanel {
 			}
 			@Override
 			public void mouseReleased(MouseEvent e) {
-				lblSaveExit.setForeground(Color.BLACK);
+				btnSaveExit.setForeground(Color.BLACK);
 			}
 			@Override
 			public void mouseExited(MouseEvent e) {
-				lblSaveExit.setForeground(Color.BLACK);
+				btnSaveExit.setForeground(Color.BLACK);
 			}
 		});
-		lblSaveExit.setFont(new Font("Baoli TC", Font.BOLD | Font.ITALIC, 32));
-		lblSaveExit.setBounds(72, 160, 180, 45);
-		add(lblSaveExit);
-		
-		JLabel lblExit = new JLabel("清除进度");
-		lblExit.addMouseListener(new MouseAdapter() {
+		btnSaveExit.setFont(new Font("Baoli TC", Font.BOLD | Font.ITALIC, 32));
+		btnSaveExit.setBounds(72, 160, 180, 45);
+		add(btnSaveExit);
+
+		JButton btnExit = new JButton("清除进度");
+		btnExit.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				lblExit.setForeground(Start.onPress);
+				btnExit.setForeground(Start.onPress);
 			}
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -88,16 +86,16 @@ public class Pause extends JPanel {
 			}
 			@Override
 			public void mouseReleased(MouseEvent e) {
-				lblExit.setForeground(Color.BLACK);
+				btnExit.setForeground(Color.BLACK);
 			}
 			@Override
 			public void mouseExited(MouseEvent e) {
-				lblExit.setForeground(Color.BLACK);
+				btnExit.setForeground(Color.BLACK);
 			}
 		});
-		lblExit.setFont(new Font("Baoli TC", Font.BOLD | Font.ITALIC, 32));
-		lblExit.setBounds(72, 230, 180, 45);
-		add(lblExit);
+		btnExit.setFont(new Font("Baoli TC", Font.BOLD | Font.ITALIC, 32));
+		btnExit.setBounds(72, 230, 180, 45);
+		add(btnExit);
 		
 		JLabel lblPause = new JLabel("PAUSE");
 		lblPause.setFont(new Font("Baoli SC", Font.BOLD | Font.ITALIC, 60));

@@ -269,7 +269,7 @@ public class ShootGame extends JPanel {
         player = new Player(ShootGame.this, 0); // 重新创建英雄机
         score = 0; // 清空成绩
         inputManager.clearInput();
-        state = START; // 状态设置为启动
+        state = RUNNING; // 状态设置为启动
         bossDied = false;
         sceneManager.init();
     }
