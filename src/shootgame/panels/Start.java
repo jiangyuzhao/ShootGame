@@ -5,9 +5,7 @@ import shootgame.ResourceManager;
 
 import java.awt.Graphics;
 
-import javax.swing.JPanel;
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
+import javax.swing.*;
 import java.awt.Font;
 import java.awt.Color;
 import java.awt.event.MouseAdapter;
@@ -21,12 +19,12 @@ public class Start extends JPanel {
 	 */
 	public Start() {
 		setLayout(null);
-		
-		JLabel lblStart = new JLabel("开始");
-		lblStart.addMouseListener(new MouseAdapter() {
+
+		JButton btnStart = new JButton("开始");
+		btnStart.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				lblStart.setForeground(Start.onPress);
+				btnStart.setForeground(Start.onPress);
 			}
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -36,24 +34,24 @@ public class Start extends JPanel {
 			}
 			@Override
 			public void mouseReleased(MouseEvent e) {
-				lblStart.setForeground(Color.BLACK);
+				btnStart.setForeground(Color.BLACK);
 			}
 			@Override
 			public void mouseExited(MouseEvent e) {
-				lblStart.setForeground(Color.BLACK);
+				btnStart.setForeground(Color.BLACK);
 			}
 		});
 		
-		lblStart.setForeground(Color.BLACK);
-		lblStart.setFont(new Font("Baoli TC", Font.BOLD | Font.ITALIC, 32));
-		lblStart.setBounds(140, 376, 146, 48);
-		add(lblStart);
+		btnStart.setForeground(Color.BLACK);
+		btnStart.setFont(new Font("Baoli TC", Font.BOLD | Font.ITALIC, 32));
+		btnStart.setBounds(140, 376, 146, 48);
+		add(btnStart);
 		
-		JLabel lblOptions = new JLabel("选项");
-		lblOptions.addMouseListener(new MouseAdapter() {
+		JButton btnOptions = new JButton("选项");
+		btnOptions.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				lblOptions.setForeground(Start.onPress);
+				btnOptions.setForeground(Start.onPress);
 			}
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -61,23 +59,23 @@ public class Start extends JPanel {
 			}
 			@Override
 			public void mouseReleased(MouseEvent e) {
-				lblOptions.setForeground(Color.BLACK);
+				btnOptions.setForeground(Color.BLACK);
 			}
 			@Override
 			public void mouseExited(MouseEvent e) {
-				lblOptions.setForeground(Color.BLACK);
+				btnOptions.setForeground(Color.BLACK);
 			}
 		});
-		lblOptions.setFont(new Font("Baoli TC", Font.BOLD | Font.ITALIC, 32));
-		lblOptions.setForeground(Color.BLACK);
-		lblOptions.setBounds(140, 438, 106, 45);
-		add(lblOptions);
+		btnOptions.setFont(new Font("Baoli TC", Font.BOLD | Font.ITALIC, 32));
+		btnOptions.setForeground(Color.BLACK);
+		btnOptions.setBounds(140, 438, 146, 48);
+		add(btnOptions);
 		
-		JLabel lblHelp = new JLabel("帮助");
-		lblHelp.addMouseListener(new MouseAdapter() {
+		JButton btnHelp = new JButton("帮助");
+		btnHelp.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				lblHelp.setForeground(Start.onPress);
+				btnHelp.setForeground(Start.onPress);
 			}
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -85,23 +83,23 @@ public class Start extends JPanel {
 			}
 			@Override
 			public void mouseReleased(MouseEvent e) {
-				lblHelp.setForeground(Color.BLACK);
+				btnHelp.setForeground(Color.BLACK);
 			}
 			@Override
 			public void mouseExited(MouseEvent e) {
-				lblHelp.setForeground(Color.BLACK);
+				btnHelp.setForeground(Color.BLACK);
 			}
 		});
-		lblHelp.setForeground(Color.BLACK);
-		lblHelp.setFont(new Font("Baoli TC", Font.BOLD | Font.ITALIC, 32));
-		lblHelp.setBounds(140, 500, 106, 45);
-		add(lblHelp);
-		
-		JLabel lblExit = new JLabel("退出");
-		lblExit.addMouseListener(new MouseAdapter() {
+		btnHelp.setForeground(Color.BLACK);
+		btnHelp.setFont(new Font("Baoli TC", Font.BOLD | Font.ITALIC, 32));
+		btnHelp.setBounds(140, 500, 146, 48);
+		add(btnHelp);
+
+		JButton btnExit = new JButton("退出");
+		btnExit.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				lblExit.setForeground(Start.onPress);
+				btnExit.setForeground(Start.onPress);
 			}
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -109,17 +107,17 @@ public class Start extends JPanel {
 			}
 			@Override
 			public void mouseReleased(MouseEvent e) {
-				lblExit.setForeground(Color.BLACK);
+				btnExit.setForeground(Color.BLACK);
 			}
 			@Override
 			public void mouseExited(MouseEvent e) {
-				lblExit.setForeground(Color.BLACK);
+				btnExit.setForeground(Color.BLACK);
 			}
 		});
-		lblExit.setForeground(Color.BLACK);
-		lblExit.setFont(new Font("Baoli TC", Font.BOLD | Font.ITALIC, 32));
-		lblExit.setBounds(140, 562, 106, 45);
-		add(lblExit);
+		btnExit.setForeground(Color.BLACK);
+		btnExit.setFont(new Font("Baoli TC", Font.BOLD | Font.ITALIC, 32));
+		btnExit.setBounds(140, 562, 146, 48);
+		add(btnExit);
 		
 	}
 	@Override
@@ -127,6 +125,7 @@ public class Start extends JPanel {
 		super.paintComponent(g);
 		g.drawImage(ResourceManager.getImage("startBackground"),
 				0, 0, this.getWidth(), this.getHeight(), null);
+		g.drawImage(ResourceManager.getImage("logo"), 100, 100, 400, 80, null);
 		//System.out.println("drew!");
 	}
 }

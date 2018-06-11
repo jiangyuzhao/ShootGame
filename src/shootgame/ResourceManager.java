@@ -90,6 +90,9 @@ public class ResourceManager {
             BufferedImage explosion3 = ImageIO.read(ShootGame.class.getResource("/resources/explosion3.png"));
             images.put("explosion3", explosion3);
 
+            BufferedImage logo = ImageIO.read(ShootGame.class.getResource("/resources/logo.png"));
+            images.put("logo", logo);
+
         } catch (IOException exec) {
             exec.printStackTrace();
         }

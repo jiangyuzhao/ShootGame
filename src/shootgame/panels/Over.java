@@ -6,9 +6,7 @@ import shootgame.ScoreBoard;
 
 import java.awt.Graphics;
 
-import javax.swing.JPanel;
-import javax.swing.JLabel;
-import javax.swing.SwingConstants;
+import javax.swing.*;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -37,11 +35,11 @@ public class Over extends JPanel {
 		lblOver.setForeground(new Color(255,255,255));
 		add(lblOver);
 		
-		JLabel lblReTry = new JLabel("从头再来");
-		lblReTry.addMouseListener(new MouseAdapter() {
+		JButton btnReTry = new JButton("从头再来");
+		btnReTry.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				lblReTry.setForeground(Start.onPress);
+				btnReTry.setForeground(Start.onPress);
 			}
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -51,22 +49,22 @@ public class Over extends JPanel {
 			}
 			@Override
 			public void mouseReleased(MouseEvent e) {
-				lblReTry.setForeground(Color.BLACK);
+				btnReTry.setForeground(Color.BLACK);
 			}
 			@Override
 			public void mouseExited(MouseEvent e) {
-				lblReTry.setForeground(Color.BLACK);
+				btnReTry.setForeground(Color.BLACK);
 			}
 		});
-		lblReTry.setFont(new Font("Baoli TC", Font.BOLD | Font.ITALIC, 32));
-		lblReTry.setBounds(90, 143, 164, 45);
-		add(lblReTry);
+		btnReTry.setFont(new Font("Baoli TC", Font.BOLD | Font.ITALIC, 32));
+		btnReTry.setBounds(90, 143, 180, 45);
+		add(btnReTry);
 		
-		JLabel lblBoard = new JLabel("查看积分榜");
-		lblBoard.addMouseListener(new MouseAdapter() {
+		JButton btnBoard = new JButton("查看积分榜");
+		btnBoard.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				lblBoard.setForeground(Start.onPress);
+				btnBoard.setForeground(Start.onPress);
 			}
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -75,38 +73,38 @@ public class Over extends JPanel {
 			}
 			@Override
 			public void mouseReleased(MouseEvent e) {
-				lblBoard.setForeground(Color.BLACK);
+				btnBoard.setForeground(Color.BLACK);
 			}
 			@Override
 			public void mouseExited(MouseEvent e) {
-				lblBoard.setForeground(Color.BLACK);
+				btnBoard.setForeground(Color.BLACK);
 			}
 		});
-		lblBoard.setFont(new Font("Baoli TC", Font.BOLD | Font.ITALIC, 32));
-		lblBoard.setBounds(90, 249, 164, 45);
-		add(lblBoard);
-		
-		JLabel lblExit = new JLabel("退出");
-		lblExit.addMouseListener(new MouseAdapter() {
+		btnBoard.setFont(new Font("Baoli TC", Font.BOLD | Font.ITALIC, 32));
+		btnBoard.setBounds(90, 249, 180, 45);
+		add(btnBoard);
+
+		JButton btnExit = new JButton("退出");
+		btnExit.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				lblExit.setForeground(Start.onPress);
+				btnExit.setForeground(Start.onPress);
 			}
 			@Override
 			public void mouseClicked(MouseEvent e) { System.exit(0); }
 			@Override
 			public void mouseReleased(MouseEvent e) {
-				lblExit.setForeground(Color.BLACK);
+				btnExit.setForeground(Color.BLACK);
 			}
 			@Override
 			public void mouseExited(MouseEvent e) {
-				lblExit.setForeground(Color.BLACK);
+				btnExit.setForeground(Color.BLACK);
 			}
 		});
-		lblExit.setForeground(Color.BLACK);
-		lblExit.setFont(new Font("Baoli TC", Font.BOLD | Font.ITALIC, 32));
-		lblExit.setBounds(90, 353, 164, 45);
-		add(lblExit);
+		btnExit.setForeground(Color.BLACK);
+		btnExit.setFont(new Font("Baoli TC", Font.BOLD | Font.ITALIC, 32));
+		btnExit.setBounds(90, 353, 180, 45);
+		add(btnExit);
 		
 	}
 	@Override

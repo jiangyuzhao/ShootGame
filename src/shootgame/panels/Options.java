@@ -2,13 +2,10 @@ package shootgame.panels;
 
 import shootgame.GameFrame;
 
-import javax.swing.JPanel;
-import javax.swing.JLabel;
-import javax.swing.SwingConstants;
+import javax.swing.*;
 
 import java.awt.Color;
 import java.awt.Font;
-import javax.swing.JToggleButton;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -29,12 +26,12 @@ public class Options extends JPanel {
 		JToggleButton toggleButton = new JToggleButton("单人/双人");
 		toggleButton.setBounds(122, 200, 161, 29);
 		add(toggleButton);
-		
-		JLabel lblReturn = new JLabel("返回");
-		lblReturn.addMouseListener(new MouseAdapter() {
+
+		JButton btnReturn = new JButton("返回");
+		btnReturn.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				lblReturn.setForeground(Start.onPress);
+				btnReturn.setForeground(Start.onPress);
 			}
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -42,16 +39,16 @@ public class Options extends JPanel {
 			}
 			@Override
 			public void mouseReleased(MouseEvent e) {
-				lblReturn.setForeground(Color.BLACK);
+				btnReturn.setForeground(Color.BLACK);
 			}
 			@Override
 			public void mouseExited(MouseEvent e) {
-				lblReturn.setForeground(Color.BLACK);
+				btnReturn.setForeground(Color.BLACK);
 			}
 		});
-		lblReturn.setFont(new Font("Baoli TC", Font.BOLD | Font.ITALIC, 32));
-		lblReturn.setBounds(183, 576, 127, 52);
-		add(lblReturn);
+		btnReturn.setFont(new Font("Baoli TC", Font.BOLD | Font.ITALIC, 32));
+		btnReturn.setBounds(183, 576, 127, 52);
+		add(btnReturn);
 
 	}
 }
