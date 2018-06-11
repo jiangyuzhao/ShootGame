@@ -46,31 +46,7 @@ public class Start extends JPanel {
 		btnStart.setFont(new Font("Baoli TC", Font.BOLD | Font.ITALIC, 32));
 		btnStart.setBounds(140, 376, 146, 48);
 		add(btnStart);
-		
-		JButton btnOptions = new JButton("选项");
-		btnOptions.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				btnOptions.setForeground(Start.onPress);
-			}
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				GameFrame.card.show(GameFrame.container, "Options");
-			}
-			@Override
-			public void mouseReleased(MouseEvent e) {
-				btnOptions.setForeground(Color.BLACK);
-			}
-			@Override
-			public void mouseExited(MouseEvent e) {
-				btnOptions.setForeground(Color.BLACK);
-			}
-		});
-		btnOptions.setFont(new Font("Baoli TC", Font.BOLD | Font.ITALIC, 32));
-		btnOptions.setForeground(Color.BLACK);
-		btnOptions.setBounds(140, 438, 146, 48);
-		add(btnOptions);
-		
+
 		JButton btnHelp = new JButton("帮助");
 		btnHelp.addMouseListener(new MouseAdapter() {
 			@Override
@@ -92,10 +68,35 @@ public class Start extends JPanel {
 		});
 		btnHelp.setForeground(Color.BLACK);
 		btnHelp.setFont(new Font("Baoli TC", Font.BOLD | Font.ITALIC, 32));
-		btnHelp.setBounds(140, 500, 146, 48);
+		btnHelp.setBounds(140, 438, 146, 48);
 		add(btnHelp);
 
-		JButton btnExit = new JButton("退出");
+        JButton btnOptions = new JButton("关于");
+        btnOptions.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                btnOptions.setForeground(Start.onPress);
+            }
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                GameFrame.card.show(GameFrame.container, "About");
+            }
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                btnOptions.setForeground(Color.BLACK);
+            }
+            @Override
+            public void mouseExited(MouseEvent e) {
+                btnOptions.setForeground(Color.BLACK);
+            }
+        });
+        btnOptions.setFont(new Font("Baoli TC", Font.BOLD | Font.ITALIC, 32));
+        btnOptions.setForeground(Color.BLACK);
+        btnOptions.setBounds(140, 500, 146, 48);
+        add(btnOptions);
+
+
+        JButton btnExit = new JButton("退出");
 		btnExit.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent e) {

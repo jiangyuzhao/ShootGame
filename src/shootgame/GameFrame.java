@@ -35,7 +35,7 @@ public class GameFrame extends JFrame {
         container.add(new Start(), "Start");
         container.add(pausePanel, "Pause");
         container.add(new Over(), "Over");
-        container.add(new Options(), "Options");
+        container.add(new About(), "About");
         container.add(new Help(), "Help");
         container.add(scoreboard, "Scoreboard");
         

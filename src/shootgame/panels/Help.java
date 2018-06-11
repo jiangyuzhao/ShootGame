@@ -10,7 +10,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class Help extends JPanel {
-	private JTextField textField;
+	private JTextArea textArea;
 
 	/**
 	 * Create the panel.
@@ -27,12 +27,12 @@ public class Help extends JPanel {
 		scrollPane.setBounds(60, 103, 467, 484);
 		add(scrollPane);
 		
-		textField = new JTextField();
-		textField.setFont(new Font("Lucida Grande", Font.PLAIN, 24));
-		scrollPane.setViewportView(textField);
-		textField.setColumns(10);
-		textField.setEditable(false);
-		textField.setText("按↑↓←→键移动\r\n使用Z和X释放技能");
+		textArea = new JTextArea();
+		textArea.setFont(new Font("Lucida Grande", Font.PLAIN, 24));
+		scrollPane.setViewportView(textArea);
+		textArea.setColumns(10);
+		textArea.setEditable(false);
+		textArea.setText("按↑↓←→键移动\r\n使用Z和X释放技能");
 		
 		JButton btnReturn = new JButton("返回");
 		btnReturn.addMouseListener(new MouseAdapter() {
